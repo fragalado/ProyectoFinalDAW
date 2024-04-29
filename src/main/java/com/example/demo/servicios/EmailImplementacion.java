@@ -11,6 +11,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.config.EmailProperties;
 import com.example.demo.daos.Token;
 import com.example.demo.daos.Usuario;
 
@@ -31,6 +32,9 @@ public class EmailImplementacion implements EmailInterfaz {
 
 	@Autowired
 	private TokenImplementacion tokenImplementacion;
+	
+	@Autowired
+	private EmailProperties appProperties;
 
 	@Override
 	public boolean enviarEmail(String direccion, boolean esActivarCuenta, Usuario usuario) {
@@ -66,7 +70,7 @@ public class EmailImplementacion implements EmailInterfaz {
 				// Pasamos el objeto MimeMessage, true para habilitar la opcion de contenido
 				// mixto y la codificacion utf-8
 				MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-				helper.setFrom("suplementoStore@frangallegodorado.es");
+				helper.setFrom(appProperties.getEmailFrom());
 				helper.setTo(usuario.getEmail_usuario());
 				helper.setSubject(asuntoEmail);
 				helper.setText(mensajeCorreo(tokenDao.getCod_token(), direccion, esActivarCuenta), true);

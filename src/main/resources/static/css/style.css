@@ -1,0 +1,97 @@
+.nombreTiendaSuplementos {
+    margin-left: 10px;
+}
+
+.iconoPerfil{
+    margin-right: 10px;
+    font-size: 18px;
+    border: 1px solid white;
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+
+.iconoPerfil i{
+    color: white;
+}
+
+.carrito {
+	margin-right: 20px;
+	font-size: 18px;
+}
+
+.carrito i{
+	color: white;
+}
+
+.tablaAdmin {
+    margin-top: 60px;
+}
+
+.tablaAdmin table {
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 1);
+}
+
+@media (max-width: 991px){
+    .nombreTiendaSuplementos {
+        display: none;
+    }
+
+    .iconoPerfil{
+        display: none;
+    }
+    
+    .carrito{
+        display: none;
+    }
+}
+
+@media (min-width: 992px){
+    .perfilLink {
+        display: none;
+    }
+}
+
+/* Estilos de la vista Editar usuario y Editar suplemento */
+
+.tituloVista {
+	margin-top: 50px;
+}
+
+.imagen {
+    max-height: 160px;
+}
+
+.contenedor {
+    background-color: #FFFAFB;
+    margin: 0 auto;
+    max-width: 35%;
+    margin-top: 10px;
+    border: 2px solid black;
+    border-radius: 40px;
+    padding: 20px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.contenedor-imagen {
+    max-width: 150px;
+    max-height: 150px;
+    margin: 0 auto;
+}
+
+.botonImagen {
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    max-width: 150px;
+}
+
+.botonVolver {
+    margin-top: -38px;
+    float: right;
+}
+
+.inputVistaEditar {
+    border: 1px solid black;
+}
+
+/* Fin de Estilos de la vista Editar usuario */

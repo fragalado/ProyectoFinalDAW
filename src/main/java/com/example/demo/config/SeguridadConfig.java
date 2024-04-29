@@ -14,8 +14,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 /**
  * Clase configuración para la autentificación
  * 
- * @author Francisco José Gallego Dorado 
- * Fecha: 21/04/2024
+ * @author Francisco José Gallego Dorado Fecha: 21/04/2024
  */
 @Configuration
 @EnableMethodSecurity
@@ -48,15 +47,13 @@ public class SeguridadConfig {
 		http
 				// Cross-Site Request Forgery, método de seguridad que utiliza por defecto
 				// spring security
-				.csrf(csrf -> csrf.disable())
-				.authorizeHttpRequests(authRequest -> {
+				.csrf(csrf -> csrf.disable()).authorizeHttpRequests(authRequest -> {
 					// Permite acceso a estas url
-					authRequest.requestMatchers("/", "/login", "/registro", "/restablecer/**", "/activa-cuenta/**",
+					authRequest.requestMatchers("/login", "/registro", "/restablecer/**", "/activa-cuenta/**",
 							"/css/**", "/js/**", "/img/**").permitAll();
 					// Autenticación para cualquier otra solicitud
 					authRequest.anyRequest().authenticated();
-				}).formLogin(login -> login
-						.loginPage("/login") // Establece la página de inicio de sesión personalizada
+				}).formLogin(login -> login.loginPage("/login") // Establece la página de inicio de sesión personalizada
 						.defaultSuccessUrl("/home", true) // Establece la url de redirección después de un inicio
 															// exitoso
 						.loginProcessingUrl("/login") // Establece la url de procesamiento del formulario de login

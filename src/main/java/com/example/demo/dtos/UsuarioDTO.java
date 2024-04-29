@@ -20,6 +20,7 @@ public class UsuarioDTO {
 	private String psswd_usuario;
 	private long id_acceso = 1;
 	private boolean estaActivado_usuario = false;
+	private String imagen_usuario;
 
 	// Constructores -> Constructor vacío
 

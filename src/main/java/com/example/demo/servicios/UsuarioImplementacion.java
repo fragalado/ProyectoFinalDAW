@@ -1,6 +1,9 @@
 package com.example.demo.servicios;
 
 import java.util.Calendar;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -32,6 +35,45 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 
 	@Autowired
 	private TokenImplementacion tokenImplementacion;
+
+	@Override
+	public List<UsuarioDTO> obtieneTodosLosUsuarios() {
+		try {
+			// Obtenemos todos los usuarios de la base de datos y lo guardamos en una lista
+			// de tipo Usuario (DAO)
+			List<Usuario> listaUsuariosDao = usuarioRepositorio.findAll();
+
+			// Pasamos de DAO a DTO
+			List<UsuarioDTO> listaUsuariosDTO = Util.listaUsuarioDaoADto(listaUsuariosDao);
+
+			// Devolvemos la lista de usuarios DTO
+			return listaUsuariosDTO;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public UsuarioDTO obtieneUsuarioPorId(long id_usuario) {
+		try {
+			// Obtenemos el usuario
+			Optional<Usuario> usuarioEncontrado = usuarioRepositorio.findById(id_usuario);
+
+			// Comprobamos si no se ha encontrado el usuario
+			if (usuarioEncontrado.isEmpty())
+				return null;
+
+			// Si se ha encontrado vamos a convertir el usuario de DAO a DTO
+			UsuarioDTO usuarioDTO = Util.usuarioADto(usuarioEncontrado.get());
+
+			// Devolvemos el usuario convertido a DTO
+			return usuarioDTO;
+		} catch (IllegalArgumentException e) {
+			return null;
+		} catch (NoSuchElementException e) {
+			return null;
+		}
+	}
 
 	@Override
 	public UsuarioDTO obtieneUsuarioPorEmail(String email) {
@@ -100,9 +142,9 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 				// con el proceso
 				// Obtenemos el usuario del token
 				Usuario usuarioDao = tokenDao.getUsuario();
-				
+
 				// Comprobamos si el email introducido es distinto al email del usuario
-				if(!email.equals(usuarioDao.getEmail_usuario())) {
+				if (!email.equals(usuarioDao.getEmail_usuario())) {
 					return false;
 				}
 
@@ -176,7 +218,7 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 
 				// Modificamos la contraseña
 				usuarioDao.setPsswd_usuario(password);
-				
+
 				// Actualizamos en la base de datos
 				usuarioRepositorio.save(usuarioDao);
 
@@ -187,6 +229,88 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			}
 		} catch (NullPointerException e) {
 			return false;
+		} catch (IllegalArgumentException e) {
+			return false;
+		} catch (OptimisticLockingFailureException e) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean borraUsuarioPorId(long id_usuario) {
+		try {
+			// Comprobamos si existe un usuario con el id pasado
+			UsuarioDTO usuarioEncontrado = obtieneUsuarioPorId(id_usuario);
+
+			// Comprobamos si no se ha encontrado
+			if (usuarioEncontrado == null)
+				return false;
+
+			// Si existe comprobamos que no sea administrador
+			if(usuarioEncontrado.getId_acceso() == 2)
+				return false;
+			
+			// Si no es admin lo eliminamos
+			usuarioRepositorio.deleteById(id_usuario);
+
+			// Ahora para comprobar si se ha eliminado vamos a buscar el usuario por el id
+			UsuarioDTO usuarioDTO = obtieneUsuarioPorId(id_usuario);
+
+			if (usuarioDTO == null)
+				return true; // Devolvemos true si no existe
+
+			return false; // En caso de que se haya encontrado un usuario con el id
+		} catch (IllegalArgumentException e) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean actualizaUsuario(UsuarioDTO usuarioDTO) {
+		try {
+			// Con el id del usuario pasado obtenemos el usuario de la base de datos
+			Usuario usuarioEncontrado = Util.usuarioADao(obtieneUsuarioPorId(usuarioDTO.getId_usuario()));
+			// Optional<Usuario> usuarioEncontrado =
+			// usuarioRepositorio.findById(usuarioDTO.getId_usuario());
+
+			// Actualizamos algunos datos del usuarioEncontrado con el usuarioDTO
+			usuarioEncontrado.setNombre_usuario(usuarioDTO.getNombre_usuario());
+			usuarioEncontrado.setEmail_usuario(usuarioDTO.getEmail_usuario());
+			usuarioEncontrado.setTlf_usuario(usuarioDTO.getTlf_usuario());
+			if (usuarioDTO.getImagen_usuario() != null)
+				usuarioEncontrado.setImagen_usuario(Util.convertirAByteArray(usuarioDTO.getImagen_usuario()));
+
+			// Actualizamos el usuario
+			usuarioRepositorio.save(usuarioEncontrado);
+
+			return true;
+		} catch (IllegalArgumentException e) {
+			return false;
+		} catch (OptimisticLockingFailureException e) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean agregaUsuario(UsuarioDTO usuarioDTO) {
+		try {
+			// Buscamos si existe un usuario con el email introducido
+			UsuarioDTO usuarioEncontrado = obtieneUsuarioPorEmail(usuarioDTO.getEmail_usuario());
+
+			if (usuarioEncontrado != null) {
+				// Se ha encontrado un usuario con el email introducido
+				// Luego devolveremos false
+				return false;
+			}
+
+			// Si no se ha encontrado
+			// Activamos la cuenta
+			usuarioDTO.setEstaActivado_usuario(true);
+
+			// Guardamos el usuario
+			usuarioRepositorio.save(Util.usuarioADao(usuarioDTO));
+
+			return true;
 		} catch (IllegalArgumentException e) {
 			return false;
 		} catch (OptimisticLockingFailureException e) {
