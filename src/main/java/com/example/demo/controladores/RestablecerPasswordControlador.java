@@ -48,9 +48,9 @@ public class RestablecerPasswordControlador {
 			}
 
 			// Devolvemos la vista register
-			return "peticionPassword";
+			return "auth/peticionPassword";
 		} catch (Exception e) {
-			return "peticionPassword";
+			return "auth/peticionPassword";
 		}
 	}
 
@@ -87,9 +87,9 @@ public class RestablecerPasswordControlador {
 			model.addAttribute("objetoDTO", new FormularioCambioPasswordDTO());
 
 			// Devolvemos la vista
-			return "cambiarPassword";
+			return "auth/cambiarPassword";
 		} catch (Exception e) {
-			return "cambiarPassword";
+			return "auth/cambiarPassword";
 		}
 	}
 

@@ -50,7 +50,7 @@ public class ActivaCuentaControlador {
 			model.addAttribute("usuarioDTO", new UsuarioDTO());
 
 			// Devolvemos la vista register
-			return "confirmarEmail";
+			return "auth/confirmarEmail";
 		} catch (Exception e) {
 			return "redirect:/login";
 		}

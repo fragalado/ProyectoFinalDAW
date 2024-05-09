@@ -38,9 +38,9 @@ public class LoginControlador {
 			model.addAttribute("usuarioDTO", new UsuarioDTO());
 
 			// Devolvemos la vista login
-			return "login";
+			return "auth/login";
 		} catch (Exception e) {
-			return "login";
+			return "auth/login";
 		}
 	}
 }

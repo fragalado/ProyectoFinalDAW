@@ -50,9 +50,9 @@ public class RegistroControlador {
 			model.addAttribute("usuarioDTO", new UsuarioDTO());
 
 			// Devolvemos la vista register
-			return "register";
+			return "auth/register";
 		} catch (Exception e) {
-			return "register";
+			return "auth/register";
 		}
 	}
 

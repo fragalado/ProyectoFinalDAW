@@ -1,5 +1,7 @@
 package com.example.demo.servicios;
 
+import java.util.List;
+
 import com.example.demo.dtos.UsuarioDTO;
 
 /**
@@ -9,6 +11,25 @@ import com.example.demo.dtos.UsuarioDTO;
  * Fecha: 21/04/2024
  */
 public interface UsuarioInterfaz {
+
+	/**
+	 * Método que obtiene todos los usuarios de la base de datos
+	 * 
+	 * Fecha: 27/04/2024
+	 * 
+	 * @return Devuelve una lista de objetos UsuarioDTO
+	 */
+	public List<UsuarioDTO> obtieneTodosLosUsuarios();
+
+	/**
+	 * Método que obtiene un usuario por el id
+	 * 
+	 * Fecha: 27/04/2024
+	 * 
+	 * @param id_usuario Id del usuario a obtener
+	 * @return Devuelve un objeto UsuarioDTO
+	 */
+	public UsuarioDTO obtieneUsuarioPorId(long id_usuario);
 
 	/**
 	 * Método que obtiene un usuario de la base de datos por el email
@@ -42,7 +63,7 @@ public interface UsuarioInterfaz {
 	/**
 	 * Método que cambia la contraseña de un usuario
 	 * 
-	 * @param token      Token
+	 * @param token    Token
 	 * @param password Contraseña encriptada
 	 * @return Devuelte true si se ha cambiado las contraseñas con éxito o false si
 	 *         ha ocurrido un error.
@@ -59,4 +80,42 @@ public interface UsuarioInterfaz {
 	 *         error.
 	 */
 	public Boolean peticionCambiaPassword(String email);
+
+	/**
+	 * Método que elimina un usuario por su id.
+	 * 
+	 * Fecha: 27/04/2024
+	 * 
+	 * @param id_usuario Id del usuario a eliminar
+	 * @return Devuelve true si se ha eliminado o false si no.
+	 */
+	public boolean borraUsuarioPorId(long id_usuario);
+
+	/**
+	 * Método que actualiza un usuario.
+	 * 
+	 * Fecha: 27/04/2024
+	 * 
+	 * @param usuarioDTO Objeto UsuarioDTO con los nuevos datos del usuario.
+	 * @return Devuelve true si se ha actualizado o false si no.
+	 */
+	public boolean actualizaUsuario(UsuarioDTO usuarioDTO);
+
+	/**
+	 * Método que agrega un nuevo usuario a la base de datos.
+	 * 
+	 * Fecha: 27/04/2024
+	 * 
+	 * @param usuarioDTO Objeto UsuarioDTO con los datos del nuevo usuario.
+	 * @return Devuelve true si se ha agregado o false si no.
+	 */
+	public boolean agregaUsuario(UsuarioDTO usuarioDTO);
+	
+	/**
+	 * Método que actualiza el perfil de un usuario
+	 * @param usuarioActual Objeto UsuarioDTO con los datos actuales del usuario
+	 * @param usuarioNuevo Objeto UsuarioDTO con los nuevos datos del usuario
+	 * @return Devuelve true si se ha actualizado correctamente o false si no
+	 */
+	public boolean editarPerfil(UsuarioDTO usuarioActual, UsuarioDTO usuarioNuevo);
 }
