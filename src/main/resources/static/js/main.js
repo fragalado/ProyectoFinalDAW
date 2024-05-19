@@ -11,9 +11,12 @@ function validarFormulario() {
 	let telefonoError = validarTelefono(telefono);
 
 	// Mostramos los errores
-	mostrarError('emailError', emailError);
-	mostrarError('passwordError', passwordError);
-	mostrarError('telefonoError', telefonoError);
+	if (emailError)
+		muestraToast(emailError, false);
+	if (passwordError)
+		muestraToast(passwordError, false);
+	if (telefonoError)
+		muestraToast(telefonoError, false);
 
 	// Comprobamos si se ha obtenido algun error o no
 	return emailError === "" && passwordError === "" && telefonoError === "";
@@ -29,8 +32,8 @@ function validarFormularioEditarAdmin() {
 	let telefonoError = validarTelefono(telefono);
 
 	// Mostramos los errores
-	mostrarError('emailError', emailError);
-	mostrarError('telefonoError', telefonoError);
+	muestraToast(emailError, false);
+	muestraToast(telefonoError, false);
 
 	// Comprobamos si se ha obtenido algun error o no
 	return emailError === "" && telefonoError === "";
@@ -44,10 +47,27 @@ function validarFormularioEditarPerfil() {
 	let telefonoError = validarTelefono(telefono);
 
 	// Mostramos los errores
-	mostrarError('telefonoError', telefonoError);
+	muestraToast(telefonoError, false);
 
 	// Comprobamos si se ha obtenido algun error o no
 	return telefonoError === "";
+}
+
+function validarPasswords() {
+	// Obtenemos las dos password
+	let password1 = document.getElementById("password1").value.trim();
+	let password2 = document.getElementById("password2").value.trim();
+
+	// Comprobamos si son iguales
+	if (password1 != password2) {
+		muestraToast("Las contraseñas tienen que coincidir.", false);
+		return false;
+	} else if (password1.length < 6 || password2.length < 6) {
+		muestraToast("La contraseña debe tener al menos 6 caracteres.")
+		return false;
+	} else {
+		return true;
+	}
 }
 
 function validarEmail(email) {
@@ -75,10 +95,4 @@ function validarTelefono(telefono) {
 		return "Por favor ingresa un número de teléfono válido (9 dígitos).";
 	}
 	return ""; // Teléfono válido
-}
-
-function mostrarError(elementId, error) {
-	let elemento = document.getElementById(elementId);
-	elemento.textContent = error;
-	elemento.style.display = error ? "" : "none";
 }

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Administracion Usuarios - Tienda de Suplementos</title>
+	<!-- Bootstrap -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"
+		asp-append-version="true">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"
+		asp-append-version="true"></script>
+	<!-- Fin Bootstrap -->
+	<!-- CSS -->
+	<link rel="stylesheet" th:href="@{/css/style.css}" asp-append-version="true" />
+	<!-- Fin CSS -->
+	<!-- Font awesome -->
+	<link
+		href="https://cdn.jsdelivr.net/gh/eliyantosarage/font-awesome-pro@main/fontawesome-pro-6.5.2-web/css/all.min.css"
+		rel="stylesheet">
+	<!-- Fin Font awesome -->
+	<!-- SweetAlert2 -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" asp-append-version="true"></script>
+	<!-- Fin SweetAlert2 -->
+</head>
+
+<body>
+	<!-- Nav -->
+	<div th:replace="~{partials/navbar::navbar}"></div>
+	<!-- Fin Nav -->
+
+	<div class="container">
+		<main role="main" class="pb-3">
+			<div class="row tablaAdmin">
+				<div class="col-12">
+					<h1 class="text-center tituloVista">Administración Usuarios</h1>
+				</div>
+				<div class="col">
+					<!-- Enlaces para moverse entre administracion -->
+					<div style="margin-bottom: 5px;">
+						<a class="btn btn-outline-secondary" role="button" th:href="@{/admin/usuarios}">Usuarios</a>
+						<a class="btn btn-outline-secondary" role="button"
+							th:href="@{/admin/suplementos}">Suplementos</a>
+						<a class="btn btn-outline-secondary" th:href="@{/admin/usuarios/agregar}" role="button"
+							style="float: right">Añadir Usuario</a>
+					</div>
+
+					<!-- Tabla -->
+					<table class="table table-dark table-hover">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Nombre</th>
+								<th scope="col">Email</th>
+								<th scope="col">Rol</th>
+								<th scope="col">Editar/Eliminar</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:if="${listaUsuariosDTO != null && listaUsuariosDTO.size() < 1}">
+								<td colspan="5" style="text-align: center">No existe ningún usuario.</td>
+							</tr>
+							<tr th:each="usuarioDTO, stat: ${listaUsuariosDTO}">
+								<th scope="row" th:text="${stat.index + 1}"></th>
+								<td th:text="${usuarioDTO.getNombre_usuario()}"></td>
+								<td th:text="${usuarioDTO.getEmail_usuario()}"></td>
+								<td th:if="${usuarioDTO.getId_acceso() == 2}">Admin</td>
+								<td th:if="${usuarioDTO.getId_acceso() == 1}">Usuario</td>
+								<td>
+									<a th:href="@{/admin/usuarios/editar/} + ${usuarioDTO.getId_usuario()}"><i
+											class="fa-solid fa-pen-to-square"
+											style="color: green; padding-left: 15px;"></i></a>
+									<i class="fa-solid fa-trash" style="color: red; margin-left: 35px; cursor: pointer;"
+										th:attr="data-idUsuario=${usuarioDTO.getId_usuario()}, data-idAcceso=${usuarioDTO.getId_acceso()}, data-emailUsuario=${usuarioDTO.getEmail_usuario()}"
+										onclick="compruebaEsAdmin(event)"></i>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</main>
+	</div>
+	<script>
+		function compruebaEsAdmin(event) {
+			const id_acceso = event.currentTarget.getAttribute("data-idAcceso");
+			const id_usuario = event.currentTarget.getAttribute("data-idUsuario");
+			const email_usuario = event.currentTarget.getAttribute("data-emailUsuario");
+			if (id_acceso != 2) {
+				compruebaEliminar(id_usuario, email_usuario);
+			} else {
+				Swal.fire({
+					title: "Error!",
+					text: "No puedes borrar un Administrador!",
+					icon: "error"
+				});
+			}
+		}
+
+		function compruebaEliminar(id_usuario, email_usuario) {
+			Swal.fire({
+				title: "¿Estás seguro?",
+				text: 'Para eliminar introduce el email: "' + email_usuario + '"',
+				input: 'text',
+				showCancelButton: true
+			}).then((result) => {
+				if (result.value == email_usuario) {
+					// Eliminamos
+					// Obtén la ruta base de la URL actual (localhost:8080)
+					const baseUrl = window.location.origin;
+
+					// Redirige a la nueva URL (/Admin/BorrarUsuario)
+					window.location.href = baseUrl + '/admin/usuarios/borrar/' + id_usuario;
+				}
+			});
+		}
+	</script>
+
+	<!-- Control de alertas -->
+
+	<!-- Control borrar -->
+	<script th:if="${param.success}">
+		Swal.fire({
+			title: "Éxito!",
+			text: "El usuario se ha borrado con éxito!",
+			icon: "success"
+		});
+	</script>
+
+	<script th:if="${param.error}">
+		Swal.fire({
+			title: "Error!",
+			text: "El usuario no se ha podido eliminar!",
+			icon: "error"
+		});
+	</script>
+	<!-- Fin Control borrar -->
+
+	<!-- Control agregar -->
+	<script th:if="${param.usuarioAgregadoSuccess}">
+		Swal.fire({
+			title: "Éxito!",
+			text: "El usuario se ha agregado con éxito!",
+			icon: "success"
+		});
+	</script>
+
+	<script th:if="${param.usuarioAgregadoExiste}">
+		Swal.fire({
+			title: "Error!",
+			text: "El email introducido ya existe!",
+			icon: "error"
+		});
+	</script>
+
+	<script th:if="${param.usuarioAgregadoError}">
+		Swal.fire({
+			title: "Error!",
+			text: "Se ha producido un error. Vuelva a intentarlo más tarde!",
+			icon: "error"
+		});
+	</script>
+	<!-- Fin Control agregar -->
+
+	<!-- Control actualizar -->
+	<script th:if="${param.usuarioEditadoSuccess}">
+		Swal.fire({
+			title: "Éxito!",
+			text: "El usuario ha sido actualizado con éxito!",
+			icon: "success"
+		});
+	</script>
+
+	<script th:if="${param.usuarioEditadoError}">
+		Swal.fire({
+			title: "Error!",
+			text: "Se ha producido un error. Vuelva a intentarlo más tarde!",
+			icon: "error"
+		});
+	</script>
+	<!-- Fin Control actualizar -->
+
+	<!-- Fin Control de alertas -->
+</body>
+
+</html>

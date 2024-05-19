@@ -7,8 +7,10 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 
 import com.example.demo.daos.Acceso;
+import com.example.demo.daos.Carrito;
 import com.example.demo.daos.Suplemento;
 import com.example.demo.daos.Usuario;
+import com.example.demo.dtos.CarritoDTO;
 import com.example.demo.dtos.SuplementoDTO;
 import com.example.demo.dtos.UsuarioDTO;
 
@@ -22,7 +24,7 @@ import com.example.demo.dtos.UsuarioDTO;
 public class Util {
 
 	private static ModelMapper modelMapper = new ModelMapper();
-	
+
 	/**
 	 * Método que convierte un array de byte a String
 	 * 
@@ -48,7 +50,7 @@ public class Util {
 
 		return null;
 	}
-	
+
 	/**
 	 * Método que convierte un UsuarioDTO a DAO
 	 * 
@@ -63,7 +65,7 @@ public class Util {
 			else
 				usuarioDao.setAcceso(new Acceso(2, "Admin", "Administrador de la tienda"));
 			// Comprobamos si tiene imagen
-			if(usuarioDto.getImagen_usuario() != null) {
+			if (usuarioDto.getImagen_usuario() != null) {
 				// Tiene imagen luego se la añadimos
 				usuarioDao.setImagen_usuario(convertirAByteArray(usuarioDto.getImagen_usuario()));
 			}
@@ -88,7 +90,7 @@ public class Util {
 			UsuarioDTO usuarioDto = modelMapper.map(usuarioDao, UsuarioDTO.class);
 			usuarioDto.setId_acceso(usuarioDao.getAcceso().getId_acceso());
 			// Comprobamos si tiene imagen
-			if(usuarioDao.getImagen_usuario() != null) {
+			if (usuarioDao.getImagen_usuario() != null) {
 				// Tiene imagen, luego se la añadimos
 				usuarioDto.setImagen_usuario(convertirABase64(usuarioDao.getImagen_usuario()));
 			}
@@ -101,12 +103,12 @@ public class Util {
 			return null;
 		}
 	}
-	
-	public static List<UsuarioDTO> listaUsuarioDaoADto(List<Usuario> listaUsuarioDao){
+
+	public static List<UsuarioDTO> listaUsuarioDaoADto(List<Usuario> listaUsuarioDao) {
 		try {
 			// Lista donde guardaremos los objetos DTOs
 			List<UsuarioDTO> listaUsuarioDto = new ArrayList<>();
-			
+
 			// Recorremos la lista Dao
 			for (Usuario usuarioDao : listaUsuarioDao) {
 				UsuarioDTO usuarioDto = modelMapper.map(usuarioDao, UsuarioDTO.class);
@@ -115,14 +117,14 @@ public class Util {
 				// Añadimos a la lista
 				listaUsuarioDto.add(usuarioDto);
 			}
-			
+
 			// Devolvemos la lista Dto
 			return listaUsuarioDto;
 		} catch (Exception e) {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Método que convierte una lista de objetos Suplemento Dao a Dto
 	 * 
@@ -165,9 +167,10 @@ public class Util {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Método que convierte un suplemento de tipo Dto a Dao
+	 * 
 	 * @param suplementoDTO Objeto SuplementoDto a convertir a Dao
 	 * @return Devuelve un objeto de tipo Suplemento Dao
 	 */
@@ -177,6 +180,34 @@ public class Util {
 			// Le añadimos la imagen
 			suplemento.setImagen_suplemento(convertirAByteArray(suplementoDTO.getImagen_suplemento()));
 			return suplemento;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Método que convierte una lista de carrito de tipo Dao a Dto
+	 * 
+	 * @param listaCarritoDao Lista con objetos de tipo Carrito Dao
+	 * @return Devuelve la lista convertida a Dto
+	 */
+	public static List<CarritoDTO> listaCarritoDaoADto(List<Carrito> listaCarritoDao) {
+		try {
+			// Lista donde guardaremos los objetos DTOs
+			List<CarritoDTO> listaCarritoDto = new ArrayList<>();
+
+			// Recorremos la lista Dao
+			for (Carrito carritoDao : listaCarritoDao) {
+				CarritoDTO carritoDTO = modelMapper.map(carritoDao, CarritoDTO.class);
+				// Le añadimos el id del usuario
+				carritoDTO.setId_usuario(carritoDao.getUsuario().getId_usuario());
+				// Le añadimos el suplemento
+				carritoDTO.setSuplementoDTO(suplementoDaoADto(carritoDao.getSuplemento()));
+				listaCarritoDto.add(carritoDTO);
+			}
+
+			// Devolvemos la lista dto
+			return listaCarritoDto;
 		} catch (Exception e) {
 			return null;
 		}

@@ -11,21 +11,43 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-top: 5px;">
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<!-- Home -->
 					<li class="nav-item">
 						<a class="nav-link active text-white" aria-current="page" th:href="@{/home}">Home</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link active text-white" aria-current="page"
-							th:href="@{/nutricion/3}">Nutrición</a>
+					<!-- Suplementos -->
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
+							aria-expanded="false">
+							Suplementos
+						</a>
+						<ul class="dropdown-menu">
+							<li><a class="dropdown-item" th:href="@{/suplementos/1}">Proteína</a></li>
+							<li><a class="dropdown-item" th:href="@{/suplementos/2}">Creatina</a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a class="dropdown-item" th:href="@{/suplementos}">Ver todo</a></li>
+						</ul>
 					</li>
-					<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-						<a class="nav-link text-white" th:href="@{/admin/usuarios}">Administración</a>
+					<!-- Administracion -->
+					<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+						<a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
+							aria-expanded="false">
+							Administración
+						</a>
+						<ul class="dropdown-menu">
+							<li><a class="dropdown-item" th:href="@{/admin/usuarios}">Usuarios</a></li>
+							<li><a class="dropdown-item" th:href="@{/admin/suplementos}">Suplementos</a></li>
+						</ul>
 					</li>
-					<li class="nav-item perfilLink">
-						<a th:href="@{/perfil}" class="nav-link text-white">Perfil</a>
-					</li>
+					<!-- Carrito -->
 					<li class="nav-item perfilLink">
 						<a th:href="@{/carrito}" class="nav-link text-white">Carrito</a>
+					</li>
+					<!-- Perfil -->
+					<li class="nav-item perfilLink">
+						<a th:href="@{/perfil}" class="nav-link text-white">Perfil</a>
 					</li>
 				</ul>
 				<a th:href="@{/carrito}" class="carrito"><i class="fa-regular fa-cart-shopping"></i></a>
