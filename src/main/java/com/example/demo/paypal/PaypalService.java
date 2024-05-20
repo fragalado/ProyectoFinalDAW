@@ -1,7 +1,10 @@
 package com.example.demo.paypal;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,6 +55,12 @@ public class PaypalService {
 		redirectUrls.setCancelUrl(cancelUrl);
 		redirectUrls.setReturnUrl(successUrl);
 		payment.setRedirectUrls(redirectUrls);
+		
+		// Generar un ID único para la solicitud
+        String requestId = UUID.randomUUID().toString();
+        Map<String, String> map = new HashMap<>();
+        map.put("PayPal-Request-Id", requestId);
+        apiContext.setHTTPHeaders(map);
 
 		return payment.create(apiContext);
 	}

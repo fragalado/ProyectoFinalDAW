@@ -1,6 +1,7 @@
 package com.example.demo.controladores;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.paypal.PaypalService;
+import com.example.demo.servicios.OrdenImplementacion;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
@@ -25,6 +27,9 @@ public class OrdenControlador {
 
 	@Autowired
 	private PaypalService paypalService;
+	
+	@Autowired
+	private OrdenImplementacion ordenImplementacion;
 
 	@PostMapping
 	public String comprarCarrito(@RequestParam Double total) {
@@ -49,17 +54,17 @@ public class OrdenControlador {
 
 	@GetMapping("/cancel")
 	public String cancelPay() {
-		System.out.println("Ha entrado en cancel");
 		return "redirect:/carrito?payCancel";
 	}
 
 	@GetMapping("/success")
-	public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
+	public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId, Authentication authentication) {
 		try {
-			System.out.println("Ha entrado en success");
 			Payment payment = paypalService.executePayment(paymentId, payerId);
 			if(payment.getState().equals("approved")){
-				return "redirect:/carrito?paySuccess";
+				// Realizamos la compra del carrito
+				boolean ok = ordenImplementacion.compraCarritoUsuario(authentication.getName());
+				return ok ? "redirect:/carrito?paySuccess" : "redirect:/carrito?error";
 			}
 			return "redirect:/carrito?payError";
 		} catch (PayPalRESTException e) {

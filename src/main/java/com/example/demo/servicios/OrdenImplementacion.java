@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.example.demo.daos.Carrito;
 import com.example.demo.daos.Orden;
@@ -22,6 +23,7 @@ import com.example.demo.utiles.Util;
  * 
  * @author Francisco José Gallego Dorado
  */
+@Service
 public class OrdenImplementacion implements OrdenInterfaz {
 
 	@Autowired
