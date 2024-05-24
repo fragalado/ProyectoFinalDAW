@@ -95,7 +95,7 @@ public class PerfilControlador {
 			UsuarioDTO usuarioDto = usuarioImplementacion.obtieneUsuarioPorEmail(authentication.getName());
 
 			// Eliminamos la cuenta
-			usuarioImplementacion.borraUsuarioPorId(usuarioDto.getId_usuario());
+			usuarioImplementacion.borraUsuarioPorId(usuarioDto.getIdUsuario());
 
 			return "redirect:/logout";
 		} catch (Exception e) {
@@ -121,7 +121,7 @@ public class PerfilControlador {
 				String foto = Util.convertirABase64(file.getBytes());
 
 				// Le añadimos la imagen al usuarioDTO
-				usuarioDto.setImagen_usuario(foto);
+				usuarioDto.setImagenUsuario(foto);
 			}
 			
 			// Actualizamos

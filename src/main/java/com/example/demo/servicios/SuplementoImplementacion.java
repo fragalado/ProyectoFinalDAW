@@ -91,18 +91,18 @@ public class SuplementoImplementacion implements SuplementoInterfaz {
 	@Override
 	public boolean actualizaSuplemento(SuplementoDTO suplementoDTO) {
 		try {
-			System.out.println(suplementoDTO.getId_suplemento());
+			System.out.println(suplementoDTO.getIdSuplemento());
 			// Con el id del suplemento pasado obtenemos el suplemento de la base de datos
-			Suplemento suplementoEncontrado = suplementoRepository.findById(suplementoDTO.getId_suplemento()).get();
+			Suplemento suplementoEncontrado = suplementoRepository.findById(suplementoDTO.getIdSuplemento()).get();
 			
 			// Actualizamos algunos datos del suplementoEncontrado con el suplementoDTO
-			suplementoEncontrado.setNombre_suplemento(suplementoDTO.getNombre_suplemento());
-			suplementoEncontrado.setDesc_suplemento(suplementoDTO.getDesc_suplemento());
-			suplementoEncontrado.setMarca_suplemento(suplementoDTO.getMarca_suplemento());
-			suplementoEncontrado.setTipo_suplemento(suplementoDTO.getTipo_suplemento());
-			suplementoEncontrado.setPrecio_suplemento(suplementoDTO.getPrecio_suplemento());
-			if(suplementoDTO.getImagen_suplemento() != null)
-				suplementoEncontrado.setImagen_suplemento(Util.convertirAByteArray(suplementoDTO.getImagen_suplemento()));
+			suplementoEncontrado.setNombreSuplemento(suplementoDTO.getNombreSuplemento());
+			suplementoEncontrado.setDescSuplemento(suplementoDTO.getDescSuplemento());
+			suplementoEncontrado.setMarcaSuplemento(suplementoDTO.getMarcaSuplemento());
+			suplementoEncontrado.setTipoSuplemento(suplementoDTO.getTipoSuplemento());
+			suplementoEncontrado.setPrecioSuplemento(suplementoDTO.getPrecioSuplemento());
+			if(suplementoDTO.getImagenSuplemento() != null)
+				suplementoEncontrado.setImagenSuplemento(Util.convertirAByteArray(suplementoDTO.getImagenSuplemento()));
 			
 			// Actualizamos el suplemento
 			suplementoRepository.save(suplementoEncontrado);

@@ -55,9 +55,9 @@ public class OrdenImplementacion implements OrdenInterfaz {
 
 			// Creamos un objeto Orden
 			Orden orden = new Orden();
-			orden.setPrecio_orden(precioTotal);
+			orden.setPrecioOrden(precioTotal);
 			orden.setUsuario(usuarioDAO);
-			orden.setFch_orden(Calendar.getInstance());
+			orden.setFchOrden(Calendar.getInstance());
 
 			// Guardamos la orden
 			Orden ordenDevuelta = ordenRepositorio.save(orden);
@@ -66,12 +66,12 @@ public class OrdenImplementacion implements OrdenInterfaz {
 			for (CarritoDTO aux : listaCarritos) {
 				// Convertimos el carrito a DAO
 				Carrito carritoDAO = new Carrito();
-				carritoDAO.setId_carrito(aux.getId_carrito());
-				carritoDAO.setEstaComprado_carrito(aux.isEstaComprado_carrito());
+				carritoDAO.setIdCarrito(aux.getIdCarrito());
+				carritoDAO.setEstaCompradoCarrito(aux.isEstaCompradoCarrito());
 				carritoDAO.setCantidad(aux.getCantidad());
 				carritoDAO.setSuplemento(Util.suplementoDtoADao(aux.getSuplementoDTO()));
 				// Obtenemos el usuario por el id
-				carritoDAO.setUsuario(Util.usuarioADao(usuarioImplementacion.obtieneUsuarioPorId(aux.getId_usuario())));
+				carritoDAO.setUsuario(Util.usuarioADao(usuarioImplementacion.obtieneUsuarioPorId(aux.getIdUsuario())));
 
 				// Ahora que tenemos el carrito en DAO creamos el objeto RelOrdenCarrito
 				RelOrdenCarrito ordenCarrito = new RelOrdenCarrito();
@@ -82,7 +82,7 @@ public class OrdenImplementacion implements OrdenInterfaz {
 				ordenCarritoRepositorio.save(ordenCarrito);
 
 				// Ahora hacemos el update del carrito
-				carritoDAO.setEstaComprado_carrito(true);
+				carritoDAO.setEstaCompradoCarrito(true);
 				carritoRepositorio.save(carritoDAO);
 			}
 

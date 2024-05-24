@@ -60,14 +60,14 @@ public class Util {
 		try {
 			// Convertimos el usuarioDto a usuarioDao
 			Usuario usuarioDao = modelMapper.map(usuarioDto, Usuario.class);
-			if (usuarioDto.getId_acceso() == 1)
+			if (usuarioDto.getIdAcceso() == 1)
 				usuarioDao.setAcceso(new Acceso(1, "Usu", "Usuarios de la tienda"));
 			else
 				usuarioDao.setAcceso(new Acceso(2, "Admin", "Administrador de la tienda"));
 			// Comprobamos si tiene imagen
-			if (usuarioDto.getImagen_usuario() != null) {
+			if (usuarioDto.getImagenUsuario() != null) {
 				// Tiene imagen luego se la añadimos
-				usuarioDao.setImagen_usuario(convertirAByteArray(usuarioDto.getImagen_usuario()));
+				usuarioDao.setImagenUsuario(convertirAByteArray(usuarioDto.getImagenUsuario()));
 			}
 
 			// Devolvemos el usuarioDao
@@ -88,11 +88,11 @@ public class Util {
 		try {
 			// Convertimos el usuarioDao a usuarioDto
 			UsuarioDTO usuarioDto = modelMapper.map(usuarioDao, UsuarioDTO.class);
-			usuarioDto.setId_acceso(usuarioDao.getAcceso().getId_acceso());
+			usuarioDto.setIdAcceso(usuarioDao.getAcceso().getIdAcceso());
 			// Comprobamos si tiene imagen
-			if (usuarioDao.getImagen_usuario() != null) {
+			if (usuarioDao.getImagenUsuario() != null) {
 				// Tiene imagen, luego se la añadimos
-				usuarioDto.setImagen_usuario(convertirABase64(usuarioDao.getImagen_usuario()));
+				usuarioDto.setImagenUsuario(convertirABase64(usuarioDao.getImagenUsuario()));
 			}
 
 			// Devolvemos el usuarioDto
@@ -112,8 +112,8 @@ public class Util {
 			// Recorremos la lista Dao
 			for (Usuario usuarioDao : listaUsuarioDao) {
 				UsuarioDTO usuarioDto = modelMapper.map(usuarioDao, UsuarioDTO.class);
-				usuarioDto.setImagen_usuario(convertirABase64(usuarioDao.getImagen_usuario()));
-				usuarioDto.setId_acceso(usuarioDao.getAcceso().getId_acceso());
+				usuarioDto.setImagenUsuario(convertirABase64(usuarioDao.getImagenUsuario()));
+				usuarioDto.setIdAcceso(usuarioDao.getAcceso().getIdAcceso());
 				// Añadimos a la lista
 				listaUsuarioDto.add(usuarioDto);
 			}
@@ -140,7 +140,7 @@ public class Util {
 			for (Suplemento suplementoDao : listaSuplementoDao) {
 				SuplementoDTO suplementoDTO = modelMapper.map(suplementoDao, SuplementoDTO.class);
 				// Le añadimos la imagen
-				suplementoDTO.setImagen_suplemento(convertirABase64(suplementoDao.getImagen_suplemento()));
+				suplementoDTO.setImagenSuplemento(convertirABase64(suplementoDao.getImagenSuplemento()));
 				listaSuplementoDto.add(suplementoDTO);
 			}
 
@@ -161,7 +161,7 @@ public class Util {
 		try {
 			SuplementoDTO suplementoDTO = modelMapper.map(suplementodDao, SuplementoDTO.class);
 			// Le añadimos la imagen
-			suplementoDTO.setImagen_suplemento(convertirABase64(suplementodDao.getImagen_suplemento()));
+			suplementoDTO.setImagenSuplemento(convertirABase64(suplementodDao.getImagenSuplemento()));
 			return suplementoDTO;
 		} catch (Exception e) {
 			return null;
@@ -178,7 +178,7 @@ public class Util {
 		try {
 			Suplemento suplemento = modelMapper.map(suplementoDTO, Suplemento.class);
 			// Le añadimos la imagen
-			suplemento.setImagen_suplemento(convertirAByteArray(suplementoDTO.getImagen_suplemento()));
+			suplemento.setImagenSuplemento(convertirAByteArray(suplementoDTO.getImagenSuplemento()));
 			return suplemento;
 		} catch (Exception e) {
 			return null;
@@ -200,7 +200,7 @@ public class Util {
 			for (Carrito carritoDao : listaCarritoDao) {
 				CarritoDTO carritoDTO = modelMapper.map(carritoDao, CarritoDTO.class);
 				// Le añadimos el id del usuario
-				carritoDTO.setId_usuario(carritoDao.getUsuario().getId_usuario());
+				carritoDTO.setIdUsuario(carritoDao.getUsuario().getIdUsuario());
 				// Le añadimos el suplemento
 				carritoDTO.setSuplementoDTO(suplementoDaoADto(carritoDao.getSuplemento()));
 				listaCarritoDto.add(carritoDTO);

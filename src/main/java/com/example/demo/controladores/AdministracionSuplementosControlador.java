@@ -129,10 +129,10 @@ public class AdministracionSuplementosControlador {
 			@RequestPart("imagenFile") MultipartFile imagenFile) {
 		try {
 			// Controlamos los valores
-			if (suplementoDTO.getPrecio_suplemento() > 999 || suplementoDTO.getNombre_suplemento().length() > 255
-					|| suplementoDTO.getDesc_suplemento().length() > 255
-					|| suplementoDTO.getMarca_suplemento().length() > 255
-					|| suplementoDTO.getTipo_suplemento().length() > 255) {
+			if (suplementoDTO.getPrecioSuplemento() > 999 || suplementoDTO.getNombreSuplemento().length() > 255
+					|| suplementoDTO.getDescSuplemento().length() > 255
+					|| suplementoDTO.getMarcaSuplemento().length() > 255
+					|| suplementoDTO.getTipoSuplemento().length() > 255) {
 				return "redirect:/admin/suplementos?suplementoEditadoError";
 			}
 
@@ -140,7 +140,7 @@ public class AdministracionSuplementosControlador {
 			String foto = Util.convertirABase64(imagenFile.getBytes());
 
 			// Le añadimos la imagen al suplementoDTO
-			suplementoDTO.setImagen_suplemento(foto);
+			suplementoDTO.setImagenSuplemento(foto);
 
 			// Actualizamos el suplemento
 			boolean ok = suplementoImplementacion.actualizaSuplemento(suplementoDTO);
@@ -168,10 +168,10 @@ public class AdministracionSuplementosControlador {
 			@RequestPart("imagenFile") MultipartFile imagenFile) {
 		try {
 			// Controlamos los valores
-			if (suplementoDTO.getPrecio_suplemento() > 999 || suplementoDTO.getNombre_suplemento().length() > 255
-					|| suplementoDTO.getDesc_suplemento().length() > 255
-					|| suplementoDTO.getMarca_suplemento().length() > 255
-					|| suplementoDTO.getTipo_suplemento().length() > 255) {
+			if (suplementoDTO.getPrecioSuplemento() > 999 || suplementoDTO.getNombreSuplemento().length() > 255
+					|| suplementoDTO.getDescSuplemento().length() > 255
+					|| suplementoDTO.getMarcaSuplemento().length() > 255
+					|| suplementoDTO.getTipoSuplemento().length() > 255) {
 				return "redirect:/admin/suplementos?suplementoAgregadoError";
 			}
 
@@ -179,7 +179,7 @@ public class AdministracionSuplementosControlador {
 			String foto = Util.convertirABase64(imagenFile.getBytes());
 
 			// Le añadimos la imagen al suplementoDTO
-			suplementoDTO.setImagen_suplemento(foto);
+			suplementoDTO.setImagenSuplemento(foto);
 
 			// Agregamos el suplemento a la base de datos
 			boolean ok = suplementoImplementacion.agregaSuplemento(suplementoDTO);

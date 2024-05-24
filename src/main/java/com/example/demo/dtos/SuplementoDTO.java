@@ -17,11 +17,11 @@ public class SuplementoDTO {
 
 	// Atributos
 	
-	private long id_suplemento;
-	private String nombre_suplemento;
-	private String desc_suplemento;
-	private float precio_suplemento;
-	private String tipo_suplemento;
-	private String marca_suplemento;
-	private String imagen_suplemento;
+	private long idSuplemento;
+	private String nombreSuplemento;
+	private String descSuplemento;
+	private float precioSuplemento;
+	private String tipoSuplemento;
+	private String marcaSuplemento;
+	private String imagenSuplemento;
 }

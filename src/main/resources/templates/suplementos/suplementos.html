@@ -63,19 +63,19 @@
 						<!-- Cards Suplementos -->
 						<div th:each="suplemento: ${listaSuplementosDTO}" class="col-lg-2 col-md-3 col-sm-4 col-6">
 							<div class="card">
-								<img th:src="'data:image/png;base64, ' + ${suplemento.getImagen_suplemento()}"
-									class="card-img-top" th:alt="${suplemento.getNombre_suplemento()}"
+								<img th:src="'data:image/png;base64, ' + ${suplemento.getImagenSuplemento()}"
+									class="card-img-top" th:alt="${suplemento.getNombreSuplemento()}"
 									style="max-height: 200px">
 								<div class="card-body">
-									<h5 class="card-title" th:text="${suplemento.getNombre_suplemento()}"></h5>
-									<p th:if="${suplemento.getDesc_suplemento().length > 50}"
-										th:text="${suplemento.getDesc_suplemento().substring(0, 50)} + ..."
+									<h5 class="card-title" th:text="${suplemento.getNombreSuplemento()}"></h5>
+									<p th:if="${suplemento.getDescSuplemento().length > 50}"
+										th:text="${suplemento.getDescSuplemento().substring(0, 50)} + ..."
 										class="card-text"></p>
-									<p th:if="${suplemento.getDesc_suplemento().length <= 50}" class="card-text"
-										th:text="${suplemento.getDesc_suplemento()}"></p>
+									<p th:if="${suplemento.getDescSuplemento().length <= 50}" class="card-text"
+										th:text="${suplemento.getDescSuplemento()}"></p>
 									<p class="card-text">Precio: <span
-											th:text="${suplemento.getPrecio_suplemento()}"></span>€</p>
-									<a th:href="@{/carrito/agrega-suplemento/} + ${suplemento.getId_suplemento()}"
+											th:text="${suplemento.getPrecioSuplemento()}"></span>€</p>
+									<a th:href="@{/carrito/agrega-suplemento/} + ${suplemento.getIdSuplemento()}"
 										class="btn btn-primary">Añadir al carrito</a>
 								</div>
 							</div>

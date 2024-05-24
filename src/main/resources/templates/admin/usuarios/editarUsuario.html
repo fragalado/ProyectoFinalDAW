@@ -24,6 +24,8 @@
 	<!-- SweetAlert2 -->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" asp-append-version="true"></script>
 	<!-- Fin SweetAlert2 -->
+	<!-- JS -->
+	<script th:src="@{/js/toast.js}"></script>
 </head>
 
 <body>
@@ -42,10 +44,10 @@
 					<div class="contenedor">
 						<!-- Imagen -->
 						<div class="contenedor-imagen">
-							<img th:if="${usuarioDTO.getImagen_usuario() != null}"
-								th:src="'data:image/png;base64, '+ ${usuarioDTO.getImagen_usuario()}"
+							<img th:if="${usuarioDTO.getImagenUsuario() != null}"
+								th:src="'data:image/png;base64, '+ ${usuarioDTO.getImagenUsuario()}"
 								class="card-img-top imagen" alt="Foto de perfil del usuario" id="profile-pic">
-							<img th:if="${usuarioDTO.getImagen_usuario() == null}"
+							<img th:if="${usuarioDTO.getImagenUsuario() == null}"
 								src="https://upload.wikimedia.org/wikipedia/commons/4/41/Profile-720.png"
 								class="card-img-top imagen" alt="Foto de perfil del usuario" id="profile-pic">
 						</div>
@@ -66,27 +68,28 @@
 								<div class="mb-3">
 									<label for="email" class="form-label">Email</label>
 									<input type="email" class="form-control inputVistaEditar" id="email"
-										th:field="*{email_usuario}" maxlength="50">
+										th:field="*{emailUsuario}" maxlength="50">
 								</div>
 
 								<!-- Nombre -->
 								<div class="mb-3">
 									<label for="nombre" class="form-label">Nombre</label>
 									<input type="text" class="form-control inputVistaEditar" id="nombre"
-										th:field="*{nombre_usuario}" maxlength="50">
+										th:field="*{nombreUsuario}" maxlength="50">
 								</div>
 
 								<!-- Telefono -->
 								<div class="mb-3">
 									<label for="tlf" class="form-label">Teléfono</label>
 									<input type="text" class="form-control inputVistaEditar" id="tlf"
-										th:field="*{tlf_usuario}" maxlength="15">
+										th:field="*{tlfUsuario}" maxlength="15">
 								</div>
 
 								<!-- Rol -->
 								<div class="mb-3">
 									<label for="rol" class="form-label">Rol</label>
-									<select class="form-select" aria-label="Default select example" id="rol" th:field="*{id_acceso}" style="border: 1px solid black;">
+									<select class="form-select" aria-label="Default select example" id="rol"
+										th:field="*{idAcceso}" style="border: 1px solid black;">
 										<option value="1">Usuario</option>
 										<option value="2">Admin</option>
 									</select>
@@ -95,22 +98,17 @@
 								<!-- Activar cuenta -->
 								<div class="mb-3">
 									<div class="form-check">
-									  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" th:field="*{estaActivado_usuario}" style="border: 1px solid black;">
-									  <label class="form-check-label" for="flexCheckDefault">
-									    Cuenta activada
-									  </label>
+										<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+											th:field="*{estaActivadoUsuario}" style="border: 1px solid black;">
+										<label class="form-check-label" for="flexCheckDefault">
+											Cuenta activada
+										</label>
 									</div>
 								</div>
 
 								<!-- Id usuario -->
-								<input type="text" class="form-control" name="id_usuario" th:field="*{id_usuario}"
+								<input type="text" class="form-control" name="idUsuario" th:field="*{idUsuario}"
 									style="display:none">
-
-								<!-- Control de alertas -->
-								<div id="emailError" class="alert alert-danger" role="alert" style="display: none;">
-								</div>
-								<div id="telefonoError" class="alert alert-danger" role="alert" style="display: none;">
-								</div>
 
 								<!-- Boton enviar -->
 								<button type="submit" class="btn btn-primary">Enviar</button>
@@ -126,6 +124,10 @@
 		</main>
 	</div>
 	<!-- Fin Contenedor -->
+
+
+	<!-- Toast -->
+	<div th:replace="~{partials/toast::toast}"></div>
 
 	<script>
 		let profilePic = document.getElementById("profile-pic");

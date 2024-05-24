@@ -56,15 +56,15 @@
 								</tr>
 								<tr th:each="carritoDTO: ${listaCarritoDTO}">
 									<th scope="row"><img
-											th:src="'data:image/png;base64, '+ ${carritoDTO.getSuplementoDTO().getImagen_suplemento()}"
+											th:src="'data:image/png;base64, '+ ${carritoDTO.getSuplementoDTO().getImagenSuplemento()}"
 											class="img-fluid" style="max-width: 80px; max-height: 80px;"
-											th:alt="${carritoDTO.getSuplementoDTO().getNombre_suplemento()}"></th>
-									<td th:text="${carritoDTO.getSuplementoDTO().getNombre_suplemento()}"></td>
+											th:alt="${carritoDTO.getSuplementoDTO().getNombreSuplemento()}"></th>
+									<td th:text="${carritoDTO.getSuplementoDTO().getNombreSuplemento()}"></td>
 									<td th:text="${carritoDTO.getCantidad()}"></td>
-									<td th:text="${carritoDTO.getSuplementoDTO().getPrecio_suplemento()} + '€'"></td>
+									<td th:text="${carritoDTO.getSuplementoDTO().getPrecioSuplemento()} + '€'"></td>
 									<td>
 										<i class="fa-solid fa-trash" style="color: red; cursor: pointer;"
-											th:attr="data-idCarrito=${carritoDTO.getId_carrito()}"
+											th:attr="data-idCarrito=${carritoDTO.getIdCarrito()}"
 											onclick="compruebaEliminar(event)"></i>
 									</td>
 								</tr>

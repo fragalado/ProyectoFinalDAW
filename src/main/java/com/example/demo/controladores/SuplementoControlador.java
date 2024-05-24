@@ -65,10 +65,10 @@ public class SuplementoControlador {
 			// Actualizamos la lista si es necesario
 			if (tipo == 1)
 				listaSuplementosDTO = listaSuplementosDTO.stream()
-						.filter(x -> x.getTipo_suplemento().equals("Proteína")).collect(Collectors.toList());
+						.filter(x -> x.getTipoSuplemento().equals("Proteína")).collect(Collectors.toList());
 			else if (tipo == 2)
 				listaSuplementosDTO = listaSuplementosDTO.stream()
-						.filter(x -> x.getTipo_suplemento().equals("Creatina")).collect(Collectors.toList());
+						.filter(x -> x.getTipoSuplemento().equals("Creatina")).collect(Collectors.toList());
 
 			// Añadimos la lista al modelo
 			modelo.addAttribute("listaSuplementosDTO", listaSuplementosDTO);

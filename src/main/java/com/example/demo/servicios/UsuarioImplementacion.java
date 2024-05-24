@@ -99,7 +99,7 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 
 		try {
 			// Buscamos si existe un usuario con el email introducido
-			UsuarioDTO usuarioEncontrado = obtieneUsuarioPorEmail(usuario.getEmail_usuario());
+			UsuarioDTO usuarioEncontrado = obtieneUsuarioPorEmail(usuario.getEmailUsuario());
 
 			if (usuarioEncontrado != null) {
 				// Se ha encontrado un usuario con el email introducido
@@ -142,26 +142,26 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			Calendar fechaActual = Calendar.getInstance();
 
 			// Comparamos la fechaActual con la fecha del token
-			if (fechaActual.compareTo(tokenDao.getFch_fin_token()) < 0
-					|| fechaActual.compareTo(tokenDao.getFch_fin_token()) == 0) {
+			if (fechaActual.compareTo(tokenDao.getFchFinToken()) < 0
+					|| fechaActual.compareTo(tokenDao.getFchFinToken()) == 0) {
 				// La fecha actual es menor que la fecha del token o son iguales, luego seguimos
 				// con el proceso
 				// Obtenemos el usuario del token
 				Usuario usuarioDao = tokenDao.getUsuario();
 
 				// Comprobamos si el email introducido es distinto al email del usuario
-				if (!email.equals(usuarioDao.getEmail_usuario())) {
+				if (!email.equals(usuarioDao.getEmailUsuario())) {
 					return false;
 				}
 
 				// Modificamos la propiedad estaActivado y la ponemos en true
-				usuarioDao.setEstaActivado_usuario(true);
+				usuarioDao.setEstaActivadoUsuario(true);
 
 				// Actualizamos en la base de datos
 				Usuario usuarioDevuelto = usuarioRepositorio.save(usuarioDao);
 
 				// Comprobamos si se ha actualizado correctamente
-				if (usuarioDevuelto != null && usuarioDevuelto.isEstaActivado_usuario()) {
+				if (usuarioDevuelto != null && usuarioDevuelto.isEstaActivadoUsuario()) {
 					return true; // El usuario ha sido activado
 				} else {
 					return false; // El usuario no ha sido activado
@@ -215,15 +215,15 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			Calendar fechaActual = Calendar.getInstance();
 
 			// Comparamos la fechaActual con la fecha del token
-			if (fechaActual.compareTo(tokenDao.getFch_fin_token()) < 0
-					|| fechaActual.compareTo(tokenDao.getFch_fin_token()) == 0) {
+			if (fechaActual.compareTo(tokenDao.getFchFinToken()) < 0
+					|| fechaActual.compareTo(tokenDao.getFchFinToken()) == 0) {
 				// La fecha actual es menor que la fecha del token o son iguales, luego seguimos
 				// con el proceso
 				// Obtenemos el usuario
 				Usuario usuarioDao = tokenDao.getUsuario();
 
 				// Modificamos la contraseña
-				usuarioDao.setPsswd_usuario(password);
+				usuarioDao.setPsswdUsuario(password);
 
 				// Actualizamos en la base de datos
 				usuarioRepositorio.save(usuarioDao);
@@ -253,7 +253,7 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 				return false;
 
 			// Si existe comprobamos que no sea administrador
-			if(usuarioEncontrado.getId_acceso() == 2)
+			if(usuarioEncontrado.getIdAcceso() == 2)
 				return false;
 			
 			// Si no es admin lo eliminamos
@@ -275,7 +275,7 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	public boolean actualizaUsuario(UsuarioDTO usuarioDTO) {
 		try {
 			// Con el id del usuario pasado obtenemos el usuario de la base de datos
-			Usuario usuarioEncontrado = Util.usuarioADao(obtieneUsuarioPorId(usuarioDTO.getId_usuario()));
+			Usuario usuarioEncontrado = Util.usuarioADao(obtieneUsuarioPorId(usuarioDTO.getIdUsuario()));
 			// Optional<Usuario> usuarioEncontrado =
 			// usuarioRepositorio.findById(usuarioDTO.getId_usuario());
 			
@@ -284,13 +284,13 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			
 			// Actualizamos algunos datos del usuarioEncontrado con el usuarioDTO
 			Usuario usuarioDao = Util.usuarioADao(usuarioDTO);
-			usuarioEncontrado.setNombre_usuario(usuarioDao.getNombre_usuario());
-			usuarioEncontrado.setEmail_usuario(usuarioDao.getEmail_usuario());
-			usuarioEncontrado.setTlf_usuario(usuarioDao.getTlf_usuario());
-			usuarioEncontrado.setEstaActivado_usuario(usuarioDao.isEstaActivado_usuario());
+			usuarioEncontrado.setNombreUsuario(usuarioDao.getNombreUsuario());
+			usuarioEncontrado.setEmailUsuario(usuarioDao.getEmailUsuario());
+			usuarioEncontrado.setTlfUsuario(usuarioDao.getTlfUsuario());
+			usuarioEncontrado.setEstaActivadoUsuario(usuarioDao.isEstaActivadoUsuario());
 			usuarioEncontrado.setAcceso(usuarioDao.getAcceso());
-			if (usuarioDTO.getImagen_usuario() != null)
-				usuarioEncontrado.setImagen_usuario(Util.convertirAByteArray(usuarioDTO.getImagen_usuario()));
+			if (usuarioDTO.getImagenUsuario() != null)
+				usuarioEncontrado.setImagenUsuario(Util.convertirAByteArray(usuarioDTO.getImagenUsuario()));
 
 			// Actualizamos el usuario
 			usuarioRepositorio.save(usuarioEncontrado);
@@ -307,7 +307,7 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	public boolean agregaUsuario(UsuarioDTO usuarioDTO) {
 		try {
 			// Buscamos si existe un usuario con el email introducido
-			UsuarioDTO usuarioEncontrado = obtieneUsuarioPorEmail(usuarioDTO.getEmail_usuario());
+			UsuarioDTO usuarioEncontrado = obtieneUsuarioPorEmail(usuarioDTO.getEmailUsuario());
 
 			if (usuarioEncontrado != null) {
 				// Se ha encontrado un usuario con el email introducido
@@ -317,7 +317,7 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 
 			// Si no se ha encontrado
 			// Activamos la cuenta
-			usuarioDTO.setEstaActivado_usuario(true);
+			usuarioDTO.setEstaActivadoUsuario(true);
 
 			// Guardamos el usuario
 			usuarioRepositorio.save(Util.usuarioADao(usuarioDTO));
@@ -334,10 +334,10 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	public boolean editarPerfil(UsuarioDTO usuarioActual, UsuarioDTO usuarioNuevo) {
 		try {
 			// Cambiamos los valores del usuarioActual
-			usuarioActual.setNombre_usuario(usuarioNuevo.getNombre_usuario());
-			usuarioActual.setTlf_usuario(usuarioNuevo.getTlf_usuario());
-			if (usuarioNuevo.getImagen_usuario() != null)
-				usuarioActual.setImagen_usuario(usuarioNuevo.getImagen_usuario());
+			usuarioActual.setNombreUsuario(usuarioNuevo.getNombreUsuario());
+			usuarioActual.setTlfUsuario(usuarioNuevo.getTlfUsuario());
+			if (usuarioNuevo.getImagenUsuario() != null)
+				usuarioActual.setImagenUsuario(usuarioNuevo.getImagenUsuario());
 
 			// Convertimos a DAO el usuarioActual
 			Usuario usuarioDao = Util.usuarioADao(usuarioActual);
@@ -345,8 +345,8 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			// Actualizamos
 			Usuario usuarioDevuelto = usuarioRepositorio.save(usuarioDao);
 
-			if (usuarioDevuelto.getNombre_usuario().equals(usuarioNuevo.getNombre_usuario())
-					&& usuarioDevuelto.getTlf_usuario().equals(usuarioNuevo.getTlf_usuario()))
+			if (usuarioDevuelto.getNombreUsuario().equals(usuarioNuevo.getNombreUsuario())
+					&& usuarioDevuelto.getTlfUsuario().equals(usuarioNuevo.getTlfUsuario()))
 				return true;
 			else
 				return false;
@@ -362,10 +362,10 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 				// Si solo existe un admin tendremos que comprobar si el usuario es admin y si
 				// le esta cambiando el rol
 				// Primero obtenemos el usuario
-				Usuario usuarioEncontrado = Util.usuarioADao(obtieneUsuarioPorId(usuarioDTO.getId_usuario()));
+				Usuario usuarioEncontrado = Util.usuarioADao(obtieneUsuarioPorId(usuarioDTO.getIdUsuario()));
 
 				// Comprobamos el rol
-				if (usuarioEncontrado.getAcceso().getCod_acceso().equals("Admin") && usuarioDTO.getId_acceso() != 2) {
+				if (usuarioEncontrado.getAcceso().getCodAcceso().equals("Admin") && usuarioDTO.getIdAcceso() != 2) {
 					// El usuario en la base de datos es admin y le esta cambiando a user
 					return true; // Devolvemos true porque es el ultimo admin
 				}
@@ -380,13 +380,13 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	public boolean existeUsuarioConEmail(UsuarioDTO usuarioDTO) {
 		try {
 			// Primero obtenemos el usuario
-			Usuario usuarioEncontrado = Util.usuarioADao(obtieneUsuarioPorId(usuarioDTO.getId_usuario()));
+			Usuario usuarioEncontrado = Util.usuarioADao(obtieneUsuarioPorId(usuarioDTO.getIdUsuario()));
 			
 			// Comprobamos si esta intentando cambiar el email
-			if(!usuarioEncontrado.getEmail_usuario().equals(usuarioDTO.getEmail_usuario())) {
+			if(!usuarioEncontrado.getEmailUsuario().equals(usuarioDTO.getEmailUsuario())) {
 				// Se esta intentando cambiar de email
 				// Ahora comprobamos si existe algun usuario con el email
-				Usuario usuarioConEmail = usuarioRepositorio.findByEmailUsuario(usuarioDTO.getEmail_usuario());
+				Usuario usuarioConEmail = usuarioRepositorio.findByEmailUsuario(usuarioDTO.getEmailUsuario());
 					
 				return usuarioConEmail == null ? false : true;
 			}

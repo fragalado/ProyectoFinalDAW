@@ -64,16 +64,16 @@
 							</tr>
 							<tr th:each="usuarioDTO, stat: ${listaUsuariosDTO}">
 								<th scope="row" th:text="${stat.index + 1}"></th>
-								<td th:text="${usuarioDTO.getNombre_usuario()}"></td>
-								<td th:text="${usuarioDTO.getEmail_usuario()}"></td>
-								<td th:if="${usuarioDTO.getId_acceso() == 2}">Admin</td>
-								<td th:if="${usuarioDTO.getId_acceso() == 1}">Usuario</td>
+								<td th:text="${usuarioDTO.getNombreUsuario()}"></td>
+								<td th:text="${usuarioDTO.getEmailUsuario()}"></td>
+								<td th:if="${usuarioDTO.getIdAcceso() == 2}">Admin</td>
+								<td th:if="${usuarioDTO.getIdAcceso() == 1}">Usuario</td>
 								<td>
-									<a th:href="@{/admin/usuarios/editar/} + ${usuarioDTO.getId_usuario()}"><i
+									<a th:href="@{/admin/usuarios/editar/} + ${usuarioDTO.getIdUsuario()}"><i
 											class="fa-solid fa-pen-to-square"
 											style="color: green; padding-left: 15px;"></i></a>
 									<i class="fa-solid fa-trash" style="color: red; margin-left: 35px; cursor: pointer;"
-										th:attr="data-idUsuario=${usuarioDTO.getId_usuario()}, data-idAcceso=${usuarioDTO.getId_acceso()}, data-emailUsuario=${usuarioDTO.getEmail_usuario()}"
+										th:attr="data-idUsuario=${usuarioDTO.getIdUsuario()}, data-idAcceso=${usuarioDTO.getIdAcceso()}, data-emailUsuario=${usuarioDTO.getEmailUsuario()}"
 										onclick="compruebaEsAdmin(event)"></i>
 								</td>
 							</tr>
@@ -86,10 +86,10 @@
 	<script>
 		function compruebaEsAdmin(event) {
 			const id_acceso = event.currentTarget.getAttribute("data-idAcceso");
-			const id_usuario = event.currentTarget.getAttribute("data-idUsuario");
-			const email_usuario = event.currentTarget.getAttribute("data-emailUsuario");
+			const idUsuario = event.currentTarget.getAttribute("data-idUsuario");
+			const emailUsuario = event.currentTarget.getAttribute("data-emailUsuario");
 			if (id_acceso != 2) {
-				compruebaEliminar(id_usuario, email_usuario);
+				compruebaEliminar(idUsuario, emailUsuario);
 			} else {
 				Swal.fire({
 					title: "Error!",
@@ -99,20 +99,20 @@
 			}
 		}
 
-		function compruebaEliminar(id_usuario, email_usuario) {
+		function compruebaEliminar(idUsuario, emailUsuario) {
 			Swal.fire({
 				title: "¿Estás seguro?",
-				text: 'Para eliminar introduce el email: "' + email_usuario + '"',
+				text: 'Para eliminar introduce el email: "' + emailUsuario + '"',
 				input: 'text',
 				showCancelButton: true
 			}).then((result) => {
-				if (result.value == email_usuario) {
+				if (result.value == emailUsuario) {
 					// Eliminamos
 					// Obtén la ruta base de la URL actual (localhost:8080)
 					const baseUrl = window.location.origin;
 
 					// Redirige a la nueva URL (/Admin/BorrarUsuario)
-					window.location.href = baseUrl + '/admin/usuarios/borrar/' + id_usuario;
+					window.location.href = baseUrl + '/admin/usuarios/borrar/' + idUsuario;
 				}
 			});
 		}

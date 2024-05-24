@@ -23,18 +23,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Accesos", schema = "gtp_usuarios")
+@Table(name = "accesos")
 public class Acceso {
 
 	// Atributos
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id_acceso;
+	private long idAcceso;
 	@Column(name = "cod_acceso", nullable = false)
-	private String cod_acceso;
+	private String codAcceso;
 	@Column(name = "desc_acceso", nullable = false)
-	private String desc_acceso;
+	private String descAcceso;
 	@OneToMany(mappedBy = "acceso")
 	private List<Usuario> listaUsuarios;
 	
@@ -43,9 +43,9 @@ public class Acceso {
 	// Constructor con todos los parámetros -> Lombok
 	// Constructor sin parámetros -> Lombok
 	// Constructor sin lista usuario ->
-	public Acceso(long id_acceso, String cod_acceso, String desc_acceso) {
-		this.id_acceso = id_acceso;
-		this.cod_acceso = cod_acceso;
-		this.desc_acceso = desc_acceso;
+	public Acceso(long idAcceso, String codAcceso, String descAcceso) {
+		this.idAcceso = idAcceso;
+		this.codAcceso = codAcceso;
+		this.descAcceso = descAcceso;
 	}
 }

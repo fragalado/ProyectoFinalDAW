@@ -20,30 +20,30 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "suplementos", schema = "gtp_hechos")
+@Table(name = "suplementos")
 public class Suplemento {
 
 	// Atributos
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id_suplemento;
+	private long idSuplemento;
 	
 	@Column(name = "nombre_suplemento", nullable = false)
-	private String nombre_suplemento;
+	private String nombreSuplemento;
 	
 	@Column(name = "desc_suplemento", nullable = false)
-	private String desc_suplemento;
+	private String descSuplemento;
 	
 	@Column(name = "precio_suplemento", nullable = false)
-	private float precio_suplemento;
+	private float precioSuplemento;
 	
 	@Column(name = "tipo_suplemento", nullable = false)
-	private String tipo_suplemento;
+	private String tipoSuplemento;
 	
 	@Column(name = "marca_suplemento", nullable = false)
-	private String marca_suplemento;
+	private String marcaSuplemento;
 	
 	@Column(name = "imagen_suplemento", nullable = false, columnDefinition = "LONGBLOB")
-	private byte[] imagen_suplemento;
+	private byte[] imagenSuplemento;
 }

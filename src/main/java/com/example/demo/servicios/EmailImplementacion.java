@@ -71,9 +71,9 @@ public class EmailImplementacion implements EmailInterfaz {
 				// mixto y la codificacion utf-8
 				MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 				helper.setFrom(appProperties.getEmailFrom());
-				helper.setTo(usuario.getEmail_usuario());
+				helper.setTo(usuario.getEmailUsuario());
 				helper.setSubject(asuntoEmail);
-				helper.setText(mensajeCorreo(tokenDao.getCod_token(), direccion, esActivarCuenta), true);
+				helper.setText(mensajeCorreo(tokenDao.getCodToken(), direccion, esActivarCuenta), true);
 
 				// Enviamos el correo utilizando el JavaMailSender
 				mailSender.send(message);

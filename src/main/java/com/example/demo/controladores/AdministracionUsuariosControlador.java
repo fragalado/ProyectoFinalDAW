@@ -49,7 +49,7 @@ public class AdministracionUsuariosControlador {
 		try {
 			// Obtenemos una lista con todos los usuarios y la ordenamos por el id_acceso
 			List<UsuarioDTO> listaUsuarios = usuarioImplementacion.obtieneTodosLosUsuarios().stream()
-					.sorted(Comparator.comparingLong(UsuarioDTO::getId_acceso).reversed()).collect(Collectors.toList());
+					.sorted(Comparator.comparingLong(UsuarioDTO::getIdAcceso).reversed()).collect(Collectors.toList());
 			
 			// Agregamos la lista al modelo
 			model.addAttribute("listaUsuariosDTO", listaUsuarios);
@@ -144,8 +144,8 @@ public class AdministracionUsuariosControlador {
 	public String editarUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuario, @RequestPart("imagenFile") MultipartFile imagenFile) {
 		try {
 			// Controlamos los valores
-			if (usuario.getNombre_usuario().length() > 50 || usuario.getEmail_usuario().length() > 50
-					|| usuario.getTlf_usuario().length() > 15)
+			if (usuario.getNombreUsuario().length() > 50 || usuario.getEmailUsuario().length() > 50
+					|| usuario.getTlfUsuario().length() > 15)
 				return "redirect:/admin/administracion-usuarios?usuarioAgregadoError";
 
 			// Si la imagen no esta vacia se la añadimos al usuario
@@ -154,7 +154,7 @@ public class AdministracionUsuariosControlador {
 				String foto = Util.convertirABase64(imagenFile.getBytes());
 
 				// Le añadimos la imagen al usuarioDTO
-				usuario.setImagen_usuario(foto);
+				usuario.setImagenUsuario(foto);
 			}
 			
 			// Comprobamos si es el ultimo admin y le estamos cambiando el rol
@@ -192,11 +192,11 @@ public class AdministracionUsuariosControlador {
 	public String agregarUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuarioDTO, @RequestPart("imagenFile") MultipartFile imagenFile) {
 		try {
 			// Encriptamos la contraseña
-			usuarioDTO.setPsswd_usuario(bCryptPasswordEncoder.encode(usuarioDTO.getPsswd_usuario()));
+			usuarioDTO.setPsswdUsuario(bCryptPasswordEncoder.encode(usuarioDTO.getPsswdUsuario()));
 
 			// Controlamos los valores
-			if (usuarioDTO.getNombre_usuario().length() > 50 || usuarioDTO.getEmail_usuario().length() > 50
-					|| usuarioDTO.getTlf_usuario().length() > 15 || usuarioDTO.getPsswd_usuario().length() > 255)
+			if (usuarioDTO.getNombreUsuario().length() > 50 || usuarioDTO.getEmailUsuario().length() > 50
+					|| usuarioDTO.getTlfUsuario().length() > 15 || usuarioDTO.getPsswdUsuario().length() > 255)
 				return "redirect:/admin/usuarios?usuarioAgregadoError";
 
 			// Si la imagen no esta vacia se la añadimos al usuario
@@ -205,7 +205,7 @@ public class AdministracionUsuariosControlador {
 				String foto = Util.convertirABase64(imagenFile.getBytes());
 
 				// Le añadimos la imagen al usuarioDTO
-				usuarioDTO.setImagen_usuario(foto);
+				usuarioDTO.setImagenUsuario(foto);
 			}
 
 			// Agregamos el usuario

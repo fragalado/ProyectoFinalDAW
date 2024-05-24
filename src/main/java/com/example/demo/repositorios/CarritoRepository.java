@@ -25,7 +25,7 @@ public interface CarritoRepository extends JpaRepository<Carrito, Long> {
 	 * 
 	 * @return Devuelve una lista de tipo Carrito List<Carrito>
 	 */
-	@Query("SELECT c FROM Carrito c WHERE c.usuario=:usuario AND c.estaComprado_carrito = false")
+	@Query("SELECT c FROM Carrito c WHERE c.usuario=:usuario AND c.estaCompradoCarrito = false")
 	public List<Carrito> findAllCarritoNoComprado(@Param("usuario") Usuario usuario);
 
 	/**
@@ -36,7 +36,7 @@ public interface CarritoRepository extends JpaRepository<Carrito, Long> {
 	 * @param suplemento Suplemento del carrito
 	 * @return Devuelve el carrito obtenido
 	 */
-	@Query("SELECT c FROM Carrito c WHERE c.usuario=:usuario AND c.suplemento=:suplemento AND c.estaComprado_carrito = false")
+	@Query("SELECT c FROM Carrito c WHERE c.usuario=:usuario AND c.suplemento=:suplemento AND c.estaCompradoCarrito = false")
 	public Carrito findCarritoBySuplemento(@Param("usuario") Usuario usuario,
 			@Param("suplemento") Suplemento suplemento);
 }

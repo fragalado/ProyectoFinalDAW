@@ -25,14 +25,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "carritos", schema = "gtp_hechos")
+@Table(name = "carritos")
 public class Carrito {
 
 	// Atributos
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id_carrito;
+	private long idCarrito;
 
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
@@ -45,8 +45,8 @@ public class Carrito {
 	@Column(name = "cantidad", nullable = false)
 	private int cantidad;
 
-	@Column(name = "estaComprado_carrito")
-	private boolean estaComprado_carrito;
+	@Column(name = "esta_comprado_carrito")
+	private boolean estaCompradoCarrito;
 
 	@OneToMany(mappedBy = "carrito")
 	private List<RelOrdenCarrito> listaRelacion;

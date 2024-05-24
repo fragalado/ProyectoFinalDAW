@@ -26,29 +26,29 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "Usuarios", schema = "gtp_usuarios")
+@Table(name = "usuarios")
 public class Usuario {
 
 	// Atributos
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id_usuario;
+	private long idUsuario;
 	@Column(name = "nombre_usuario", nullable = false, length = 50)
-	private String nombre_usuario;
+	private String nombreUsuario;
 	@Column(name = "tlf_usuario", nullable = false)
-	private String tlf_usuario;
+	private String tlfUsuario;
 	@Column(name = "email_usuario", nullable = false, length = 50)
-	private String email_usuario;
+	private String emailUsuario;
 	@Column(name = "psswd_usuario", nullable = false)
-	private String psswd_usuario;
+	private String psswdUsuario;
 	@ManyToOne
 	@JoinColumn(name = "id_acceso")
 	private Acceso acceso;
-	@Column(name = "estaActivado_usuario", nullable = false)
-	private boolean estaActivado_usuario;
+	@Column(name = "esta_activado_usuario", nullable = false)
+	private boolean estaActivadoUsuario;
 	@Column(name = "imagen_usuario", nullable = true, columnDefinition = "LONGBLOB")
-	private byte[] imagen_usuario;
+	private byte[] imagenUsuario;
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	private List<Token> listaTokens;
 }

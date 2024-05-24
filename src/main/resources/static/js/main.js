@@ -32,8 +32,10 @@ function validarFormularioEditarAdmin() {
 	let telefonoError = validarTelefono(telefono);
 
 	// Mostramos los errores
-	muestraToast(emailError, false);
-	muestraToast(telefonoError, false);
+	if(emailError)
+		muestraToast(emailError, false);
+	if(telefonoError)
+		muestraToast(telefonoError, false);
 
 	// Comprobamos si se ha obtenido algun error o no
 	return emailError === "" && telefonoError === "";
@@ -47,7 +49,8 @@ function validarFormularioEditarPerfil() {
 	let telefonoError = validarTelefono(telefono);
 
 	// Mostramos los errores
-	muestraToast(telefonoError, false);
+	if(telefonoError)
+		muestraToast(telefonoError, false);
 
 	// Comprobamos si se ha obtenido algun error o no
 	return telefonoError === "";
@@ -89,9 +92,12 @@ function validarPassword(password) {
 }
 
 function validarTelefono(telefono) {
+	// Expresión regular para validar un número de teléfono de 9 dígitos
+    const regexTelefono = /^[0-9]{9}$/;
+	
 	if (!telefono) {
 		return "Por favor ingresa un número de teléfono.";
-	} else if (telefono.length !== 9) {
+	} else if (!regexTelefono.test(telefono)) {
 		return "Por favor ingresa un número de teléfono válido (9 dígitos).";
 	}
 	return ""; // Teléfono válido

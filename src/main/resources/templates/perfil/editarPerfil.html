@@ -24,6 +24,8 @@
 	<!-- SweetAlert2 -->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" asp-append-version="true"></script>
 	<!-- Fin SweetAlert2 -->
+	<!-- JS -->
+	<script th:src="@{/js/toast.js}"></script>
 </head>
 
 <body>
@@ -42,10 +44,10 @@
 					<div class="contenedor">
 						<!-- Imagen -->
 						<div class="contenedor-imagen">
-							<img th:if="${usuarioDTO.getImagen_usuario() != null}"
-								th:src="'data:image/png;base64, '+ ${usuarioDTO.getImagen_usuario()}"
+							<img th:if="${usuarioDTO.getImagenUsuario() != null}"
+								th:src="'data:image/png;base64, '+ ${usuarioDTO.getImagenUsuario()}"
 								class="card-img-top imagen" alt="Foto de perfil del usuario" id="profile-pic">
-							<img th:if="${usuarioDTO.getImagen_usuario() == null}"
+							<img th:if="${usuarioDTO.getImagenUsuario() == null}"
 								src="https://upload.wikimedia.org/wikipedia/commons/4/41/Profile-720.png"
 								class="card-img-top imagen" alt="Foto de perfil del usuario" id="profile-pic">
 						</div>
@@ -66,25 +68,21 @@
 								<div class="mb-3">
 									<label for="email" class="form-label">Email</label>
 									<input type="email" class="form-control inputVistaEditar" id="email"
-										th:field="*{email_usuario}" maxlength="50" disabled>
+										th:field="*{emailUsuario}" maxlength="50" disabled>
 								</div>
 
 								<!-- Nombre -->
 								<div class="mb-3">
 									<label for="nombre" class="form-label">Nombre</label>
 									<input type="text" class="form-control inputVistaEditar" id="nombre"
-										th:field="*{nombre_usuario}" maxlength="50">
+										th:field="*{nombreUsuario}" maxlength="50">
 								</div>
 
 								<!-- Telefono -->
 								<div class="mb-3">
 									<label for="tlf" class="form-label">Teléfono</label>
 									<input type="text" class="form-control inputVistaEditar" id="tlf"
-										th:field="*{tlf_usuario}" maxlength="15">
-								</div>
-
-								<!-- Control de alertas -->
-								<div id="telefonoError" class="alert alert-danger" role="alert" style="display: none;">
+										th:field="*{tlfUsuario}" maxlength="15">
 								</div>
 
 								<!-- Boton enviar -->
@@ -100,6 +98,9 @@
 			</div>
 		</main>
 	</div>
+
+	<!-- Toast -->
+	<div th:replace="~{partials/toast::toast}"></div>
 
 	<script>
 		let profilePic = document.getElementById("profile-pic");

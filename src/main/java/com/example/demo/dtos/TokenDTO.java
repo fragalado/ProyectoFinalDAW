@@ -19,8 +19,8 @@ public class TokenDTO {
 
 	// Atributos
 	
-	private long id_token;
-	private String cod_token;
-	private Calendar fch_fin_token;
-	private long id_usuario;
+	private long idToken;
+	private String codToken;
+	private Calendar fchFinToken;
+	private long idUsuario;
 }

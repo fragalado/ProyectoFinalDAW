@@ -27,21 +27,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "ordenes", schema = "gtp_hechos")
+@Table(name = "ordenes")
 public class Orden {
 
 	// Atributos
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id_orden;
+	private long idOrden;
 
 	@Column(name = "precio_orden", nullable = false)
-	private float precio_orden;
+	private float precioOrden;
 
 	@Column(name = "fch_orden", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar fch_orden;
+	private Calendar fchOrden;
 
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")

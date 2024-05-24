@@ -41,10 +41,10 @@
 					<div class="contenedor">
 						<!-- Imagen -->
 						<div class="contenedor-imagen">
-							<img th:if="${suplementoDTO.getImagen_suplemento() != null}"
-								th:src="'data:image/png;base64, '+ ${suplementoDTO.getImagen_suplemento()}"
+							<img th:if="${suplementoDTO.getImagenSuplemento() != null}"
+								th:src="'data:image/png;base64, '+ ${suplementoDTO.getImagenSuplemento()}"
 								class="card-img-top imagen" alt="Foto del suplemento" id="profile-pic">
-							<img th:if="${suplementoDTO.getImagen_suplemento() == null}"
+							<img th:if="${suplementoDTO.getImagenSuplemento() == null}"
 								src="https://upload.wikimedia.org/wikipedia/commons/4/41/Profile-720.png"
 								class="card-img-top imagen" alt="Foto de suplemento genérico" id="profile-pic">
 						</div>
@@ -65,34 +65,34 @@
 								<div class="mb-3">
 									<label for="nombreForm" class="form-label">Nombre</label>
 									<input type="text" class="form-control inputVistaEditar" id="nombreForm"
-										th:field="*{nombre_suplemento}" required>
+										th:field="*{nombreSuplemento}" required>
 								</div>
 
 								<!-- Descripcion -->
 								<div class="mb-3">
 									<label for="descForm" class="form-label">Descripcion</label>
 									<textarea class="form-control inputVistaEditar" id="descForm"
-										th:field="*{desc_suplemento}" rows="3" maxlength="254" required></textarea>
+										th:field="*{descSuplemento}" rows="3" maxlength="254" required></textarea>
 								</div>
 
 								<!-- Precio -->
 								<div class="mb-3">
 									<label for="precioForm" class="form-label">Precio</label>
 									<input type="text" class="form-control inputVistaEditar" id="precioForm"
-										th:field="*{precio_suplemento}" required>
+										th:field="*{precioSuplemento}" required>
 								</div>
 
 								<!-- Marca -->
 								<div class="mb-3">
 									<label for="marcaForm" class="form-label">Marca</label>
 									<input type="text" class="form-control inputVistaEditar" id="marcaForm"
-										th:field="*{marca_suplemento}" required>
+										th:field="*{marcaSuplemento}" required>
 								</div>
 
 								<!-- Tipo -->
 								<div class="mb-3">
 									<label for="tipoForm" class="form-label">Tipo</label>
-									<select th:field="*{tipo_suplemento}" class="form-select" aria-label="tipo select"
+									<select th:field="*{tipoSuplemento}" class="form-select" aria-label="tipo select"
 										id="tipoForm" style="border: 1px solid black;">
 										<option value="" selected>-- Selecciona --</option>
 										<option value="Proteína">Proteína</option>
@@ -101,7 +101,7 @@
 									</select>
 								</div>
 
-								<input type="text" class="form-control" name="id_suplemento" th:field="*{id_suplemento}"
+								<input type="text" class="form-control" name="idSuplemento" th:field="*{idSuplemento}"
 									style="display:none">
 
 								<!-- Boton enviar -->

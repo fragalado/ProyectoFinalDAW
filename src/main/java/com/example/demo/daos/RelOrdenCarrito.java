@@ -22,14 +22,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "rel_ordenes_carritos", schema = "gtp_hechos")
+@Table(name = "rel_ordenes_carritos")
 public class RelOrdenCarrito {
 
 	// Atributos
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id_rel_orden_carrito;
+	private long idRelOrdenCarrito;
 
 	@ManyToOne
 	@JoinColumn(name = "id_orden")

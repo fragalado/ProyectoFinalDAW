@@ -14,10 +14,10 @@ public class CarritoDTO {
 
 	// Atributos
 
-	private long id_carrito;
-	private long id_usuario;
+	private long idCarrito;
+	private long idUsuario;
 	private SuplementoDTO suplementoDTO;
 	private int cantidad;
-	private boolean estaComprado_carrito;
+	private boolean estaCompradoCarrito;
 
 }

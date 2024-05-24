@@ -13,14 +13,14 @@ public class UsuarioDTO {
 
 	// Atributos
 
-	private long id_usuario;
-	private String nombre_usuario;
-	private String tlf_usuario;
-	private String email_usuario;
-	private String psswd_usuario;
-	private long id_acceso = 1;
-	private boolean estaActivado_usuario = false;
-	private String imagen_usuario;
+	private long idUsuario;
+	private String nombreUsuario;
+	private String tlfUsuario;
+	private String emailUsuario;
+	private String psswdUsuario;
+	private long idAcceso = 1;
+	private boolean estaActivadoUsuario = false;
+	private String imagenUsuario;
 
 	// Constructores -> Constructor vacío
 

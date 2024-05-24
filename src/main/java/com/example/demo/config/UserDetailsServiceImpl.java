@@ -34,16 +34,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		}
 
 		// Comprobamos si el usuario está desactivado
-		if (!usuarioEncontrado.isEstaActivado_usuario()) {
+		if (!usuarioEncontrado.isEstaActivadoUsuario()) {
 			throw new DisabledException("Usuario desactivado");
 		}
 
 		// Contruimos un objeto UserDetails con los datos
 		return User.builder()
 				.username(username)
-				.password(usuarioEncontrado.getPsswd_usuario())
+				.password(usuarioEncontrado.getPsswdUsuario())
 				.disabled(false)
-				.authorities("ROLE_" + usuarioEncontrado.getAcceso().getCod_acceso().toUpperCase())
+				.authorities("ROLE_" + usuarioEncontrado.getAcceso().getCodAcceso().toUpperCase())
 				.build();
 	}
 

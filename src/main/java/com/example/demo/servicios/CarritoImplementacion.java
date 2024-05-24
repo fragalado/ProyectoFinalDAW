@@ -113,7 +113,7 @@ public class CarritoImplementacion implements CarritoInterfaz {
 			// Obtenemos el precio total
 			float total = 0;
 			for (CarritoDTO aux : listaCarrito)
-				total += aux.getCantidad() * aux.getSuplementoDTO().getPrecio_suplemento();
+				total += aux.getCantidad() * aux.getSuplementoDTO().getPrecioSuplemento();
 
 			// Devolvemos el total
 			return (float) (Math.round(total * 100.0) / 100.0);

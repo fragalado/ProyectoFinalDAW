@@ -67,7 +67,7 @@ public class RegistroControlador {
 	public String registrarUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuario, HttpServletRequest request) {
 		try {
 			// Encriptamos la contraseña
-			usuario.setPsswd_usuario(bCryptPasswordEncoder.encode(usuario.getPsswd_usuario()));
+			usuario.setPsswdUsuario(bCryptPasswordEncoder.encode(usuario.getPsswdUsuario()));
 
 			// Control de sesion
 			if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {

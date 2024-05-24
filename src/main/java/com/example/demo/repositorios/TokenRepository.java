@@ -21,6 +21,6 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
 	 * @param codToken Código del token a obtener
 	 * @return Devuelve el token obtenido
 	 */
-	@Query("SELECT t FROM Token t WHERE t.cod_token = :codToken")
+	@Query("SELECT t FROM Token t WHERE t.codToken = :codToken")
 	public Token findByCodToken(@Param("codToken") String codToken);
 }

@@ -26,19 +26,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tokens", schema = "gtp_usuarios")
+@Table(name = "tokens")
 public class Token {
 
 	// Atributos
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id_token;
+	private long idToken;
 	@Column(name = "cod_token", nullable = false)
-	private String cod_token;
+	private String codToken;
 	@Column(name = "fch_fin_token", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar fch_fin_token;
+	private Calendar fchFinToken;
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;

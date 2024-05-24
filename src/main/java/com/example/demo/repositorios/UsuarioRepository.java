@@ -23,9 +23,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	 * @param email Email del usuario a obtener
 	 * @return Devuelve el usuario obtenido
 	 */
-	@Query("SELECT u FROM Usuario u WHERE u.email_usuario = :email")
+	@Query("SELECT u FROM Usuario u WHERE u.emailUsuario = :email")
 	public Usuario findByEmailUsuario(@Param("email") String email);
 	
-	@Query ("select count(u) from Usuario u where u.acceso.cod_acceso = 'Admin'")
+	@Query ("select count(u) from Usuario u where u.acceso.codAcceso = 'Admin'")
 	public int countAdminUsers();
 }

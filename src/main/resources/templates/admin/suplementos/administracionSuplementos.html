@@ -67,17 +67,17 @@
 							</tr>
 							<tr th:each="suplementoDTO, stat: ${listaSuplementosDTO}">
 								<th scope="row" th:text="${stat.index + 1}"></th>
-								<td th:text="${suplementoDTO.getNombre_suplemento}"></td>
-								<td th:text="${suplementoDTO.getDesc_suplemento}"></td>
-								<td th:text="${suplementoDTO.getPrecio_suplemento} + '$'"></td>
-								<td th:text="${suplementoDTO.getTipo_suplemento}"></td>
-								<td th:text="${suplementoDTO.getMarca_suplemento}"></td>
+								<td th:text="${suplementoDTO.getNombreSuplemento}"></td>
+								<td th:text="${suplementoDTO.getDescSuplemento}"></td>
+								<td th:text="${suplementoDTO.getPrecioSuplemento} + '$'"></td>
+								<td th:text="${suplementoDTO.getTipoSuplemento}"></td>
+								<td th:text="${suplementoDTO.getMarcaSuplemento}"></td>
 								<td>
-									<a th:href="@{/admin/suplementos/editar/} + ${suplementoDTO.getId_suplemento()}"><i
+									<a th:href="@{/admin/suplementos/editar/} + ${suplementoDTO.getIdSuplemento()}"><i
 											class="fa-solid fa-pen-to-square"
 											style="color: green; padding-left: 15px;"></i></a>
 									<i class="fa-solid fa-trash" style="color: red; margin-left: 35px; cursor: pointer;"
-										th:attr="data-idSuplemento=${suplementoDTO.getId_suplemento()}"
+										th:attr="data-idSuplemento=${suplementoDTO.getIdSuplemento()}"
 										onclick="compruebaEliminar(event)"></i>
 								</td>
 							</tr>
@@ -89,7 +89,7 @@
 	</div>
 	<script>
 		function compruebaEliminar(event) {
-			const id_suplemento = event.currentTarget.getAttribute("data-idSuplemento");
+			const idSuplemento = event.currentTarget.getAttribute("data-idSuplemento");
 			Swal.fire({
 				title: "¿Estás seguro?",
 				text: "No se podrán revertir los cambios!",
@@ -106,7 +106,7 @@
 					const baseUrl = window.location.origin;
 
 					// Redirige a la nueva URL (/Admin/BorrarSuplemento)
-					window.location.href = baseUrl + '/admin/suplementos/borrar/' + id_suplemento;
+					window.location.href = baseUrl + '/admin/suplementos/borrar/' + idSuplemento;
 				}
 			});
 		}
