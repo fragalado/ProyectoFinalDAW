@@ -44,6 +44,6 @@ public class Suplemento {
 	@Column(name = "marca_suplemento", nullable = false)
 	private String marca_suplemento;
 	
-	@Column(name = "imagen_suplemento", nullable = false)
+	@Column(name = "imagen_suplemento", nullable = false, columnDefinition = "LONGBLOB")
 	private byte[] imagen_suplemento;
 }

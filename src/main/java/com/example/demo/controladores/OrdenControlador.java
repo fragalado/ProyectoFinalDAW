@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.config.UrlProperties;
 import com.example.demo.paypal.PaypalService;
 import com.example.demo.servicios.OrdenImplementacion;
 import com.paypal.api.payments.Links;
@@ -27,17 +28,21 @@ public class OrdenControlador {
 
 	@Autowired
 	private PaypalService paypalService;
-	
+
 	@Autowired
 	private OrdenImplementacion ordenImplementacion;
 
+	@Autowired
+	private UrlProperties url;
+
 	@PostMapping
 	public String comprarCarrito(@RequestParam Double total) {
-		String cancelUrl = "http://localhost:8080/comprar/cancel";
-		String successUrl = "http://localhost:8080/comprar/success";
+		String cancelUrl = url.getUrl() + "/comprar/cancel";
+		String successUrl = url.getUrl() + "/comprar/success";
 		try {
 			try {
-				Payment payment = paypalService.createPayment(total, "EUR", "payment description", cancelUrl, successUrl);
+				Payment payment = paypalService.createPayment(total, "EUR", "payment description", cancelUrl,
+						successUrl);
 				for (Links links : payment.getLinks()) {
 					if (links.getRel().equals("approval_url")) {
 						return "redirect:" + links.getHref();
@@ -58,10 +63,11 @@ public class OrdenControlador {
 	}
 
 	@GetMapping("/success")
-	public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId, Authentication authentication) {
+	public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId,
+			Authentication authentication) {
 		try {
 			Payment payment = paypalService.executePayment(paymentId, payerId);
-			if(payment.getState().equals("approved")){
+			if (payment.getState().equals("approved")) {
 				// Realizamos la compra del carrito
 				boolean ok = ordenImplementacion.compraCarritoUsuario(authentication.getName());
 				return ok ? "redirect:/carrito?paySuccess" : "redirect:/carrito?error";

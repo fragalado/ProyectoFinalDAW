@@ -118,4 +118,18 @@ public interface UsuarioInterfaz {
 	 * @return Devuelve true si se ha actualizado correctamente o false si no
 	 */
 	public boolean editarPerfil(UsuarioDTO usuarioActual, UsuarioDTO usuarioNuevo);
+	
+	/**
+	 * Método que comprueba si el usuario es el ultimo admin y si se esta intentando cambiar de rol
+	 * @param usuarioDTO Objeto UsuarioDTO con los datos del usuario
+	 * @return Devuelve true si es el ultimo admin y se esta intentando cambiar de rol o false si no.
+	 */
+	public boolean esUltimoAdmin(UsuarioDTO usuarioDTO);
+	
+	/**
+	 * 
+	 * @param usuarioDTO
+	 * @return
+	 */
+	public boolean existeUsuarioConEmail(UsuarioDTO usuarioDTO);
 }

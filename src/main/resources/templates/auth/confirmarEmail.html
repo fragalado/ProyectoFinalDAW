@@ -24,19 +24,19 @@
 
 <body>
 	<div class="wrapper">
-		
+
 		<!-- Formulario -->
 		<form method="post" th:action="@{/activa-cuenta}">
 			<h1>Activar cuenta</h1>
-			
+
 			<p>Para activar la cuenta introduzca su email.</p>
-			
+
 			<!-- Email -->
 			<div class="input-box">
 				<input type="email" placeholder="Email" name="email" required>
 				<i class="fa-solid fa-envelope"></i>
 			</div>
-			
+
 			<!-- Token -->
 			<input type="text" name="token" th:value="${token}" style="display: none;" required>
 
@@ -52,7 +52,11 @@
 
 			<!-- Botón enviar -->
 			<button type="submit" class="boton">Enviar</button>
-		
+
+			<!-- Enlace a login -->
+			<div class="register-link">
+				<p>Pulsa <a th:href="@{/login}">aquí</a> para volver.</p>
+			</div>
 		</form>
 	</div>
 </body>

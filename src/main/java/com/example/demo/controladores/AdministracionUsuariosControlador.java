@@ -156,6 +156,16 @@ public class AdministracionUsuariosControlador {
 				// Le añadimos la imagen al usuarioDTO
 				usuario.setImagen_usuario(foto);
 			}
+			
+			// Comprobamos si es el ultimo admin y le estamos cambiando el rol
+			if(usuarioImplementacion.esUltimoAdmin(usuario)) {
+				return "redirect:/admin/usuarios?esUltimoAdmin";
+			}
+			
+			// Comprobamos si esta cambiando el email y si ya existe
+			if(usuarioImplementacion.existeUsuarioConEmail(usuario)) {
+				return "redirect:/admin/usuarios?emailExiste";
+			}
 
 			// Actualizamos el usuario
 			boolean ok = usuarioImplementacion.actualizaUsuario(usuario);

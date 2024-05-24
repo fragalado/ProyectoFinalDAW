@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.config.UrlProperties;
 import com.example.demo.daos.Token;
 import com.example.demo.daos.Usuario;
 import com.example.demo.dtos.UsuarioDTO;
@@ -35,6 +36,9 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 
 	@Autowired
 	private TokenImplementacion tokenImplementacion;
+	
+	@Autowired
+	private UrlProperties url;
 
 	@Override
 	public List<UsuarioDTO> obtieneTodosLosUsuarios() {
@@ -82,7 +86,9 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			Usuario usuarioEncontrado = usuarioRepositorio.findByEmailUsuario(email);
 
 			// Convertimos el usuario a DTO y lo devolvemos
-			return Util.usuarioADto(usuarioEncontrado);
+			if(usuarioEncontrado != null)
+				return Util.usuarioADto(usuarioEncontrado);
+			return null;
 		} catch (Exception e) {
 			return null; // Devuelve null en caso de no encontrarlo
 		}
@@ -112,7 +118,7 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			// correctamente
 			if (usuarioDevuelto != null) {
 				// Enviamos el correo
-				emailImplementacion.enviarEmail("http://localhost:8080/activa-cuenta", true, usuarioDevuelto);
+				emailImplementacion.enviarEmail(url.getUrl() + "/activa-cuenta", true, usuarioDevuelto);
 			}
 			return usuarioDevuelto != null;
 		} catch (IllegalArgumentException e) {
@@ -185,7 +191,7 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 
 			// Si llega aqui es porque se ha encontrado el usuario.
 			// Luego enviamos un email
-			boolean ok = emailImplementacion.enviarEmail("http://localhost:8080/restablecer/cambiar-password", false,
+			boolean ok = emailImplementacion.enviarEmail(url.getUrl() +"/restablecer/cambiar-password", false,
 					usuarioEncontrado);
 
 			// Controlamos la respuesta
@@ -272,11 +278,17 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			Usuario usuarioEncontrado = Util.usuarioADao(obtieneUsuarioPorId(usuarioDTO.getId_usuario()));
 			// Optional<Usuario> usuarioEncontrado =
 			// usuarioRepositorio.findById(usuarioDTO.getId_usuario());
-
+			
+			// Comprobamos si existe algun usuario con el email introducido
+			
+			
 			// Actualizamos algunos datos del usuarioEncontrado con el usuarioDTO
-			usuarioEncontrado.setNombre_usuario(usuarioDTO.getNombre_usuario());
-			usuarioEncontrado.setEmail_usuario(usuarioDTO.getEmail_usuario());
-			usuarioEncontrado.setTlf_usuario(usuarioDTO.getTlf_usuario());
+			Usuario usuarioDao = Util.usuarioADao(usuarioDTO);
+			usuarioEncontrado.setNombre_usuario(usuarioDao.getNombre_usuario());
+			usuarioEncontrado.setEmail_usuario(usuarioDao.getEmail_usuario());
+			usuarioEncontrado.setTlf_usuario(usuarioDao.getTlf_usuario());
+			usuarioEncontrado.setEstaActivado_usuario(usuarioDao.isEstaActivado_usuario());
+			usuarioEncontrado.setAcceso(usuarioDao.getAcceso());
 			if (usuarioDTO.getImagen_usuario() != null)
 				usuarioEncontrado.setImagen_usuario(Util.convertirAByteArray(usuarioDTO.getImagen_usuario()));
 
@@ -338,6 +350,47 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 				return true;
 			else
 				return false;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean esUltimoAdmin(UsuarioDTO usuarioDTO) {
+		try {
+			if (usuarioRepositorio.countAdminUsers() == 1) {
+				// Si solo existe un admin tendremos que comprobar si el usuario es admin y si
+				// le esta cambiando el rol
+				// Primero obtenemos el usuario
+				Usuario usuarioEncontrado = Util.usuarioADao(obtieneUsuarioPorId(usuarioDTO.getId_usuario()));
+
+				// Comprobamos el rol
+				if (usuarioEncontrado.getAcceso().getCod_acceso().equals("Admin") && usuarioDTO.getId_acceso() != 2) {
+					// El usuario en la base de datos es admin y le esta cambiando a user
+					return true; // Devolvemos true porque es el ultimo admin
+				}
+			}
+			return false;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean existeUsuarioConEmail(UsuarioDTO usuarioDTO) {
+		try {
+			// Primero obtenemos el usuario
+			Usuario usuarioEncontrado = Util.usuarioADao(obtieneUsuarioPorId(usuarioDTO.getId_usuario()));
+			
+			// Comprobamos si esta intentando cambiar el email
+			if(!usuarioEncontrado.getEmail_usuario().equals(usuarioDTO.getEmail_usuario())) {
+				// Se esta intentando cambiar de email
+				// Ahora comprobamos si existe algun usuario con el email
+				Usuario usuarioConEmail = usuarioRepositorio.findByEmailUsuario(usuarioDTO.getEmail_usuario());
+					
+				return usuarioConEmail == null ? false : true;
+			}
+			return false;
 		} catch (Exception e) {
 			return false;
 		}

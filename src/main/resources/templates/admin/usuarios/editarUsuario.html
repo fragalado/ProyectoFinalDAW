@@ -83,6 +83,25 @@
 										th:field="*{tlf_usuario}" maxlength="15">
 								</div>
 
+								<!-- Rol -->
+								<div class="mb-3">
+									<label for="rol" class="form-label">Rol</label>
+									<select class="form-select" aria-label="Default select example" id="rol" th:field="*{id_acceso}" style="border: 1px solid black;">
+										<option value="1">Usuario</option>
+										<option value="2">Admin</option>
+									</select>
+								</div>
+
+								<!-- Activar cuenta -->
+								<div class="mb-3">
+									<div class="form-check">
+									  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" th:field="*{estaActivado_usuario}" style="border: 1px solid black;">
+									  <label class="form-check-label" for="flexCheckDefault">
+									    Cuenta activada
+									  </label>
+									</div>
+								</div>
+
 								<!-- Id usuario -->
 								<input type="text" class="form-control" name="id_usuario" th:field="*{id_usuario}"
 									style="display:none">

@@ -47,7 +47,7 @@ public class Usuario {
 	private Acceso acceso;
 	@Column(name = "estaActivado_usuario", nullable = false)
 	private boolean estaActivado_usuario;
-	@Column(name = "imagen_usuario", nullable = true)
+	@Column(name = "imagen_usuario", nullable = true, columnDefinition = "LONGBLOB")
 	private byte[] imagen_usuario;
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	private List<Token> listaTokens;
