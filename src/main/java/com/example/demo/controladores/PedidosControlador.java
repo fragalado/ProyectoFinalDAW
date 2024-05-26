@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.dtos.OrdenDTO;
+import com.example.demo.servicios.CarritoImplementacion;
 import com.example.demo.servicios.OrdenImplementacion;
 import com.example.demo.utiles.Util;
 
@@ -27,6 +28,9 @@ public class PedidosControlador {
 	@Autowired
 	private OrdenImplementacion ordenImplementacion;
 
+	@Autowired
+	private CarritoImplementacion carritoImplementacion;
+
 	@GetMapping
 	public String vistaPedidos(Model modelo, Authentication authentication) {
 
@@ -37,6 +41,10 @@ public class PedidosControlador {
 
 			// Añadimos la lista al modelo
 			modelo.addAttribute("listaOrdenDto", listaOrdenDto);
+
+			// Obtenemos el numero de carrito del usuario
+			modelo.addAttribute("tieneCarrito",
+					carritoImplementacion.obtieneCantidadDeCarritosUsuario(authentication.getName()));
 
 			// Devolvemos la vista
 			return "pedidos/pedidos";

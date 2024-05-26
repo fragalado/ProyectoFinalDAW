@@ -47,14 +47,22 @@
 					</li>
 					<!-- Carrito -->
 					<li class="nav-item perfilLink">
-						<a th:href="@{/carrito}" class="nav-link text-white">Carrito</a>
+						<a th:href="@{/carrito}" class="nav-link text-white">
+							Carrito
+						</a>
 					</li>
 					<!-- Perfil -->
 					<li class="nav-item perfilLink">
 						<a th:href="@{/perfil}" class="nav-link text-white">Perfil</a>
 					</li>
 				</ul>
-				<a th:href="@{/carrito}" class="carrito"><i class="bi bi-cart-fill"></i></a>
+				<a th:href="@{/carrito}" class="carrito position-relative">
+					<i class="bi bi-cart-fill"></i>
+					<span th:if="${tieneCarrito}" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+						<span th:text="${tieneCarrito + '+'}"></span>
+						<span class="visually-hidden">unread messages</span>
+					</span>
+				</a>
 				<a th:href="@{/perfil}" class="iconoPerfil"><i class="bi bi-person-fill"></i></a>
 			</div>
 		</div>

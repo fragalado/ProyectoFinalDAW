@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.dtos.SuplementoDTO;
+import com.example.demo.servicios.CarritoImplementacion;
 import com.example.demo.servicios.SuplementoImplementacion;
 import com.example.demo.utiles.Util;
 
@@ -26,6 +27,9 @@ public class HomeControlador {
 
 	@Autowired
 	private SuplementoImplementacion suplementoImplementacion;
+	
+	@Autowired
+	private CarritoImplementacion carritoImplementacion;
 
 	/**
 	 * Método que maneja las solicitudes GET para la ruta /home
@@ -46,6 +50,9 @@ public class HomeControlador {
 						listaSuplementosDto.stream().limit(6).collect(Collectors.toList()));
 			else
 				modelo.addAttribute("listaSuplementosDTO", listaSuplementosDto);
+			
+			// Obtenemos el numero de carrito del usuario
+			modelo.addAttribute("tieneCarrito", carritoImplementacion.obtieneCantidadDeCarritosUsuario(authentication.getName()));
 
 			// Devolvemos la vista
 			return "home";

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dtos.UsuarioDTO;
+import com.example.demo.servicios.CarritoImplementacion;
 import com.example.demo.servicios.UsuarioImplementacion;
 import com.example.demo.utiles.Util;
 
@@ -27,6 +28,9 @@ public class PerfilControlador {
 
 	@Autowired
 	private UsuarioImplementacion usuarioImplementacion;
+
+	@Autowired
+	private CarritoImplementacion carritoImplementacion;
 
 	/**
 	 * Método que controla las peticiones GET para la ruta /perfil
@@ -49,6 +53,10 @@ public class PerfilControlador {
 
 			// Añadimos al modelo el usuario
 			modelo.addAttribute("usuarioDTO", usuarioDto);
+
+			// Obtenemos el numero de carrito del usuario
+			modelo.addAttribute("tieneCarrito",
+					carritoImplementacion.obtieneCantidadDeCarritosUsuario(authentication.getName()));
 
 			// Devolvemos la vista
 			return "perfil/perfil";
@@ -79,6 +87,12 @@ public class PerfilControlador {
 
 			// Añadimos al modelo el usuario
 			modelo.addAttribute("usuarioDTO", usuarioDto);
+
+			// Obtenemos el numero de carrito del usuario
+			modelo.addAttribute("tieneCarrito",
+					carritoImplementacion.obtieneCantidadDeCarritosUsuario(authentication.getName()));
+
+			// Devolvemos la vista
 			return "perfil/editarPerfil";
 		} catch (Exception e) {
 			Util.logError("PerfilControlador", "vistaEditarPerfil", "Se ha producido un error");

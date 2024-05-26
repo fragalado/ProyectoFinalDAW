@@ -45,4 +45,11 @@ public interface CarritoInterfaz {
 	 * @return Devuelve un tipo float; Precio total del carrito
 	 */
 	public float obtienePrecioTotalCarrito(List<CarritoDTO> listaCarrito);
+	
+	/**
+	 * Método que comprueba si el usuario tiene un carrito
+	 * @param emailUsuario Email del usuario
+	 * @return Devuelve true si el usuario tiene un carrito o false si no
+	 */
+	public int obtieneCantidadDeCarritosUsuario(String emailUsuario);
 }

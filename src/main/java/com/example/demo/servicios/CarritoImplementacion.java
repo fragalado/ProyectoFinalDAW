@@ -121,4 +121,17 @@ public class CarritoImplementacion implements CarritoInterfaz {
 			return 0f;
 		}
 	}
+
+	@Override
+	public int obtieneCantidadDeCarritosUsuario(String emailUsuario) {
+		try {
+			// Obtenemos todos los carritos del usuario
+			List<CarritoDTO> listaCarritoDto = obtieneCarritoUsuario(emailUsuario);
+			
+			// Devolvemos el numero de carritos del usuario
+			return listaCarritoDto.size();
+		} catch (Exception e) {
+			return 0;
+		}
+	}
 }

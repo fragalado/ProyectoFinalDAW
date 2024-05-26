@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.dtos.SuplementoDTO;
+import com.example.demo.servicios.CarritoImplementacion;
 import com.example.demo.servicios.SuplementoImplementacion;
 import com.example.demo.utiles.Util;
 
@@ -28,6 +30,9 @@ public class SuplementoControlador {
 	@Autowired
 	private SuplementoImplementacion suplementoImplementacion;
 
+	@Autowired
+	private CarritoImplementacion carritoImplementacion;
+
 	/**
 	 * Método que controla las peticiones GET para la ruta /suplementos
 	 * 
@@ -43,6 +48,10 @@ public class SuplementoControlador {
 
 			// Añadimos la lista al modelo
 			modelo.addAttribute("listaSuplementosDTO", listaSuplementosDTO);
+
+			// Obtenemos el numero de carrito del usuario
+			modelo.addAttribute("tieneCarrito", carritoImplementacion.obtieneCantidadDeCarritosUsuario(
+					SecurityContextHolder.getContext().getAuthentication().getName()));
 
 			// Devolvemos la vista
 			return "suplementos/suplementos";
@@ -76,6 +85,10 @@ public class SuplementoControlador {
 
 			// Añadimos la lista al modelo
 			modelo.addAttribute("listaSuplementosDTO", listaSuplementosDTO);
+
+			// Obtenemos el numero de carrito del usuario
+			modelo.addAttribute("tieneCarrito", carritoImplementacion.obtieneCantidadDeCarritosUsuario(
+					SecurityContextHolder.getContext().getAuthentication().getName()));
 
 			// Devolvemos la vista
 			return "suplementos/suplementos";

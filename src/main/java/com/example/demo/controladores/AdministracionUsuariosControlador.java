@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dtos.UsuarioDTO;
+import com.example.demo.servicios.CarritoImplementacion;
 import com.example.demo.servicios.UsuarioImplementacion;
 import com.example.demo.utiles.Util;
 
@@ -33,6 +35,9 @@ public class AdministracionUsuariosControlador {
 
 	@Autowired
 	private UsuarioImplementacion usuarioImplementacion;
+
+	@Autowired
+	private CarritoImplementacion carritoImplementacion;
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -54,6 +59,10 @@ public class AdministracionUsuariosControlador {
 
 			// Agregamos la lista al modelo
 			model.addAttribute("listaUsuariosDTO", listaUsuarios);
+
+			// Obtenemos el numero de carrito del usuario
+			model.addAttribute("tieneCarrito", carritoImplementacion.obtieneCantidadDeCarritosUsuario(
+					SecurityContextHolder.getContext().getAuthentication().getName()));
 
 			// Devolvemos la vista
 			return "admin/usuarios/administracionUsuarios";
@@ -87,6 +96,10 @@ public class AdministracionUsuariosControlador {
 			// Lo agregamos al modelo
 			model.addAttribute("usuarioDTO", usuarioDTO);
 
+			// Obtenemos el numero de carrito del usuario
+			model.addAttribute("tieneCarrito", carritoImplementacion.obtieneCantidadDeCarritosUsuario(
+					SecurityContextHolder.getContext().getAuthentication().getName()));
+
 			// Devolvemos la vista
 			return "admin/usuarios/editarUsuario";
 		} catch (Exception e) {
@@ -108,6 +121,10 @@ public class AdministracionUsuariosControlador {
 			Util.logInfo("AdministracionUsuariosControlador", "vistaAgregarUsuario", "Ha entrado");
 			// Agregamos al modelo un objeto de tipo UsuarioDTO
 			model.addAttribute("usuarioDTO", new UsuarioDTO());
+
+			// Obtenemos el numero de carrito del usuario
+			model.addAttribute("tieneCarrito", carritoImplementacion.obtieneCantidadDeCarritosUsuario(
+					SecurityContextHolder.getContext().getAuthentication().getName()));
 
 			// Devolvemos el nombre de la vista
 			return "admin/usuarios/agregarUsuario";

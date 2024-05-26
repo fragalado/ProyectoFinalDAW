@@ -2,6 +2,7 @@ package com.example.demo.controladores;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dtos.SuplementoDTO;
+import com.example.demo.servicios.CarritoImplementacion;
 import com.example.demo.servicios.SuplementoImplementacion;
 import com.example.demo.utiles.Util;
 
@@ -29,6 +31,9 @@ public class AdministracionSuplementosControlador {
 	@Autowired
 	private SuplementoImplementacion suplementoImplementacion;
 
+	@Autowired
+	private CarritoImplementacion carritoImplementacion;
+
 	/**
 	 * Método que controla las peticiones GET para la ruta /admin/suplementos
 	 * 
@@ -42,6 +47,10 @@ public class AdministracionSuplementosControlador {
 			Util.logInfo("AdministracionSuplementosControlador", "vistaAdministracionSuplementos", "Ha entrado");
 			// Obtenemos una lista con todos los suplementos y lo agregamos al modelo
 			model.addAttribute("listaSuplementosDTO", suplementoImplementacion.obtieneTodosLosSuplementos());
+
+			// Obtenemos el numero de carrito del usuario
+			model.addAttribute("tieneCarrito", carritoImplementacion.obtieneCantidadDeCarritosUsuario(
+					SecurityContextHolder.getContext().getAuthentication().getName()));
 
 			// Devolvemos la vista
 			return "admin/suplementos/administracionSuplementos";
@@ -70,6 +79,10 @@ public class AdministracionSuplementosControlador {
 			// Lo agregamos al modelo
 			model.addAttribute("suplementoDTO", suplementoDTO);
 
+			// Obtenemos el numero de carrito del usuario
+			model.addAttribute("tieneCarrito", carritoImplementacion.obtieneCantidadDeCarritosUsuario(
+					SecurityContextHolder.getContext().getAuthentication().getName()));
+
 			// Devolvemos la vista
 			return "admin/suplementos/editarSuplemento";
 		} catch (Exception e) {
@@ -91,6 +104,10 @@ public class AdministracionSuplementosControlador {
 			Util.logInfo("AdministracionSuplementosControlador", "vistaAgregarSuplemento", "Ha entrado");
 			// Agregamos al modelo un objeto suplemento
 			model.addAttribute("suplementoDTO", new SuplementoDTO());
+
+			// Obtenemos el numero de carrito del usuario
+			model.addAttribute("tieneCarrito", carritoImplementacion.obtieneCantidadDeCarritosUsuario(
+					SecurityContextHolder.getContext().getAuthentication().getName()));
 
 			// Devolvemos la vista
 			return "admin/suplementos/agregarSuplemento";
