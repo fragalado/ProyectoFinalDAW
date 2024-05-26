@@ -25,4 +25,11 @@ public interface OrdenInterfaz {
 	 * @return List de objetos OrdenDTO
 	 */
 	public List<OrdenDTO> obtieneComprasUsuario(String emailUsuario);
+	
+	/**
+	 * Método que obtiene una orden/compra por el id
+	 * @param idOrden Id del orden
+	 * @return Devuelve un objeto OrdenDTO
+	 */
+	public OrdenDTO obtieneOrdenPorId(long idOrden);
 }

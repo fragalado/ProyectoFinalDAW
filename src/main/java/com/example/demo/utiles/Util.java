@@ -258,6 +258,28 @@ public class Util {
 			return null;
 		}
 	}
+	
+	public static OrdenDTO ordenDaoADto(Orden ordenDao) {
+		try {
+			// Mapeamos a OrdenDTO
+			OrdenDTO ordenDto = modelMapper.map(ordenDao, OrdenDTO.class);
+
+			// Recorremos la lista relacion
+			for (RelOrdenCarrito aux : ordenDao.getListaRelacion()) {
+				// Convertimos el carrito a DTO
+				CarritoDTO carritoDTO = modelMapper.map(aux.getCarrito(), CarritoDTO.class);
+				// Le añadimos el suplemento
+				carritoDTO.setSuplementoDTO(suplementoDaoADto(aux.getCarrito().getSuplemento()));
+				// Agregamos el carrito a la orden
+				ordenDto.getListaCarritoDto().add(carritoDTO);
+			}
+			
+			// Devolvemos el objeto OrdenDTO
+			return ordenDto;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 	/**
 	 * Método para info que escribe en un fichero de texto

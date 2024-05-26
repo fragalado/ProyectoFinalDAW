@@ -2,6 +2,7 @@ package com.example.demo.servicios;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -106,6 +107,23 @@ public class OrdenImplementacion implements OrdenInterfaz {
 				return Util.listaOrdenDaoADto(listaOrdenDao);
 			
 			return null;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public OrdenDTO obtieneOrdenPorId(long idOrden) {
+		try {
+			// Obtenemos el orden por el id
+			Optional<Orden> ordenDao = ordenRepositorio.findById(idOrden);
+			
+			// Comprobamos si se ha obtenido
+			if(ordenDao.isEmpty())
+				return null;
+			
+			// Si se ha obtenido lo convertimos a DTO y devolvemos
+			return Util.ordenDaoADto(ordenDao.get());
 		} catch (Exception e) {
 			return null;
 		}

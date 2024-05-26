@@ -88,6 +88,13 @@
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
+		<!-- OpenPDF, Generar archivos PDF -->
+		<dependency>
+			<groupId>com.github.librepdf</groupId>
+			<artifactId>openpdf</artifactId>
+			<version>2.0.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>

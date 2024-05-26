@@ -75,7 +75,7 @@
 									</div>
 
 									<!-- Boton generar pdf -->
-									<button class="btn btn-primary">Generar PDF</button>
+									<a th:href="@{/pedidos/export/} + ${ordenDto.getIdOrden()}" class="btn btn-primary">Generar PDF</a>
 								</div>
 							</div>
 						</div>
