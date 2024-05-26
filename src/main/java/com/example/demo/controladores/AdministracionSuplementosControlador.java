@@ -39,12 +39,15 @@ public class AdministracionSuplementosControlador {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String vistaAdministracionSuplementos(Model model) {
 		try {
+			Util.logInfo("AdministracionSuplementosControlador", "vistaAdministracionSuplementos", "Ha entrado");
 			// Obtenemos una lista con todos los suplementos y lo agregamos al modelo
 			model.addAttribute("listaSuplementosDTO", suplementoImplementacion.obtieneTodosLosSuplementos());
 
 			// Devolvemos la vista
 			return "admin/suplementos/administracionSuplementos";
 		} catch (Exception e) {
+			Util.logError("AdministracionSuplementosControlador", "vistaAdministracionSuplementos",
+					"Se ha producido un error");
 			return "redirect:/home";
 		}
 	}
@@ -60,6 +63,7 @@ public class AdministracionSuplementosControlador {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String vistaEditarSuplemento(@PathVariable long id_suplemento, Model model) {
 		try {
+			Util.logInfo("AdministracionSuplementosControlador", "vistaEditarSuplemento", "Ha entrado");
 			// Obtenemos el suplemento de la base de datos y lo agregamos al modelo
 			SuplementoDTO suplementoDTO = suplementoImplementacion.obtieneSuplementoPorId(id_suplemento);
 
@@ -69,6 +73,7 @@ public class AdministracionSuplementosControlador {
 			// Devolvemos la vista
 			return "admin/suplementos/editarSuplemento";
 		} catch (Exception e) {
+			Util.logError("AdministracionSuplementosControlador", "vistaEditarSuplemento", "Se ha producido un error");
 			return "redirect:/home";
 		}
 	}
@@ -76,19 +81,21 @@ public class AdministracionSuplementosControlador {
 	/**
 	 * Método que controla las peticiones GET para la ruta /admin/suplementos/agregar
 	 * 
-	 * @param model   Objeto Model para enviar datos a la vista
+	 * @param model Objeto Model para enviar datos a la vista
 	 * @return Devuelve una vista
 	 */
 	@GetMapping("/agregar")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String vistaAgregarSuplemento(Model model) {
 		try {
+			Util.logInfo("AdministracionSuplementosControlador", "vistaAgregarSuplemento", "Ha entrado");
 			// Agregamos al modelo un objeto suplemento
 			model.addAttribute("suplementoDTO", new SuplementoDTO());
 
 			// Devolvemos la vista
 			return "admin/suplementos/agregarSuplemento";
 		} catch (Exception e) {
+			Util.logError("AdministracionSuplementosControlador", "vistaAgregarSuplemento", "Se ha producido un error");
 			return "redirect:/home";
 		}
 	}
@@ -103,6 +110,7 @@ public class AdministracionSuplementosControlador {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String borraSuplemento(@PathVariable long id_suplemento) {
 		try {
+			Util.logInfo("AdministracionSuplementosControlador", "borraSuplemento", "Ha entrado");
 			// Eliminamos el suplemento por el id_suplemento
 			boolean ok = suplementoImplementacion.borraSuplementoPorId(id_suplemento);
 
@@ -112,6 +120,7 @@ public class AdministracionSuplementosControlador {
 			else
 				return "redirect:/admin/suplementos?error";
 		} catch (Exception e) {
+			Util.logError("AdministracionSuplementosControlador", "borraSuplemento", "Se ha producido un error");
 			return "redirect:/admin/suplementos?error";
 		}
 	}
@@ -128,6 +137,7 @@ public class AdministracionSuplementosControlador {
 	public String editaSuplemento(@ModelAttribute("suplementoDTO") SuplementoDTO suplementoDTO,
 			@RequestPart("imagenFile") MultipartFile imagenFile) {
 		try {
+			Util.logInfo("AdministracionSuplementosControlador", "editaSuplemento", "Ha entrado");
 			// Controlamos los valores
 			if (suplementoDTO.getPrecioSuplemento() > 999 || suplementoDTO.getNombreSuplemento().length() > 255
 					|| suplementoDTO.getDescSuplemento().length() > 255
@@ -150,6 +160,7 @@ public class AdministracionSuplementosControlador {
 			else
 				return "redirect:/admin/suplementos?suplementoEditadoError";
 		} catch (Exception e) {
+			Util.logError("AdministracionSuplementosControlador", "editaSuplemento", "Se ha producido un error");
 			return "redirect:/admin/suplementos?suplementoEditadoError";
 		}
 	}
@@ -167,6 +178,7 @@ public class AdministracionSuplementosControlador {
 	public String agregaSuplemento(@ModelAttribute("suplementoDTO") SuplementoDTO suplementoDTO,
 			@RequestPart("imagenFile") MultipartFile imagenFile) {
 		try {
+			Util.logInfo("AdministracionSuplementosControlador", "agregaSuplemento", "Ha entrado");
 			// Controlamos los valores
 			if (suplementoDTO.getPrecioSuplemento() > 999 || suplementoDTO.getNombreSuplemento().length() > 255
 					|| suplementoDTO.getDescSuplemento().length() > 255
@@ -189,6 +201,7 @@ public class AdministracionSuplementosControlador {
 			else
 				return "redirect:/admin/suplementos?suplementoAgregadoError";
 		} catch (Exception e) {
+			Util.logError("AdministracionSuplementosControlador", "agregaSuplemento", "Se ha producido un error");
 			return "redirect:/admin/suplementos?suplementoAgregadoError";
 		}
 	}

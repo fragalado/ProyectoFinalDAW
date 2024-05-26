@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.dtos.SuplementoDTO;
 import com.example.demo.servicios.SuplementoImplementacion;
+import com.example.demo.utiles.Util;
 
 /**
  * Controlador que controla las peticiones HTTP para la ruta /home
@@ -32,8 +34,9 @@ public class HomeControlador {
 	 * @return Devuelve una vista
 	 */
 	@GetMapping
-	public String vistaHome(Model modelo) {
+	public String vistaHome(Model modelo, Authentication authentication) {
 		try {
+			Util.logInfo("HomeControlador", "vistaHome", "Ha entrado");
 			// Obtenemos todos los suplementos
 			List<SuplementoDTO> listaSuplementosDto = suplementoImplementacion.obtieneTodosLosSuplementos();
 
@@ -47,6 +50,7 @@ public class HomeControlador {
 			// Devolvemos la vista
 			return "home";
 		} catch (Exception e) {
+			Util.logError("HomeControlador", "vistaHome", "Ha entrado");
 			return "redirect:/errorVista";
 		}
 	}

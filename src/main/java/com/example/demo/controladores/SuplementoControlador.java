@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.dtos.SuplementoDTO;
 import com.example.demo.servicios.SuplementoImplementacion;
+import com.example.demo.utiles.Util;
 
 /**
  * Clase controlador que controla las peticiones HTTP para la ruta /suplementos
@@ -36,6 +37,7 @@ public class SuplementoControlador {
 	@GetMapping
 	public String vistaSuplementos(Model modelo) {
 		try {
+			Util.logInfo("SuplementoControlador", "vistaSuplementos", "Ha entrado");
 			// Obtenemos todos los suplementos
 			List<SuplementoDTO> listaSuplementosDTO = suplementoImplementacion.obtieneTodosLosSuplementos();
 
@@ -45,6 +47,7 @@ public class SuplementoControlador {
 			// Devolvemos la vista
 			return "suplementos/suplementos";
 		} catch (Exception e) {
+			Util.logError("SuplementoControlador", "vistaSuplementos", "Se ha producido un error");
 			return "redirect:/home";
 		}
 	}
@@ -59,16 +62,17 @@ public class SuplementoControlador {
 	@GetMapping("/{tipo}")
 	public String vistaSuplementosPorTipo(@PathVariable int tipo, Model modelo) {
 		try {
+			Util.logInfo("SuplementoControlador", "vistaSuplementosPorTipo", "Ha entrado");
 			// Obtenemos todos los suplementos
 			List<SuplementoDTO> listaSuplementosDTO = suplementoImplementacion.obtieneTodosLosSuplementos();
 
 			// Actualizamos la lista si es necesario
 			if (tipo == 1)
-				listaSuplementosDTO = listaSuplementosDTO.stream()
-						.filter(x -> x.getTipoSuplemento().equals("Proteína")).collect(Collectors.toList());
+				listaSuplementosDTO = listaSuplementosDTO.stream().filter(x -> x.getTipoSuplemento().equals("Proteína"))
+						.collect(Collectors.toList());
 			else if (tipo == 2)
-				listaSuplementosDTO = listaSuplementosDTO.stream()
-						.filter(x -> x.getTipoSuplemento().equals("Creatina")).collect(Collectors.toList());
+				listaSuplementosDTO = listaSuplementosDTO.stream().filter(x -> x.getTipoSuplemento().equals("Creatina"))
+						.collect(Collectors.toList());
 
 			// Añadimos la lista al modelo
 			modelo.addAttribute("listaSuplementosDTO", listaSuplementosDTO);
@@ -76,6 +80,7 @@ public class SuplementoControlador {
 			// Devolvemos la vista
 			return "suplementos/suplementos";
 		} catch (Exception e) {
+			Util.logError("SuplementoControlador", "vistaSuplementosPorTipo", "Se ha producido un error");
 			return "redirect:/home";
 		}
 	}

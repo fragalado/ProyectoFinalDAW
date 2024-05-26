@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.dtos.UsuarioDTO;
 import com.example.demo.servicios.UsuarioImplementacion;
+import com.example.demo.utiles.Util;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -33,16 +34,20 @@ public class RegistroControlador {
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/register".
 	 * 
-	 * @param model   Objeto Model que proporciona Spring para enviar datos a la vista
-	 * @param request Objeto HttpServletRequest que contiene información sobre la solicitud HTTP
+	 * @param model   Objeto Model que proporciona Spring para enviar datos a la
+	 *                vista
+	 * @param request Objeto HttpServletRequest que contiene información sobre la
+	 *                solicitud HTTP
 	 * @return Devuelve el nombre de la vista
 	 */
 	@GetMapping
 	public String vistaRegister(Model model, HttpServletRequest request) {
 
 		try {
+			Util.logInfo("RegistroControlador", "vistaRegister", "Ha entrado");
 			// Control de sesion
 			if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				Util.logInfo("RegistroControlador", "vistaRegister", "El usuario ya ha iniciado sesion");
 				return "redirect:/home";
 			}
 
@@ -52,6 +57,7 @@ public class RegistroControlador {
 			// Devolvemos la vista register
 			return "auth/register";
 		} catch (Exception e) {
+			Util.logError("RegistroControlador", "vistaRegister", "Se ha producido un error");
 			return "auth/register";
 		}
 	}
@@ -60,17 +66,20 @@ public class RegistroControlador {
 	 * Método que maneja las solicitudes POST para la ruta "/register"
 	 * 
 	 * @param usuario Objeto UsuarioDTO con los datos del formulario
-	 * @param request Objeto HttpServletRequest que contiene información sobre la solicitud HTTP
+	 * @param request Objeto HttpServletRequest que contiene información sobre la
+	 *                solicitud HTTP
 	 * @return Devuelve una redirección
 	 */
 	@PostMapping
 	public String registrarUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuario, HttpServletRequest request) {
 		try {
+			Util.logInfo("RegistroControlador", "registrarUsuario", "Ha entrado");
 			// Encriptamos la contraseña
 			usuario.setPsswdUsuario(bCryptPasswordEncoder.encode(usuario.getPsswdUsuario()));
 
 			// Control de sesion
 			if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				Util.logInfo("RegistroControlador", "registrarUsuario", "El usuario ya ha iniciado sesion");
 				return "redirect:/home";
 			}
 
@@ -89,6 +98,7 @@ public class RegistroControlador {
 				return "redirect:/registro?email";
 			}
 		} catch (Exception e) {
+			Util.logError("RegistroControlador", "registrarUsuario", "Se ha producido un error");
 			return "redirect:/registro?error";
 		}
 	}

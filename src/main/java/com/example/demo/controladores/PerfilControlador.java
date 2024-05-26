@@ -18,7 +18,8 @@ import com.example.demo.utiles.Util;
 /**
  * Controlador que controla las peticiones HTTP para la ruta /perfil
  * 
- * @author Francisco José Gallego Dorado Fecha: 05/05/2024
+ * @author Francisco José Gallego Dorado 
+ * Fecha: 05/05/2024
  */
 @Controller
 @RequestMapping("/perfil")
@@ -38,6 +39,7 @@ public class PerfilControlador {
 	@GetMapping()
 	public String vistaPerfil(Model modelo, Authentication authentication) {
 		try {
+			Util.logInfo("PerfilControlador", "vistaPerfil", "Ha entrado");
 			// Obtenemos el usuario por el email
 			UsuarioDTO usuarioDto = usuarioImplementacion.obtieneUsuarioPorEmail(authentication.getName());
 
@@ -51,6 +53,7 @@ public class PerfilControlador {
 			// Devolvemos la vista
 			return "perfil/perfil";
 		} catch (Exception e) {
+			Util.logError("PerfilControlador", "vistaPerfil", "Se ha producido un error");
 			return "redirect:/errorVista";
 		}
 	}
@@ -66,6 +69,7 @@ public class PerfilControlador {
 	@GetMapping("/editar")
 	public String vistaEditarPerfil(Model modelo, Authentication authentication) {
 		try {
+			Util.logInfo("PerfilControlador", "vistaEditarPerfil", "Ha entrado");
 			// Obtenemos el usuario por el email
 			UsuarioDTO usuarioDto = usuarioImplementacion.obtieneUsuarioPorEmail(authentication.getName());
 
@@ -77,6 +81,7 @@ public class PerfilControlador {
 			modelo.addAttribute("usuarioDTO", usuarioDto);
 			return "perfil/editarPerfil";
 		} catch (Exception e) {
+			Util.logError("PerfilControlador", "vistaEditarPerfil", "Se ha producido un error");
 			return "redirect:/errorVista";
 		}
 	}
@@ -91,6 +96,7 @@ public class PerfilControlador {
 	@GetMapping("/borrar")
 	public String borrarCuenta(Authentication authentication) {
 		try {
+			Util.logInfo("PerfilControlador", "borrarCuenta", "Ha entrado");
 			// Obtenemos el usuario
 			UsuarioDTO usuarioDto = usuarioImplementacion.obtieneUsuarioPorEmail(authentication.getName());
 
@@ -99,6 +105,7 @@ public class PerfilControlador {
 
 			return "redirect:/logout";
 		} catch (Exception e) {
+			Util.logError("PerfilControlador", "borrarCuenta", "Se ha producido un error");
 			return "redirect:/errorVista";
 		}
 	}
@@ -110,11 +117,13 @@ public class PerfilControlador {
 	 * @return Devuelve una redirección
 	 */
 	@PostMapping("/editar")
-	public String editarPerfil(@ModelAttribute("usuarioDTO") UsuarioDTO usuarioDto, @RequestPart("imagenFile") MultipartFile file, Authentication authentication) {
+	public String editarPerfil(@ModelAttribute("usuarioDTO") UsuarioDTO usuarioDto,
+			@RequestPart("imagenFile") MultipartFile file, Authentication authentication) {
 		try {
+			Util.logInfo("PerfilControlador", "editarPerfil", "Ha entrado");
 			// Obtenemos el usuario actual
 			UsuarioDTO usuarioActual = usuarioImplementacion.obtieneUsuarioPorEmail(authentication.getName());
-			
+
 			// Si la imagen no esta vacia se la añadimos al usuario
 			if (!file.isEmpty()) {
 				// Pasamos la imagen a base64
@@ -123,13 +132,14 @@ public class PerfilControlador {
 				// Le añadimos la imagen al usuarioDTO
 				usuarioDto.setImagenUsuario(foto);
 			}
-			
+
 			// Actualizamos
 			boolean ok = usuarioImplementacion.editarPerfil(usuarioActual, usuarioDto);
-			
+
 			// Controlamos la respuesta
-			return ok ? "redirect:/perfil?editado": "redirect:/perfil?error";
+			return ok ? "redirect:/perfil?editado" : "redirect:/perfil?error";
 		} catch (Exception e) {
+			Util.logError("PerfilControlador", "editarPerfil", "Se ha producido un error");
 			return "redirect:/errorVista";
 		}
 	}

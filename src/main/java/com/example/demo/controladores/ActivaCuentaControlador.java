@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.dtos.UsuarioDTO;
 import com.example.demo.servicios.UsuarioImplementacion;
+import com.example.demo.utiles.Util;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -38,8 +39,10 @@ public class ActivaCuentaControlador {
 	public String vistaActivarCuenta(@RequestParam("tk") String token, Model model, HttpServletRequest request) {
 
 		try {
+			Util.logInfo("ActivaCuentaControlador", "vistaActivarCuenta", "Ha entrado");
 			// Control de sesion
 			if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				Util.logInfo("ActivaCuentaControlador", "vistaActivarCuenta", "El usuario ya ha iniciado sesion");
 				return "redirect:/home";
 			}
 			
@@ -52,6 +55,7 @@ public class ActivaCuentaControlador {
 			// Devolvemos la vista register
 			return "auth/confirmarEmail";
 		} catch (Exception e) {
+			Util.logError("ActivaCuentaControlador", "vistaActivarCuenta", "Se ha producido un error");
 			return "redirect:/login";
 		}
 	}
@@ -67,13 +71,16 @@ public class ActivaCuentaControlador {
 	public String activarCuenta(@ModelAttribute("token") String token, @RequestParam("email") String email, HttpServletRequest request) {
 
 		try {
+			Util.logInfo("ActivaCuentaControlador", "activarCuenta", "Ha entrado");
 			// Control de sesion
 			if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				Util.logInfo("ActivaCuentaControlador", "activarCuenta", "El usuario ya ha iniciado sesion");
 				return "redirect:/home";
 			}
 
 			// Controlamos que el token no este vacio
 			if (token.isEmpty()) {
+				Util.logInfo("ActivaCuentaControlador", "activarCuenta", "No hay token en la url");
 				return "redirect:/login";
 			}
 
@@ -88,6 +95,7 @@ public class ActivaCuentaControlador {
 				return "redirect:/activa-cuenta?error&tk="+token;
 			}
 		} catch (Exception e) {
+			Util.logError("ActivaCuentaControlador", "activarCuenta", "Se ha producido un error");
 			return "redirect:/login";
 		}
 	}

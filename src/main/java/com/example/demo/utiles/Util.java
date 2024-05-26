@@ -1,16 +1,27 @@
 package com.example.demo.utiles;
 
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Calendar;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.example.demo.daos.Acceso;
 import com.example.demo.daos.Carrito;
+import com.example.demo.daos.Orden;
+import com.example.demo.daos.RelOrdenCarrito;
 import com.example.demo.daos.Suplemento;
 import com.example.demo.daos.Usuario;
 import com.example.demo.dtos.CarritoDTO;
+import com.example.demo.dtos.OrdenDTO;
 import com.example.demo.dtos.SuplementoDTO;
 import com.example.demo.dtos.UsuarioDTO;
 
@@ -18,8 +29,7 @@ import com.example.demo.dtos.UsuarioDTO;
  * Clase Util que contiene los métodos que se usarán muchas veces en toda la
  * aplicación
  * 
- * @author Francisco José Gallego Dorado 
- * Fecha: 21/04/2024
+ * @author Francisco José Gallego Dorado Fecha: 21/04/2024
  */
 public class Util {
 
@@ -210,6 +220,119 @@ public class Util {
 			return listaCarritoDto;
 		} catch (Exception e) {
 			return null;
+		}
+	}
+
+	/**
+	 * Método que convierte una lista de orden de tipo Dao a Dto
+	 * 
+	 * @param listaOrdenDao Lista con objetos de tipo Orden Dao
+	 * @return Devuelve una lista convertida a Dto
+	 */
+	public static List<OrdenDTO> listaOrdenDaoADto(List<Orden> listaOrdenDao) {
+		try {
+			// Lista donde guardaremos las orden DTOs
+			List<OrdenDTO> listaOrdenDto = new ArrayList<>();
+
+			// Recorremos la lista Dao
+			for (Orden orden : listaOrdenDao) {
+				// Mapeamos a OrdenDTO
+				OrdenDTO ordenDto = modelMapper.map(orden, OrdenDTO.class);
+
+				// Recorremos la lista relacion
+				for (RelOrdenCarrito aux : orden.getListaRelacion()) {
+					// Convertimos el carrito a DTO
+					CarritoDTO carritoDTO = modelMapper.map(aux.getCarrito(), CarritoDTO.class);
+					// Le añadimos el suplemento
+					carritoDTO.setSuplementoDTO(suplementoDaoADto(aux.getCarrito().getSuplemento()));
+					// Agregamos el carrito a la orden
+					ordenDto.getListaCarritoDto().add(carritoDTO);
+				}
+
+				listaOrdenDto.add(ordenDto);
+			}
+
+			// Devolvemos la lista dto
+			return listaOrdenDto;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Método para info que escribe en un fichero de texto
+	 * 
+	 * @param nombreClase  Nombre de la clase
+	 * @param nombreMetodo Nombre del método
+	 * @param mensaje      Mensaje a escribir en el fichero de texto
+	 */
+	public static void logInfo(String nombreClase, String nombreMetodo, String mensaje) {
+		try {
+			String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
+			// Ruta de la carpeta
+			String rutaCarpeta = "C:\\FicherosProg\\" + emailUsuario;
+			// Comprobamos si existe la carpeta, si no existe la crea
+			verificarYCrearCarpeta(rutaCarpeta);
+			// Obtenemos el dia de hoy para ponerle de nombre al log
+			Calendar hoy = Calendar.getInstance();
+			String diaFormateado = hoy.get(Calendar.DAY_OF_MONTH) + "-" + hoy.get(Calendar.MONTH) + "-"
+					+ hoy.get(Calendar.YEAR);
+			FileWriter file = new FileWriter(rutaCarpeta + "\\" + diaFormateado + ".log", true);
+			PrintWriter pw = new PrintWriter(file);
+			pw.println("[" + LocalDateTime.now() + "]-[INFO-" + nombreClase + "-" + nombreMetodo + "] " + mensaje);
+			pw.close();
+			file.close();
+		} catch (Exception e) {
+			System.out.println("[ERROR-Util-logInfo] Error: no se ha podido escribir la info en el fichero log");
+		}
+	}
+
+	/**
+	 * Método para errores que escribe en un fichero de texto
+	 * 
+	 * @param nombreClase  Nombre de la clase
+	 * @param nombreMetodo Nombre del método
+	 * @param mensaje      Mensaje a escribir en el fichero de texto
+	 */
+	public static void logError(String nombreClase, String nombreMetodo, String mensaje) {
+		try {
+			String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
+			// Ruta de la carpeta
+			String rutaCarpeta = "C:\\FicherosProg\\" + emailUsuario;
+			// Comprobamos si existe la carpeta, si no existe la crea
+			verificarYCrearCarpeta(rutaCarpeta);
+			// Obtenemos el dia de hoy para ponerle de nombre al log
+			Calendar hoy = Calendar.getInstance();
+			String diaFormateado = hoy.get(Calendar.DAY_OF_MONTH) + "-" + hoy.get(Calendar.MONTH) + "-"
+					+ hoy.get(Calendar.YEAR);
+			FileWriter file = new FileWriter(rutaCarpeta + "\\" + diaFormateado + ".log", true);
+			PrintWriter pw = new PrintWriter(file);
+			pw.println(
+					"[" + LocalDateTime.now() + "]-[ERROR-" + nombreClase + "-" + nombreMetodo + "] Error: " + mensaje);
+			pw.close();
+			file.close();
+		} catch (Exception e) {
+			System.out.println("[ERROR-Util-logError] Error: no se ha podido escribir el error en el fichero log");
+		}
+	}
+
+	/**
+	 * Método que comprueba si existe una carpeta, si no existe la crea
+	 * 
+	 * @param nombreCarpeta Nombre de la carpeta
+	 */
+	private static void verificarYCrearCarpeta(String rutaCarpeta) {
+		try {
+			// Crea un objeto Path con la ruta de la carpeta
+			Path path = Paths.get(rutaCarpeta);
+
+			// Verifica si la carpeta existe
+			if (Files.notExists(path)) {
+				// Crea la carpeta incluyendo los directorios intermedios si no existen
+				Files.createDirectories(path);
+			}
+		} catch (Exception e) {
+			System.out.println("[ERROR-Util-verificarYCrearCarpeta] Error: no se ha podido crear la carpeta.");
 		}
 	}
 }

@@ -47,7 +47,7 @@ public class InicializadorDatos {
 			// Si no hay ningun admin añadimos uno
 			Usuario usuarioAdmin = new Usuario(0, "Admin", "123456789", "admin@gmail.com",
 					bCryptPasswordEncoder.encode("admin"), new Acceso(2, "Admin", "Administrador de la tienda"), true,
-					null, null);
+					null, null, null);
 
 			// Lo añadimos
 			usuarioRepository.save(usuarioAdmin);

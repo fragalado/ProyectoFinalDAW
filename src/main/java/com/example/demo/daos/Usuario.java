@@ -19,8 +19,7 @@ import lombok.NoArgsConstructor;
 /**
  * Entidad Usuario que representa a la tabla usuarios de la base de datos
  * 
- * @author Francisco José Gallego Dorado 
- * Fecha: 21/04/2024
+ * @author Francisco José Gallego Dorado Fecha: 21/04/2024
  */
 @Data
 @AllArgsConstructor
@@ -51,4 +50,6 @@ public class Usuario {
 	private byte[] imagenUsuario;
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	private List<Token> listaTokens;
+	@OneToMany(mappedBy = "usuario")
+	private List<Orden> listaOrden;
 }

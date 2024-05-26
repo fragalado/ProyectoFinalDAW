@@ -47,16 +47,19 @@ public class AdministracionUsuariosControlador {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String vistaAdministracionUsuarios(Model model) {
 		try {
+			Util.logInfo("AdministracionUsuariosControlador", "vistaAdministracionUsuarios", "Ha entrado");
 			// Obtenemos una lista con todos los usuarios y la ordenamos por el id_acceso
 			List<UsuarioDTO> listaUsuarios = usuarioImplementacion.obtieneTodosLosUsuarios().stream()
 					.sorted(Comparator.comparingLong(UsuarioDTO::getIdAcceso).reversed()).collect(Collectors.toList());
-			
+
 			// Agregamos la lista al modelo
 			model.addAttribute("listaUsuariosDTO", listaUsuarios);
 
 			// Devolvemos la vista
 			return "admin/usuarios/administracionUsuarios";
 		} catch (Exception e) {
+			Util.logError("AdministracionUsuariosControlador", "vistaAdministracionUsuarios",
+					"Se ha producido un error");
 			return "redirect:/home";
 		}
 	}
@@ -65,26 +68,29 @@ public class AdministracionUsuariosControlador {
 	 * Método que maneja las solicitudes GET para la ruta "/admin/usuarios/editar/{id_usuario}"
 	 * 
 	 * @param id_usuario Id del usuario a editar
-	 * @param model      Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @param model      Objeto Model que proporciona Spring para enviar datos a la
+	 *                   vista
 	 * @return Devuelve el nombre de la vista
 	 */
 	@GetMapping("/editar/{id_usuario}")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String vistaEditarUsuario(@PathVariable long id_usuario, Model model) {
 		try {
+			Util.logInfo("AdministracionUsuariosControlador", "vistaEditarUsuario", "Ha entrado");
 			// Obtenemos el usuario de la base de datos y lo agregamos al modelo
 			UsuarioDTO usuarioDTO = usuarioImplementacion.obtieneUsuarioPorId(id_usuario);
 
 			// Comprobamos si se ha encontrado un usuario con el id pasado
-			if(usuarioDTO == null)
+			if (usuarioDTO == null)
 				return "redirect:/errorVista";
-						
+
 			// Lo agregamos al modelo
 			model.addAttribute("usuarioDTO", usuarioDTO);
 
 			// Devolvemos la vista
 			return "admin/usuarios/editarUsuario";
 		} catch (Exception e) {
+			Util.logError("AdministracionUsuariosControlador", "vistaEditarUsuario", "Se ha producido un error");
 			return "redirect:/home";
 		}
 	}
@@ -99,12 +105,14 @@ public class AdministracionUsuariosControlador {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String vistaAgregarUsuario(Model model) {
 		try {
+			Util.logInfo("AdministracionUsuariosControlador", "vistaAgregarUsuario", "Ha entrado");
 			// Agregamos al modelo un objeto de tipo UsuarioDTO
 			model.addAttribute("usuarioDTO", new UsuarioDTO());
 
 			// Devolvemos el nombre de la vista
 			return "admin/usuarios/agregarUsuario";
 		} catch (Exception e) {
+			Util.logError("AdministracionUsuariosControlador", "vistaAgregarUsuario", "Se ha producido un error");
 			return "redirect:/home";
 		}
 	}
@@ -119,6 +127,7 @@ public class AdministracionUsuariosControlador {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String borraUsuario(@PathVariable long id_usuario) {
 		try {
+			Util.logInfo("AdministracionUsuariosControlador", "borraUsuario", "Ha entrado");
 			// Eliminamos el usuario por el id_usuario
 			boolean ok = usuarioImplementacion.borraUsuarioPorId(id_usuario);
 
@@ -128,6 +137,7 @@ public class AdministracionUsuariosControlador {
 			else
 				return "redirect:/admin/usuarios?error";
 		} catch (Exception e) {
+			Util.logError("AdministracionUsuariosControlador", "borraUsuario", "Se ha producido un error");
 			return "redirect:/admin/usuarios?error";
 		}
 	}
@@ -141,8 +151,10 @@ public class AdministracionUsuariosControlador {
 	 */
 	@PostMapping("/editar")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public String editarUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuario, @RequestPart("imagenFile") MultipartFile imagenFile) {
+	public String editarUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuario,
+			@RequestPart("imagenFile") MultipartFile imagenFile) {
 		try {
+			Util.logInfo("AdministracionUsuariosControlador", "editarUsuario", "Ha entrado");
 			// Controlamos los valores
 			if (usuario.getNombreUsuario().length() > 50 || usuario.getEmailUsuario().length() > 50
 					|| usuario.getTlfUsuario().length() > 15)
@@ -156,14 +168,14 @@ public class AdministracionUsuariosControlador {
 				// Le añadimos la imagen al usuarioDTO
 				usuario.setImagenUsuario(foto);
 			}
-			
+
 			// Comprobamos si es el ultimo admin y le estamos cambiando el rol
-			if(usuarioImplementacion.esUltimoAdmin(usuario)) {
+			if (usuarioImplementacion.esUltimoAdmin(usuario)) {
 				return "redirect:/admin/usuarios?esUltimoAdmin";
 			}
-			
+
 			// Comprobamos si esta cambiando el email y si ya existe
-			if(usuarioImplementacion.existeUsuarioConEmail(usuario)) {
+			if (usuarioImplementacion.existeUsuarioConEmail(usuario)) {
 				return "redirect:/admin/usuarios?emailExiste";
 			}
 
@@ -175,6 +187,7 @@ public class AdministracionUsuariosControlador {
 			else
 				return "redirect:/admin/usuarios?usuarioEditadoError";
 		} catch (Exception e) {
+			Util.logError("AdministracionUsuariosControlador", "editarUsuario", "Se ha producido un error");
 			return "redirect:/admin/usuarios?usuarioEditadoError";
 		}
 	}
@@ -189,8 +202,10 @@ public class AdministracionUsuariosControlador {
 	 */
 	@PostMapping("/agregar")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public String agregarUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuarioDTO, @RequestPart("imagenFile") MultipartFile imagenFile) {
+	public String agregarUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuarioDTO,
+			@RequestPart("imagenFile") MultipartFile imagenFile) {
 		try {
+			Util.logInfo("AdministracionUsuariosControlador", "agregarUsuario", "Ha entrado");
 			// Encriptamos la contraseña
 			usuarioDTO.setPsswdUsuario(bCryptPasswordEncoder.encode(usuarioDTO.getPsswdUsuario()));
 
@@ -216,6 +231,7 @@ public class AdministracionUsuariosControlador {
 			else
 				return "redirect:/admin/usuarios?usuarioAgregadoExiste";
 		} catch (Exception e) {
+			Util.logError("AdministracionUsuariosControlador", "agregarUsuario", "Se ha producido un error");
 			return "redirect:/admin/usuarios?usuarioAgregadoError";
 		}
 	}

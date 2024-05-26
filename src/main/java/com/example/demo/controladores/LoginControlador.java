@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.dtos.UsuarioDTO;
+import com.example.demo.utiles.Util;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -29,8 +30,10 @@ public class LoginControlador {
 	public String vistaLogin(Model model, HttpServletRequest request) {
 
 		try {
+			Util.logInfo("LoginControlador", "vistaLogin", "Ha entrado");
 			// Control de sesion
 			if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				Util.logInfo("LoginControlador", "vistaLogin", "El usuario ya ha iniciado sesion");
 				return "redirect:/home";
 			}
 
@@ -40,6 +43,7 @@ public class LoginControlador {
 			// Devolvemos la vista login
 			return "auth/login";
 		} catch (Exception e) {
+			Util.logError("LoginControlador", "vistaLogin", "Se ha producido un error");
 			return "auth/login";
 		}
 	}

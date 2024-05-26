@@ -154,3 +154,19 @@
 }
 
 /* Fin Estilo de la vista Perfil */
+
+/* Pedidos css */
+.button-content-pedidos {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.left-content-pedidos {
+	text-align: left;
+}
+
+.right-content-pedidos {
+	text-align: right;
+	margin-right: 15px;
+}

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.dtos.CarritoDTO;
 import com.example.demo.servicios.CarritoImplementacion;
-
+import com.example.demo.utiles.Util;
 
 /**
  * Controlador que controla las peticiones HTTP para la ruta /carrito
@@ -39,6 +39,7 @@ public class CarritoControlador {
 	@GetMapping
 	public String vistaCarrito(Model modelo, Authentication authentication) {
 		try {
+			Util.logInfo("CarritoControlador", "vistaCarrito", "Ha entrado");
 			// Obtenemos el carrito del usuario
 			List<CarritoDTO> listaCarritoDTO = carritoImplementacion.obtieneCarritoUsuario(authentication.getName());
 
@@ -53,6 +54,7 @@ public class CarritoControlador {
 			// Devolvemos la vista
 			return "carrito/carrito";
 		} catch (Exception e) {
+			Util.logError("CarritoControlador", "vistaCarrito", "Se ha producido un error");
 			return "redirect:/home";
 		}
 	}
@@ -67,19 +69,20 @@ public class CarritoControlador {
 	@GetMapping("/agrega-suplemento/{idSuplemento}")
 	public String agregaSuplementoAlCarrito(@PathVariable long idSuplemento, Authentication authentication) {
 		try {
+			Util.logInfo("CarritoControlador", "agregaSuplementoAlCarrito", "Ha entrado");
 			// Agregamos el suplemento al carrito
 			boolean ok = carritoImplementacion.agregaSuplemento(idSuplemento, authentication.getName());
 
 			// Controlamos la respuesta
 			return ok ? "redirect:/suplementos?success" : "redirect:/suplementos?error";
 		} catch (Exception e) {
+			Util.logError("CarritoControlador", "agregaSuplementoAlCarrito", "Se ha producido un error");
 			return "redirect:/home";
 		}
 	}
 
 	/**
-	 * Método que controla las peticiones GET para la ruta
-	 * /carrito/borra-suplemento/{idCarrito}
+	 * Método que controla las peticiones GET para la ruta /carrito/borra-suplemento/{idCarrito}
 	 * 
 	 * @param idCarrito Id del carrito a eliminar
 	 * @return Devuelve una redirección
@@ -87,12 +90,14 @@ public class CarritoControlador {
 	@GetMapping("/borra-suplemento/{idCarrito}")
 	public String borraSuplementoCarrito(@PathVariable long idCarrito) {
 		try {
+			Util.logInfo("CarritoControlador", "borraSuplementoCarrito", "Ha entrado");
 			// Borramos el carrito
 			boolean ok = carritoImplementacion.borraCarrito(idCarrito);
 
 			// Controlamos la respuesta
 			return ok ? "redirect:/carrito?success" : "redirect:/carrrito?error";
 		} catch (Exception e) {
+			Util.logError("CarritoControlador", "borraSuplementoCarrito", "Se ha producido un error");
 			return "redirect:/home";
 		}
 	}

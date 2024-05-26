@@ -30,6 +30,10 @@
 							<li><a class="dropdown-item" th:href="@{/suplementos}">Ver todo</a></li>
 						</ul>
 					</li>
+					<!-- Pedidos -->
+					<li class="nav-item">
+						<a class="nav-link text-white" th:href="@{/pedidos}">Pedidos</a>
+					</li>
 					<!-- Administracion -->
 					<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
 						<a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
@@ -50,8 +54,8 @@
 						<a th:href="@{/perfil}" class="nav-link text-white">Perfil</a>
 					</li>
 				</ul>
-				<a th:href="@{/carrito}" class="carrito"><i class="fa-regular fa-cart-shopping"></i></a>
-				<a th:href="@{/perfil}" class="iconoPerfil"><i class="fa-solid fa-user"></i></a>
+				<a th:href="@{/carrito}" class="carrito"><i class="bi bi-cart-fill"></i></a>
+				<a th:href="@{/perfil}" class="iconoPerfil"><i class="bi bi-person-fill"></i></a>
 			</div>
 		</div>
 	</nav>

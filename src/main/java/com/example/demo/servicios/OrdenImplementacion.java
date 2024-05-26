@@ -11,6 +11,7 @@ import com.example.demo.daos.Orden;
 import com.example.demo.daos.RelOrdenCarrito;
 import com.example.demo.daos.Usuario;
 import com.example.demo.dtos.CarritoDTO;
+import com.example.demo.dtos.OrdenDTO;
 import com.example.demo.repositorios.CarritoRepository;
 import com.example.demo.repositorios.OrdenRepository;
 import com.example.demo.repositorios.RelOrdenCarritoRepository;
@@ -89,6 +90,24 @@ public class OrdenImplementacion implements OrdenInterfaz {
 			return true;
 		} catch (Exception e) {
 			return false;
+		}
+	}
+
+	@Override
+	public List<OrdenDTO> obtieneComprasUsuario(String emailUsuario) {
+		try {
+			// Obtenemos todos los ordenes del usuario por el email del usuario
+			List<Orden> listaOrdenDao = ordenRepositorio.findOrdenByEmailUsuario(emailUsuario);
+			
+			if(listaOrdenDao == null)
+				System.out.println("La lista es null");
+			// Si es distinto de null la convertimos a DTO y la devolvemos
+			if(listaOrdenDao != null)
+				return Util.listaOrdenDaoADto(listaOrdenDao);
+			
+			return null;
+		} catch (Exception e) {
+			return null;
 		}
 	}
 
