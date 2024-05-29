@@ -1,6 +1,9 @@
 package com.example.demo.servicios;
 
+import java.util.List;
+
 import com.example.demo.daos.Usuario;
+import com.example.demo.dtos.CarritoDTO;
 
 /**
  * Interfaz que define los métodos que darán servicio al envío de emails.
@@ -19,4 +22,12 @@ public interface EmailInterfaz {
 	 * @param usuario         Objeto Usuario (DAO)
 	 */
 	public boolean enviarEmail(String direccion, boolean esActivarCuenta, Usuario usuario);
+	
+	/**
+	 * 
+	 * @param direccion
+	 * @param emailUsuario
+	 * @return
+	 */
+	public boolean enviarEmailPedido(String direccion, String emailUsuario, String nombreUsuario, List<CarritoDTO> listaCarritoDTO);
 }

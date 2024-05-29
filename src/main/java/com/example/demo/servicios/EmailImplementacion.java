@@ -1,6 +1,8 @@
 package com.example.demo.servicios;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,13 @@ import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import com.example.demo.config.EmailProperties;
 import com.example.demo.daos.Token;
 import com.example.demo.daos.Usuario;
+import com.example.demo.dtos.CarritoDTO;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -21,8 +26,7 @@ import jakarta.mail.internet.MimeMessage;
 /**
  * Implementación de la interfaz Email
  * 
- * @author Francisco José Gallego Dorado 
- * Fecha: 21/04/2024
+ * @author Francisco José Gallego Dorado Fecha: 21/04/2024
  */
 @Service
 public class EmailImplementacion implements EmailInterfaz {
@@ -31,8 +35,11 @@ public class EmailImplementacion implements EmailInterfaz {
 	private JavaMailSender mailSender; // Interfaz de Spring para enviar correos
 
 	@Autowired
+	private SpringTemplateEngine templateEngine;
+
+	@Autowired
 	private TokenImplementacion tokenImplementacion;
-	
+
 	@Autowired
 	private EmailProperties appProperties;
 
@@ -142,6 +149,58 @@ public class EmailImplementacion implements EmailInterfaz {
 							</div>
 							""",
 					direccion, token);
+		}
+	}
+
+	@Override
+	public boolean enviarEmailPedido(String direccion, String emailUsuario, String nombreUsuario,
+			List<CarritoDTO> listaCarritoDTO) {
+		try {
+			// Obtenemos el total del carrito
+			double orderTotal = listaCarritoDTO.stream()
+					.mapToDouble(carrito -> carrito.getCantidad() * carrito.getSuplementoDTO().getPrecioSuplemento())
+					.sum();
+			// Creamos un formateador para doubles, para formatear a dos decimales
+			DecimalFormat df = new DecimalFormat("#.00");
+			
+			// Configuramos el contexto para Thymeleaf
+			Context context = new Context();
+			context.setVariable("customerName", nombreUsuario);
+			context.setVariable("orderItems", listaCarritoDTO);
+			context.setVariable("orderTotal", df.format(orderTotal));
+			context.setVariable("direccionTienda", direccion);
+
+			// Procesamos la plantilla
+			String body = templateEngine.process("purchase-confirmation", context);
+
+			// Enviamos el correo
+			String asuntoEmail = "Compra carrito";
+
+			// Creamos un objeto MimeMessage en vez de SimpleMailMessage para poder poner
+			// estilos
+			MimeMessage message = mailSender.createMimeMessage();
+			// Creamos un objeto MimeMessageHelper para facilitar la creacion del mensaje.
+			// Pasamos el objeto MimeMessage, true para habilitar la opcion de contenido
+			// mixto y la codificacion utf-8
+			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+			helper.setFrom(appProperties.getEmailFrom());
+			helper.setTo(emailUsuario);
+			helper.setSubject(asuntoEmail);
+			helper.setText(body, true);
+
+			// Enviamos el correo utilizando el JavaMailSender
+			mailSender.send(message);
+			return true;
+		} catch (IllegalArgumentException e) {
+			return false;
+		} catch (OptimisticLockingFailureException e) {
+			return false;
+		} catch (MailAuthenticationException e) {
+			return false;
+		} catch (MailSendException e) {
+			return false;
+		} catch (MessagingException e) {
+			return false;
 		}
 	}
 

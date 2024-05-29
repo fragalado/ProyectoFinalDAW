@@ -1,5 +1,7 @@
 package com.example.demo.controladores;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -9,8 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.config.UrlProperties;
+import com.example.demo.dtos.CarritoDTO;
+import com.example.demo.dtos.UsuarioDTO;
 import com.example.demo.paypal.PaypalService;
+import com.example.demo.servicios.CarritoImplementacion;
+import com.example.demo.servicios.EmailImplementacion;
 import com.example.demo.servicios.OrdenImplementacion;
+import com.example.demo.servicios.UsuarioImplementacion;
 import com.example.demo.utiles.Util;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
@@ -32,6 +39,15 @@ public class OrdenControlador {
 
 	@Autowired
 	private OrdenImplementacion ordenImplementacion;
+
+	@Autowired
+	private CarritoImplementacion carritoImplementacion;
+
+	@Autowired
+	private EmailImplementacion emailImplementacion;
+
+	@Autowired
+	private UsuarioImplementacion usuarioImplementacion;
 
 	@Autowired
 	private UrlProperties url;
@@ -74,8 +90,22 @@ public class OrdenControlador {
 			Util.logInfo("OrdenControlador", "successPay", "Ha entrado");
 			Payment payment = paypalService.executePayment(paymentId, payerId);
 			if (payment.getState().equals("approved")) {
+				// Obtenemos el usuario por el email
+				UsuarioDTO usuario = usuarioImplementacion.obtieneUsuarioPorEmail(authentication.getName());
+
+				// Obtenemos la lista de carrito
+				List<CarritoDTO> listaCarritoDto = carritoImplementacion
+						.obtieneCarritoUsuario(usuario.getEmailUsuario());
+
 				// Realizamos la compra del carrito
-				boolean ok = ordenImplementacion.compraCarritoUsuario(authentication.getName());
+				boolean ok = ordenImplementacion.compraCarritoUsuario(usuario.getEmailUsuario());
+
+				// Si se ha comprado el carrito mandamo un email
+				if (ok) {
+					emailImplementacion.enviarEmailPedido(url.getUrl() + "/home", usuario.getEmailUsuario(),
+							usuario.getNombreUsuario(), listaCarritoDto);
+				}
+
 				return ok ? "redirect:/carrito?paySuccess" : "redirect:/carrito?error";
 			}
 			return "redirect:/carrito?payError";

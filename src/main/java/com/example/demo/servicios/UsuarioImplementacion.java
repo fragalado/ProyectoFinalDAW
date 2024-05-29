@@ -334,8 +334,8 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	public boolean editarPerfil(UsuarioDTO usuarioActual, UsuarioDTO usuarioNuevo) {
 		try {
 			// Cambiamos los valores del usuarioActual
-			usuarioActual.setNombreUsuario(usuarioNuevo.getNombreUsuario());
-			usuarioActual.setTlfUsuario(usuarioNuevo.getTlfUsuario());
+			usuarioActual.setNombreUsuario(usuarioNuevo.getNombreUsuario().trim());
+			usuarioActual.setTlfUsuario(usuarioNuevo.getTlfUsuario().trim());
 			if (usuarioNuevo.getImagenUsuario() != null)
 				usuarioActual.setImagenUsuario(usuarioNuevo.getImagenUsuario());
 
