@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	data-bs-theme="dark">
 
 <head>
 	<title>Nutrición - Tienda de Suplementos</title>
@@ -12,6 +13,10 @@
 </head>
 
 <body>
+	<!-- Boton cambiar modo -->
+	<div th:replace="~{partials/botonDarkLight::botonCambiarModo}"></div>
+	<!-- Fin boton cambiar modo -->
+
 	<!-- Navbar -->
 	<div th:replace="~{partials/navbar::navbar}"></div>
 
@@ -21,16 +26,22 @@
 			<!-- Suplementos -->
 			<div class="row" style="margin-top: 80px">
 				<div class="col-12">
+
+					<div class="row">
+						<h1 class="text-center mb-5">Suplementos</h1>	
+					</div>
+
 					<div class="row">
 						<!-- Dropdown Filtrar suplemento -->
-						<div class="dropdown" style="margin-bottom: 15px">
-							<button class="btn btn-outline-secondary dropdown-toggle" type="button"
+						<div class="dropdown col-9" style="margin-bottom: 15px">
+							<button class="btn btn-outline-secondary dropdown-toggle shadow-lg" type="button"
 								data-bs-toggle="dropdown" aria-expanded="false">
 								Filtrar por
 							</button>
 							<ul class="dropdown-menu">
 								<li><a class="dropdown-item" th:href="@{/suplementos/1}">Proteína</a></li>
 								<li><a class="dropdown-item" th:href="@{/suplementos/2}">Creatina</a></li>
+								<li><a class="dropdown-item" th:href="@{/suplementos/3}">Pre-Entrenamiento</a></li>
 								<li>
 									<hr class="dropdown-divider">
 								</li>
@@ -39,6 +50,14 @@
 						</div>
 						<!-- Fin Dropdown Filtrar suplemento -->
 
+						<!-- Buscador -->
+						<div class="col-12 col-md-3">
+							<input type="text" class="form-control shadow-lg" placeholder="Buscar">
+						</div>
+						<!-- Fin buscador -->
+					</div>
+
+					<div class="row">
 						<!-- No existe Suplemento -->
 						<div th:if="${listaSuplementosDTO.size() == 0}" class="col-12" style="margin-top: 80px">
 							<h3 class="text-center">No existe ningún suplemento todavía.</h3>
@@ -46,8 +65,8 @@
 						<!-- Fin No existe Suplemento -->
 
 						<!-- Cards Suplementos -->
-						<div th:each="suplemento: ${listaSuplementosDTO}" class="col-lg-2 col-md-3 col-sm-4 col-6">
-							<div class="card">
+						<div th:each="suplemento: ${listaSuplementosDTO}" class="col-lg-2 col-md-3 col-sm-4 col-6 mt-4">
+							<div class="card sombraDiv">
 								<img th:src="'data:image/png;base64, ' + ${suplemento.getImagenSuplemento()}"
 									class="card-img-top" th:alt="${suplemento.getNombreSuplemento()}"
 									style="max-height: 200px">
@@ -83,6 +102,8 @@
 	<script th:if="${param.error}">
 		muestraToast("No se ha podido agregar el suplemento al carrito.", false);
 	</script>
+
+	<script th:src="@{/js/theme.js}"></script>
 </body>
 
 </html>

@@ -12,6 +12,10 @@
 </head>
 
 <body>
+	<!-- Boton cambiar modo -->
+	<div th:replace="~{partials/botonDarkLight::botonCambiarModo}"></div>
+	<!-- Fin boton cambiar modo -->
+
 	<!-- Nav -->
 	<div th:replace="~{partials/navbar::navbar}"></div>
 	<!-- Fin Nav -->
@@ -42,35 +46,35 @@
 
 								<!-- Imagen -->
 								<div class="mb-3">
-									<label for="imagenForm" class="btn btn-primary botonImagen">Añadir imagen</label>
-									<input type="file" accept="image/jpeg, image/png, image/jpg" id="imagenForm"
-										style="display: none;" name="imagenFile">
+									<label for="formFile" class="form-label">Imagen</label>
+									<input class="form-control border-1 border-black" type="file"
+										accept="image/jpeg, image/png, image/jpg" id="imagenForm" name="imagenFile">
 								</div>
 
 								<!-- Email -->
 								<div class="mb-3">
-									<label for="email" class="form-label">Email</label>
+									<label for="email" class="form-label text-black">Email</label>
 									<input type="email" class="form-control inputVistaEditar" id="email"
 										th:field="*{emailUsuario}" maxlength="50">
 								</div>
 
 								<!-- Nombre -->
 								<div class="mb-3">
-									<label for="nombre" class="form-label">Nombre</label>
+									<label for="nombre" class="form-label text-black">Nombre</label>
 									<input type="text" class="form-control inputVistaEditar" id="nombre"
 										th:field="*{nombreUsuario}" maxlength="50">
 								</div>
 
 								<!-- Telefono -->
 								<div class="mb-3">
-									<label for="tlf" class="form-label">Teléfono</label>
+									<label for="tlf" class="form-label text-black">Teléfono</label>
 									<input type="text" class="form-control inputVistaEditar" id="tlf"
 										th:field="*{tlfUsuario}" maxlength="15">
 								</div>
 
 								<!-- Rol -->
 								<div class="mb-3">
-									<label for="rol" class="form-label">Rol</label>
+									<label for="rol" class="form-label text-black">Rol</label>
 									<select class="form-select" aria-label="Default select example" id="rol"
 										th:field="*{idAcceso}" style="border: 1px solid black;">
 										<option value="1">Usuario</option>
@@ -83,7 +87,7 @@
 									<div class="form-check">
 										<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
 											th:field="*{estaActivadoUsuario}" style="border: 1px solid black;">
-										<label class="form-check-label" for="flexCheckDefault">
+										<label class="form-check-label text-black" for="flexCheckDefault">
 											Cuenta activada
 										</label>
 									</div>
@@ -122,6 +126,7 @@
 	</script>
 
 	<script th:src="@{/js/main.js}"></script>
+	<script th:src="@{/js/theme.js}"></script>
 </body>
 
 </html>

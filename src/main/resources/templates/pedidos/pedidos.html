@@ -10,6 +10,10 @@
 </head>
 
 <body>
+<!-- Boton cambiar modo -->
+<div th:replace="~{partials/botonDarkLight::botonCambiarModo}"></div>
+<!-- Fin boton cambiar modo -->
+
 	<!-- Nav -->
 	<div th:replace="~{partials/navbar::navbar}"></div>
 	<!-- Fin Nav -->
@@ -22,15 +26,17 @@
 					<h1 class="text-center colorLetras" style="margin-top: 15px;">Historial de Pedidos</h1>
 					<div class="accordion" id="accordionExample">
 
-						<!-- Pedidos -->
+						<!-- Mensaje No Existe Pedido -->
 						<div th:if="${listaOrdenDto.size() == 0}"
 							class="bg-light border border-2 border-black shadow-lg mt-3 rounded-3">
-							<h4 class="pt-4 text-center">No se han realizado pedidos.</h4>
-							<p class="text-center w-50 my-4 m-auto "> Aún no ha realizado ningún pedido en nuestra
+							<h4 class="pt-4 text-center text-black">No se han realizado pedidos.</h4>
+							<p class="text-center text-black w-50 my-4 m-auto "> Aún no ha realizado ningún pedido en nuestra
 								tienda. Explore
 								nuestra amplia selección de suplementos deportivos y realice su primer pedido hoy mismo.
 								Estamos aquí para ayudarle a alcanzar sus metas de bienestar y rendimiento.</p>
 						</div>
+
+						<!-- Lista Pedidos -->
 						<div th:each="ordenDto, stat: ${listaOrdenDto}" class="accordion-item">
 							<h2 class="accordion-header">
 								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -94,6 +100,8 @@
 			</div>
 		</main>
 	</div>
+
+	<script th:src="@{/js/theme.js}"></script>
 </body>
 
 </html>

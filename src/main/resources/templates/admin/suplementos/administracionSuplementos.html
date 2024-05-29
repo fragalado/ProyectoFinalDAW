@@ -15,6 +15,10 @@
 </head>
 
 <body>
+	<!-- Boton cambiar modo -->
+	<div th:replace="~{partials/botonDarkLight::botonCambiarModo}"></div>
+	<!-- Fin boton cambiar modo -->
+
 	<!-- Nav -->
 	<div th:replace="~{partials/navbar::navbar}"></div>
 	<!-- Fin Nav -->
@@ -23,7 +27,7 @@
 	<div class="container">
 		<main role="main" class="pb-3">
 			<div class="row tablaAdmin">
-				<div class="col-12">
+				<div class="col-12 mb-3">
 					<h1 class="text-center tituloVista">Administración Suplementos</h1>
 				</div>
 				<div class="col">
@@ -32,8 +36,12 @@
 						<a class="btn btn-outline-secondary" role="button" th:href="@{/admin/usuarios}">Usuarios</a>
 						<a class="btn btn-outline-secondary" role="button"
 							th:href="@{/admin/suplementos}">Suplementos</a>
-						<a class="btn btn-outline-secondary" th:href="@{/admin/suplementos/agregar}" role="button"
-							style="float: right">Añadir Suplemento</a>
+						<a class="btn btn-outline-secondary botonAgregarSuplemento" th:href="@{/admin/suplementos/agregar}" role="button">Añadir Suplemento</a>
+					</div>
+
+					<!-- Buscador -->
+					<div class="my-2">
+						<input type="text" class="form-control shadow" id="searchInput" placeholder="Buscar usuarios">
 					</div>
 
 					<!-- Tabla -->
@@ -134,6 +142,8 @@
 		muestraToast("El suplemento no se ha podido editar!", true);
 	</script>
 	<!-- Control editar suplemento -->
+
+	<script th:src="@{/js/theme.js}"></script>
 </body>
 
 </html>

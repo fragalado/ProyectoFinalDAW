@@ -12,6 +12,10 @@
 </head>
 
 <body>
+	<!-- Boton cambiar modo -->
+	<div th:replace="~{partials/botonDarkLight::botonCambiarModo}"></div>
+	<!-- Fin boton cambiar modo -->
+	
 	<!-- Nav -->
 	<div th:replace="~{partials/navbar::navbar}"></div>
 	<!-- Fin Nav -->
@@ -39,35 +43,35 @@
 
 								<!-- Imagen -->
 								<div class="mb-3">
-									<label for="imagenForm" class="btn btn-primary botonImagen">Añadir imagen</label>
-									<input type="file" accept="image/jpeg, image/png, image/jpg" id="imagenForm"
-										style="display: none;" name="imagenFile">
+									<label for="formFile" class="form-label">Imagen</label>
+									<input class="form-control border-1 border-black" type="file"
+										accept="image/jpeg, image/png, image/jpg" id="imagenForm" name="imagenFile">
 								</div>
 
 								<!-- Email -->
 								<div class="mb-3">
-									<label for="email" class="form-label">Email</label>
+									<label for="email" class="form-label text-black">Email</label>
 									<input type="email" class="form-control inputVistaEditar" id="email"
 										th:field="*{emailUsuario}" maxlength="50" required>
 								</div>
 
 								<!-- Nombre -->
 								<div class="mb-3">
-									<label for="nombreForm" class="form-label">Nombre</label>
+									<label for="nombreForm" class="form-label text-black">Nombre</label>
 									<input type="text" class="form-control inputVistaEditar" id="nombreForm"
 										th:field="*{nombreUsuario}" maxlength="50" required>
 								</div>
 
 								<!-- Telefono -->
 								<div class="mb-3">
-									<label for="tlf" class="form-label">Teléfono</label>
+									<label for="tlf" class="form-label text-black">Teléfono</label>
 									<input type="text" class="form-control inputVistaEditar" id="tlf"
 										th:field="*{tlfUsuario}" maxlength="15" required>
 								</div>
 
 								<!-- Contrasena -->
 								<div class="mb-3">
-									<label for="password" class="form-label">Contraseña</label>
+									<label for="password" class="form-label text-black">Contraseña</label>
 									<input type="password" class="form-control inputVistaEditar" id="password"
 										th:field="*{psswdUsuario}" maxlength="255" required>
 								</div>
@@ -98,6 +102,7 @@
 	</script>
 
 	<script th:src="@{/js/main.js}"></script>
+	<script th:src="@{/js/theme.js}"></script>
 </body>
 
 </html>

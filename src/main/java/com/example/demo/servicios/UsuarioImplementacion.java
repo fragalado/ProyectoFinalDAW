@@ -396,4 +396,20 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 		}
 	}
 
+	@Override
+	public List<UsuarioDTO> obtieneUsuariosPorKeyword(String keyword) {
+		try {
+			// Obtenemos todos los usuarios que contengan la keyword
+			List<Usuario> listaUsuariosDao = usuarioRepositorio.findAllUsuariosByKeyword(keyword);
+
+			// Comprobamos si se ha obtenido
+			if(listaUsuariosDao != null)
+				return Util.listaUsuarioDaoADto(listaUsuariosDao);
+			// Si no se ha obtenido devolvemos null
+			return null;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
 }

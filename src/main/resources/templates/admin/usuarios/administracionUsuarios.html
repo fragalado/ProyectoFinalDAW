@@ -12,9 +12,14 @@
 	<!-- Fin SweetAlert2 -->
 	<!-- JS -->
 	<script th:src="@{/js/toast.js}"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 
 <body>
+	<!-- Boton cambiar modo -->
+	<div th:replace="~{partials/botonDarkLight::botonCambiarModo}"></div>
+	<!-- Fin boton cambiar modo -->
+	
 	<!-- Nav -->
 	<div th:replace="~{partials/navbar::navbar}"></div>
 	<!-- Fin Nav -->
@@ -22,7 +27,7 @@
 	<div class="container">
 		<main role="main" class="pb-3">
 			<div class="row tablaAdmin">
-				<div class="col-12">
+				<div class="col-12 mb-3">
 					<h1 class="text-center tituloVista colorLetras">Administración Usuarios</h1>
 				</div>
 				<div class="col">
@@ -35,9 +40,14 @@
 							style="float: right">Añadir Usuario</a>
 					</div>
 
+					<!-- Buscador -->
+					<div class="my-2">
+						<input type="text" class="form-control shadow" id="searchInput" placeholder="Buscar usuarios">
+					</div>
+
 					<!-- Tabla -->
-					<div class="table-responsive">
-						<table class="table table-dark table-hover">
+					<div class="table-responsive" id="userTableContainer">
+						<table class="table table-dark table-hover" th:fragment="userTable">
 							<thead>
 								<tr>
 									<th scope="col">#</th>
@@ -109,6 +119,25 @@
 				}
 			});
 		}
+
+		$(document).ready(function(){
+            $('#searchInput').on('input', function(){
+                var keyword = $(this).val();
+                if (keyword.length >= 4 || keyword.length === 0) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/admin/usuarios/filter',
+                        data: { keyword: keyword },
+                        success: function(data) {
+							$('#userTableContainer').html(data);
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                }
+            });
+        });
 	</script>
 
 	<!-- Control de alertas -->
@@ -148,6 +177,8 @@
 	<!-- Fin Control actualizar -->
 
 	<!-- Fin Control de alertas -->
+
+	<script th:src="@{/js/theme.js}"></script>
 </body>
 
 </html>

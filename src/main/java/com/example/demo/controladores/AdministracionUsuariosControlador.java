@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,6 +69,28 @@ public class AdministracionUsuariosControlador {
 			return "admin/usuarios/administracionUsuarios";
 		} catch (Exception e) {
 			Util.logError("AdministracionUsuariosControlador", "vistaAdministracionUsuarios",
+					"Se ha producido un error");
+			return "redirect:/home";
+		}
+	}
+
+	@GetMapping("/filter")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public String filtrarUsuarios(Model modelo, @RequestParam String keyword) {
+		try {
+			// Log
+			Util.logInfo("AdministracionUsuariosControlador", "filtrarUsuarios", "Ha entrado");
+
+			// Obtenemos la lista de usuarios que el email contiene la keyword
+			List<UsuarioDTO> listaUsuarios = usuarioImplementacion.obtieneUsuariosPorKeyword(keyword);
+
+			// Añadimos la lista al modelo
+			modelo.addAttribute("listaUsuariosDTO", listaUsuarios);
+
+			// Devolvemos la vista
+			return "admin/usuarios/administracionUsuarios :: userTable"; // Devolvemos el fragment para no que devuelva la vista entera
+		} catch (Exception e) {
+			Util.logError("AdministracionUsuariosControlador", "filtrarUsuarios",
 					"Se ha producido un error");
 			return "redirect:/home";
 		}

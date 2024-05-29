@@ -9,7 +9,7 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-top: 5px;">
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0 flex">
 					<!-- Home -->
 					<li class="nav-item">
 						<a class="nav-link colorLetras colorFondoLinkNav" aria-current="page" th:href="@{/home}">Home</a>
@@ -23,6 +23,7 @@
 						<ul class="dropdown-menu">
 							<li><a class="dropdown-item" th:href="@{/suplementos/1}">Proteína</a></li>
 							<li><a class="dropdown-item" th:href="@{/suplementos/2}">Creatina</a></li>
+							<li><a class="dropdown-item" th:href="@{/suplementos/3}">Pre-Entrenamiento</a></li>
 							<li>
 								<hr class="dropdown-divider">
 							</li>
@@ -55,6 +56,8 @@
 						<a th:href="@{/perfil}" class="nav-link colorLetras colorFondoLinkNav">Perfil</a>
 					</li>
 				</ul>
+
+				<!-- Carrito Icono -->
 				<a th:href="@{/carrito}" class="carrito position-relative colorFondoLinkNav">
 					<i class="bi bi-cart-fill colorLetras"></i>
 					<span th:if="${tieneCarrito}"
@@ -63,7 +66,10 @@
 						<span class="visually-hidden">unread messages</span>
 					</span>
 				</a>
+
+				<!-- Perfil icono -->
 				<a th:href="@{/perfil}" class="iconoPerfil"><i class="bi bi-person-fill colorLetras"></i></a>
+				
 			</div>
 		</div>
 	</nav>

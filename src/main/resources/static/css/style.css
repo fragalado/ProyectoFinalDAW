@@ -36,14 +36,6 @@
 	box-shadow: 0px 5px 15px rgba(0, 0, 0, 1);
 }
 
-.colorLetras {
-	color: #FFFFFF;
-}
-
-body {
-	background-color: #474F59;
-}
-
 .sombraDiv {
 	box-shadow: 5px 10px 34px -7px rgba(0, 0, 0, 0.75);
 }
@@ -97,7 +89,7 @@ body {
 .contenedor {
 	background-color: #FFFAFB;
 	margin: 0 auto;
-	max-width: 35%;
+	max-width: 40%;
 	margin-top: 10px;
 	border: 2px solid black;
 	border-radius: 40px;
@@ -125,6 +117,21 @@ body {
 
 .inputVistaEditar {
 	border: 1px solid black;
+}
+
+.botonAgregarSuplemento {
+	float: right;
+}
+
+@media (max-width: 991px) {
+	.contenedor{
+		max-width: 100%;
+	}
+
+	.botonAgregarSuplemento {
+		float: none;
+		margin-top: 4px;
+	}
 }
 
 /* Fin de Estilos de la vista Editar usuario */
@@ -202,4 +209,54 @@ body {
 .right-content-pedidos {
 	text-align: right;
 	margin-right: 15px;
+}
+
+/* Dark Mode */
+[data-bs-theme="dark"] {
+	body {
+		background-color: #474F59;
+	}
+
+	.colorLetras {
+		color: #FFFFFF;
+	}
+
+	@media (min-width: 992px) {	
+		.colorFondoLinkNav:hover {
+			background-color: #393f47;
+			border-radius: 5px;
+			box-shadow: 5px 10px 34px -7px rgba(0, 0, 0, 0.75);
+			color: #FFFFFF;
+		}
+	}
+
+	nav {
+		border-bottom: 1px solid #555E68;
+	}
+}
+
+/* Light mode */
+[data-bs-theme="light"] {
+	body {
+		background-color: #D8D1C7;
+	}
+	.colorLetras {
+		color: #000000;
+	}
+	@media (min-width: 992px) {	
+		.colorFondoLinkNav:hover {
+			background-color: #cac5be;
+			border-radius: 5px;
+			box-shadow: 5px 10px 34px -7px rgba(0, 0, 0, 0.75);
+			color: #000000;
+		}
+	}
+
+	nav {
+		border-bottom: 1px solid #A9A9A9;
+	}
+
+	.iconoPerfil {
+		border: 1px solid #000000;
+	}
 }

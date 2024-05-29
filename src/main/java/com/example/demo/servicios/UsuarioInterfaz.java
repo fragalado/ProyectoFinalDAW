@@ -40,6 +40,14 @@ public interface UsuarioInterfaz {
 	public UsuarioDTO obtieneUsuarioPorEmail(String email);
 
 	/**
+	 * Método que obtiene todos los usuarios que contengan la keyword
+	 * 
+	 * @param keyword Keyword
+	 * @return Devuelve una lista de objetos UsuarioDTO
+	 */
+	public List<UsuarioDTO> obtieneUsuariosPorKeyword(String keyword);
+
+	/**
 	 * Método que hace el registro de un usuario a la base de datos y envía un
 	 * correo para confirmar cuenta. Si el email introducido ya existe no hará el
 	 * registro.

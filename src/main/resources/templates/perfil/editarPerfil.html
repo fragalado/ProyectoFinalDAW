@@ -12,6 +12,10 @@
 </head>
 
 <body>
+	<!-- Boton cambiar modo -->
+	<div th:replace="~{partials/botonDarkLight::botonCambiarModo}"></div>
+	<!-- Fin boton cambiar modo -->
+	
 	<!-- Nav -->
 	<div th:replace="~{partials/navbar::navbar}"></div>
 	<!-- Fin Nav -->
@@ -95,6 +99,7 @@
 	</script>
 
 	<script th:src="@{/js/main.js}"></script>
+	<script th:src="@{/js/theme.js}"></script>
 
 </body>
 
