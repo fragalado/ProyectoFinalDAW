@@ -42,6 +42,9 @@
 		</form>
 	</div>
 
+	<!-- Toast -->
+	<div th:replace="~{partials/toast::toast}"></div>
+
 	<!-- Control de alertas -->
 	<script th:if="${param.logout}">
 		muestraToast("Se ha cerrado la sesión con éxito!!", true);

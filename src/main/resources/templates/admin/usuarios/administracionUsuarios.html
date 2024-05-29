@@ -10,6 +10,8 @@
 	<!-- SweetAlert2 -->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" asp-append-version="true"></script>
 	<!-- Fin SweetAlert2 -->
+	<!-- JS -->
+	<script th:src="@{/js/toast.js}"></script>
 </head>
 
 <body>
@@ -70,6 +72,10 @@
 			</div>
 		</main>
 	</div>
+
+	<!-- Toast -->
+	<div th:replace="~{partials/toast::toast}"></div>
+
 	<script>
 		function compruebaEsAdmin(event) {
 			const id_acceso = event.currentTarget.getAttribute("data-idAcceso");
@@ -109,63 +115,35 @@
 
 	<!-- Control borrar -->
 	<script th:if="${param.success}">
-		Swal.fire({
-			title: "Éxito!",
-			text: "El usuario se ha borrado con éxito!",
-			icon: "success"
-		});
+		muestraToast("El usuario se ha borrado con éxito!", true);
 	</script>
 
 	<script th:if="${param.error}">
-		Swal.fire({
-			title: "Error!",
-			text: "El usuario no se ha podido eliminar!",
-			icon: "error"
-		});
+		muestraToast("El usuario no se ha podido eliminar!", false);
 	</script>
 	<!-- Fin Control borrar -->
 
 	<!-- Control agregar -->
 	<script th:if="${param.usuarioAgregadoSuccess}">
-		Swal.fire({
-			title: "Éxito!",
-			text: "El usuario se ha agregado con éxito!",
-			icon: "success"
-		});
+		muestraToast("El usuario se ha agregado con éxito!", true);
 	</script>
 
 	<script th:if="${param.usuarioAgregadoExiste}">
-		Swal.fire({
-			title: "Error!",
-			text: "El email introducido ya existe!",
-			icon: "error"
-		});
+		muestraToast("El email introducido ya existe!", false);
 	</script>
 
 	<script th:if="${param.usuarioAgregadoError}">
-		Swal.fire({
-			title: "Error!",
-			text: "Se ha producido un error. Vuelva a intentarlo más tarde!",
-			icon: "error"
-		});
+		muestraToast("Se ha producido un error. Vuelva a intentarlo más tarde!", false);
 	</script>
 	<!-- Fin Control agregar -->
 
 	<!-- Control actualizar -->
 	<script th:if="${param.usuarioEditadoSuccess}">
-		Swal.fire({
-			title: "Éxito!",
-			text: "El usuario ha sido actualizado con éxito!",
-			icon: "success"
-		});
+		muestraToast("El usuario ha sido actualizado con éxito!", true);
 	</script>
 
 	<script th:if="${param.usuarioEditadoError}">
-		Swal.fire({
-			title: "Error!",
-			text: "Se ha producido un error. Vuelva a intentarlo más tarde!",
-			icon: "error"
-		});
+		muestraToast("Se ha producido un error. Vuelva a intentarlo más tarde!", false);
 	</script>
 	<!-- Fin Control actualizar -->
 

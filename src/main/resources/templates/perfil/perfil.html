@@ -10,6 +10,8 @@
 	<!-- CSS -->
 	<link rel="stylesheet" href="css/style.css" />
 	<!-- Fin CSS -->
+	<!-- JS -->
+	<script th:src="@{/js/toast.js}"></script>
 </head>
 
 <body>
@@ -52,6 +54,9 @@
 		</main>
 	</div>
 
+	<!-- Toast -->
+	<div th:replace="~{partials/toast::toast}"></div>
+
 	<script>
 		function compruebaEliminar(event) {
 			const emailUsuario = event.currentTarget.getAttribute("data-emailUsuario");
@@ -77,6 +82,14 @@
 				}
 			});
 		}
+	</script>
+
+	<!-- Control de alertas -->
+	<script th:if="${param.editado}">
+		muestraToast("El perfil ha sido editado correctamente!", true);
+	</script>
+	<script th:if="${param.error}">
+		muestraToast("No se ha podido editar el perfil.", false);
 	</script>
 </body>
 

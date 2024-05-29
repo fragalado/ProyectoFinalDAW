@@ -10,6 +10,8 @@
 	<!-- SweetAlert2 -->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<!-- Fin SweetAlert2 -->
+	<!-- JS -->
+	<script th:src="@{/js/toast.js}"></script>
 </head>
 
 <body>
@@ -74,6 +76,10 @@
 			</div>
 		</main>
 	</div>
+
+	<!-- Toast -->
+	<div th:replace="~{partials/toast::toast}"></div>
+
 	<script>
 		function compruebaEliminar(event) {
 			const idSuplemento = event.currentTarget.getAttribute("data-idSuplemento");
@@ -101,55 +107,31 @@
 
 	<!-- Control borrado suplemento -->
 	<script th:if="${param.success}">
-		Swal.fire({
-			title: "Éxito!",
-			text: "El suplemento se ha borrado con éxito!",
-			icon: "success"
-		});
+		muestraToast("El suplemento se ha borrado con éxito!", true);
 	</script>
 
 	<script th:if="${param.error}">
-		Swal.fire({
-			title: "Error!",
-			text: "El suplemento no se ha podido eliminar!",
-			icon: "error"
-		});
+		muestraToast("El suplemento no se ha podido eliminar!", false);
 	</script>
 	<!-- Control borrado suplemento -->
 
 	<!-- Control agregar suplemento -->
 	<script th:if="${param.suplementoAgregadoSuccess}">
-		Swal.fire({
-			title: "Éxito!",
-			text: "El suplemento se ha agregado con éxito!",
-			icon: "success"
-		});
+		muestraToast("El suplemento se ha agregado con éxito!", true);
 	</script>
 
 	<script th:if="${param.suplementoAgregadoError}">
-		Swal.fire({
-			title: "Error!",
-			text: "El suplemento no se ha podido agregar!",
-			icon: "error"
-		});
+		muestraToast("El suplemento no se ha podido agregar!", true);
 	</script>
 	<!-- Control agregar suplemento -->
 
 	<!-- Control editar suplemento -->
 	<script th:if="${param.suplementoEditadoSuccess}">
-		Swal.fire({
-			title: "Éxito!",
-			text: "El suplemento se ha editado con éxito!",
-			icon: "success"
-		});
+		muestraToast("El suplemento se ha editado con éxito!", true);
 	</script>
 
 	<script th:if="${param.suplementoEditadoError}">
-		Swal.fire({
-			title: "Error!",
-			text: "El suplemento no se ha podido editar!",
-			icon: "error"
-		});
+		muestraToast("El suplemento no se ha podido editar!", true);
 	</script>
 	<!-- Control editar suplemento -->
 </body>

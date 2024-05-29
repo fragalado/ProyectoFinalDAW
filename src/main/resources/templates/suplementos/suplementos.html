@@ -7,9 +7,8 @@
 	<!-- CSS -->
 	<link rel="stylesheet" th:href="@{/css/style.css}" />
 	<!-- Fin CSS -->
-	<!-- SweetAlert2 -->
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<!-- Fin SweetAlert2 -->
+	<!-- JS -->
+	<script th:src="@{/js/toast.js}"></script>
 </head>
 
 <body>
@@ -74,20 +73,15 @@
 		</main>
 	</div>
 
+	<!-- Toast -->
+	<div th:replace="~{partials/toast::toast}"></div>
+
 	<script th:if="${param.success}">
-		Swal.fire({
-			title: "Éxito!",
-			text: "El suplemento se ha agregado al carrito con éxito!",
-			icon: "success"
-		});
+		muestraToast("Se ha agregado el suplemento al carrito.", true);
 	</script>
 
 	<script th:if="${param.error}">
-		Swal.fire({
-			title: "Error!",
-			text: "El suplemento no se ha podido agregar al carrito!",
-			icon: "error"
-		});
+		muestraToast("No se ha podido agregar el suplemento al carrito.", false);
 	</script>
 </body>
 

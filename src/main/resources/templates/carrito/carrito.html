@@ -10,6 +10,8 @@
 	<!-- SweetAlert2 -->
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<!-- Fin SweetAlert2 -->
+	<!-- JS -->
+	<script th:src="@{/js/toast.js}"></script>
 </head>
 
 <body>
@@ -58,7 +60,8 @@
 									</tr>
 									<tr th:if="${listaCarritoDTO != null && listaCarritoDTO.size() > 0}">
 										<td colspan="5" style="text-align: right; padding-right: 30px;">Precio total:
-											<span th:text="${precioTotal}"></span>€</td>
+											<span th:text="${precioTotal}"></span>€
+										</td>
 									</tr>
 								</tbody>
 							</table>
@@ -78,6 +81,9 @@
 		</main>
 	</div>
 	<!-- Fin Contenedor -->
+
+	<!-- Toast -->
+	<div th:replace="~{partials/toast::toast}"></div>
 
 	<script>
 
@@ -108,39 +114,27 @@
 
 	<!-- Borrar carrito -->
 	<script th:if="${param.success}">
-		Swal.fire({
-			title: "Éxito!",
-			text: "El suplemento se ha borrado del carrito con éxito!",
-			icon: "success"
-		});
+		muestraToast("El suplemento se ha borrado del carrito con éxito!", true);
 	</script>
 
 	<script th:if="${param.error}">
-		Swal.fire({
-			title: "Error!",
-			text: "El suplemento no se ha podido eliminar!",
-			icon: "error"
-		});
+		muestraToast("El suplemento no se ha podido eliminar!", false);
 	</script>
 	<!-- Fin Borrar carrito -->
 
 	<!-- Compra carrito -->
-	<script th:if="${param.compraSuccess}">
-		Swal.fire({
-			title: "Éxito!",
-			text: "Se ha realizado la compra correctamente!",
-			icon: "success"
-		});
+	<script th:if="${param.paySuccess}">
+		muestraToast("Se ha realizado la compra correctamente!", true);
 	</script>
 
-	<script th:if="${param.cancel}">
-		Swal.fire({
-			title: "Error!",
-			text: "Se ha cancelado la compra!",
-			icon: "error"
-		});
+	<script th:if="${param.payCancel}">
+		muestraToast("Se ha cancelado la compra!", false);
 	</script>
-	<!-- Fin Borrar carrito -->
+	
+	<script th:if="${param.payError}">
+			muestraToast("Se ha producido un error a la hora de comprar el carrito!", false);
+		</script>
+	<!-- Fin Compra carrito -->
 
 	<!-- Fin Control de alertas -->
 </body>
