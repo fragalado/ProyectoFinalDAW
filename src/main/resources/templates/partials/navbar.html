@@ -1,9 +1,8 @@
 <header th:fragment="navbar">
-	<nav class="navbar navbar-expand-lg"
-		style="background: linear-gradient(90deg, rgba(141,148,241,1) 0%, rgba(157,141,241,1) 49%, rgba(181,141,241,1) 100%);">
+	<nav class="navbar navbar-expand-lg">
 		<div class="container-fluid">
 			<img th:src="@{/img/logo2.png}" alt="Logo" width="40" height="40" class="d-inline-block align-text-top">
-			<a class="navbar-brand text-white nombreTiendaSuplementos">Tienda de Suplementos</a>
+			<a class="navbar-brand nombreTiendaSuplementos colorLetras">Tienda de Suplementos</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
 				data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
 				aria-label="Toggle navigation">
@@ -13,11 +12,11 @@
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<!-- Home -->
 					<li class="nav-item">
-						<a class="nav-link active text-white" aria-current="page" th:href="@{/home}">Home</a>
+						<a class="nav-link colorLetras colorFondoLinkNav" aria-current="page" th:href="@{/home}">Home</a>
 					</li>
 					<!-- Suplementos -->
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
+						<a class="nav-link dropdown-toggle colorLetras colorFondoLinkNav" href="#" role="button" data-bs-toggle="dropdown"
 							aria-expanded="false">
 							Suplementos
 						</a>
@@ -32,11 +31,11 @@
 					</li>
 					<!-- Pedidos -->
 					<li class="nav-item">
-						<a class="nav-link text-white" th:href="@{/pedidos}">Pedidos</a>
+						<a class="nav-link colorLetras colorFondoLinkNav" th:href="@{/pedidos}">Pedidos</a>
 					</li>
 					<!-- Administracion -->
 					<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
-						<a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown"
+						<a class="nav-link dropdown-toggle colorLetras colorFondoLinkNav" href="#" role="button" data-bs-toggle="dropdown"
 							aria-expanded="false">
 							Administración
 						</a>
@@ -47,23 +46,24 @@
 					</li>
 					<!-- Carrito -->
 					<li class="nav-item perfilLink">
-						<a th:href="@{/carrito}" class="nav-link text-white">
+						<a th:href="@{/carrito}" class="nav-link colorLetras colorFondoLinkNav">
 							Carrito
 						</a>
 					</li>
 					<!-- Perfil -->
 					<li class="nav-item perfilLink">
-						<a th:href="@{/perfil}" class="nav-link text-white">Perfil</a>
+						<a th:href="@{/perfil}" class="nav-link colorLetras colorFondoLinkNav">Perfil</a>
 					</li>
 				</ul>
-				<a th:href="@{/carrito}" class="carrito position-relative">
-					<i class="bi bi-cart-fill"></i>
-					<span th:if="${tieneCarrito}" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+				<a th:href="@{/carrito}" class="carrito position-relative colorFondoLinkNav">
+					<i class="bi bi-cart-fill colorLetras"></i>
+					<span th:if="${tieneCarrito}"
+						class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
 						<span th:text="${tieneCarrito + '+'}"></span>
 						<span class="visually-hidden">unread messages</span>
 					</span>
 				</a>
-				<a th:href="@{/perfil}" class="iconoPerfil"><i class="bi bi-person-fill"></i></a>
+				<a th:href="@{/perfil}" class="iconoPerfil"><i class="bi bi-person-fill colorLetras"></i></a>
 			</div>
 		</div>
 	</nav>

@@ -19,11 +19,18 @@
 		<main role="main" class="pb-3">
 			<div class="row">
 				<div class="col">
-					<h1 class="text-center" style="margin-top: 15px;">Historial de Pedidos</h1>
-					<div class="accordion" id="accordionExample"
-						style="margin-top: 20px; border: 1px solid black; border-radius: 10px; padding: 3px;">
+					<h1 class="text-center colorLetras" style="margin-top: 15px;">Historial de Pedidos</h1>
+					<div class="accordion" id="accordionExample">
 
 						<!-- Pedidos -->
+						<div th:if="${listaOrdenDto.size() == 0}"
+							class="bg-light border border-2 border-black shadow-lg mt-3 rounded-3">
+							<h4 class="pt-4 text-center">No se han realizado pedidos.</h4>
+							<p class="text-center w-50 my-4 m-auto "> Aún no ha realizado ningún pedido en nuestra
+								tienda. Explore
+								nuestra amplia selección de suplementos deportivos y realice su primer pedido hoy mismo.
+								Estamos aquí para ayudarle a alcanzar sus metas de bienestar y rendimiento.</p>
+						</div>
 						<div th:each="ordenDto, stat: ${listaOrdenDto}" class="accordion-item">
 							<h2 class="accordion-header">
 								<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -75,7 +82,8 @@
 									</div>
 
 									<!-- Boton generar pdf -->
-									<a th:href="@{/pedidos/export/} + ${ordenDto.getIdOrden()}" class="btn btn-primary">Generar PDF</a>
+									<a th:href="@{/pedidos/export/} + ${ordenDto.getIdOrden()}"
+										class="btn btn-primary">Generar PDF</a>
 								</div>
 							</div>
 						</div>

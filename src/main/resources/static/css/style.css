@@ -14,9 +14,14 @@
 	color: white;
 }
 
+.iconoPerfil:hover {
+	box-shadow: 5px 10px 34px -7px rgba(0, 0, 0, 0.75);
+}
+
 .carrito {
 	margin-right: 20px;
 	font-size: 18px;
+	padding: 5px;
 }
 
 .carrito i {
@@ -29,6 +34,27 @@
 
 .tablaAdmin table {
 	box-shadow: 0px 5px 15px rgba(0, 0, 0, 1);
+}
+
+.colorLetras {
+	color: #FFFFFF;
+}
+
+body {
+	background-color: #474F59;
+}
+
+.sombraDiv {
+	box-shadow: 5px 10px 34px -7px rgba(0, 0, 0, 0.75);
+}
+
+.lineaDivisoraNav {
+	padding-bottom: 5px;
+	border-bottom: 1px solid #3E4650;
+}
+
+.nav-link {
+	transition: none;
 }
 
 @media (max-width: 991px) {
@@ -48,6 +74,13 @@
 @media (min-width: 992px) {
 	.perfilLink {
 		display: none;
+	}
+
+	.colorFondoLinkNav:hover {
+		background-color: #393f47;
+		border-radius: 5px;
+		box-shadow: 5px 10px 34px -7px rgba(0, 0, 0, 0.75);
+		color: #FFFFFF;
 	}
 }
 

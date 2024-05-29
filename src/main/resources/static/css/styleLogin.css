@@ -1,7 +1,8 @@
 body {
-	background-image: url("../img/background3.jpg");
-	background-size: cover;
-	background-repeat: no-repeat;
+/*	background-image: url("../img/background3.jpg");*/
+/*	background-size: cover;*/
+/*	background-repeat: no-repeat;*/
+	background: linear-gradient(90deg, rgba(124,128,133,1) 0%, rgba(71,79,89,1) 50%, rgba(124,128,133,1) 100%);
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -10,7 +11,7 @@ body {
 
 .wrapper {
 	width: 420px;
-	background: linear-gradient(90deg, rgba(141, 148, 241, 1) 0%, rgba(157, 141, 241, 1) 49%, rgba(181, 141, 241, 1) 100%);
+	background: #8A94A6;
 	border: 2px solid rgba(255, 255, 255, .2);
 	backdrop-filter: blur(35px);
 	color: #fff;

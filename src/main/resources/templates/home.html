@@ -21,7 +21,7 @@
 			<!-- Carousel -->
 			<div class="row" style="margin-top: 50px;">
 				<div class="col">
-					<div id="carouselExampleIndicators" class="carousel slide">
+					<div id="carouselExampleIndicators" class="carousel slide sombraDiv">
 						<div class="carousel-indicators">
 							<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
 								class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -59,7 +59,7 @@
 			<!-- Productos Recomendados -->
 			<div th:if="${listaSuplementosDTO != null && listaSuplementosDTO.size() > 0}" class="row"
 				style="margin-bottom: 20px">
-				<div class="col-12" style="font-size: 30px; font-weight: 600; text-align: center; margin: 30px 0;">
+				<div class="col-12 colorLetras" style="font-size: 30px; font-weight: 600; text-align: center; margin: 30px 0;">
 					<i class="bi bi-hand-thumbs-up-fill" style="color: rgba(141,148,241,1);"></i>
 					PRODUCTOS RECOMENDADOS
 				</div>
@@ -67,7 +67,7 @@
 					<div class="row">
 						<!-- Card -->
 						<div th:each="suplemento: ${listaSuplementosDTO}" class="col-lg-2 col-md-3 col-sm-4 col-6">
-							<div class="card" style="min-height: 450px;">
+							<div class="card sombraDiv" style="min-height: 450px;">
 								<!-- Imagen suplemento -->
 								<img th:src="'data:image/png;base64, '+ ${suplemento.getImagenSuplemento()}"
 									class="card-img-top" th:alt="${suplemento.getNombreSuplemento()}">
