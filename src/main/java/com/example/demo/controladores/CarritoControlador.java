@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.dtos.CarritoDTO;
 import com.example.demo.servicios.CarritoImplementacion;
@@ -67,14 +68,15 @@ public class CarritoControlador {
 	 * @return Devuelve una redirección
 	 */
 	@GetMapping("/agrega-suplemento/{idSuplemento}")
-	public String agregaSuplementoAlCarrito(@PathVariable long idSuplemento, Authentication authentication) {
+	public String agregaSuplementoAlCarrito(@PathVariable long idSuplemento, Authentication authentication, @RequestParam String tipo) {
 		try {
 			Util.logInfo("CarritoControlador", "agregaSuplementoAlCarrito", "Ha entrado");
 			// Agregamos el suplemento al carrito
 			boolean ok = carritoImplementacion.agregaSuplemento(idSuplemento, authentication.getName());
 
 			// Controlamos la respuesta
-			return ok ? "redirect:/suplementos?success" : "redirect:/suplementos?error";
+			String url = "redirect:/suplementos/"+tipo;
+			return ok ? url + "?success" : url + "?error";
 		} catch (Exception e) {
 			Util.logError("CarritoControlador", "agregaSuplementoAlCarrito", "Se ha producido un error");
 			return "redirect:/home";

@@ -10,6 +10,8 @@
 	<!-- Fin CSS -->
 	<!-- JS -->
 	<script th:src="@{/js/toast.js}"></script>
+	<!-- JQuery -->
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 
 <body>
@@ -52,12 +54,12 @@
 
 						<!-- Buscador -->
 						<div class="col-12 col-md-3">
-							<input type="text" class="form-control shadow-lg" placeholder="Buscar">
+							<input type="text" class="form-control shadow-lg" placeholder="Buscar" id="searchInput">
 						</div>
 						<!-- Fin buscador -->
 					</div>
 
-					<div class="row">
+					<div class="row" id="suplementosContainer" th:fragment="suplementosFragments">
 						<!-- No existe Suplemento -->
 						<div th:if="${listaSuplementosDTO.size() == 0}" class="col-12" style="margin-top: 80px">
 							<h3 class="text-center">No existe ningún suplemento todavía.</h3>
@@ -78,8 +80,8 @@
 									<p th:if="${suplemento.getDescSuplemento().length <= 50}" class="card-text"
 										th:text="${suplemento.getDescSuplemento()}"></p>
 									<p class="card-text">Precio: <span
-											th:text="${suplemento.getPrecioSuplemento()}"></span>€</p>
-									<a th:href="@{/carrito/agrega-suplemento/} + ${suplemento.getIdSuplemento()}"
+										th:text="${suplemento.formateaPrecio()}"></span>€</p>
+									<a th:href="@{/carrito/agrega-suplemento/} + ${suplemento.getIdSuplemento()} + '?tipo=' + ${tipo}"
 										class="btn btn-primary">Añadir al carrito</a>
 								</div>
 							</div>
@@ -102,6 +104,29 @@
 	<script th:if="${param.error}">
 		muestraToast("No se ha podido agregar el suplemento al carrito.", false);
 	</script>
+
+	<!-- Script AJAX -->
+	<script>
+		$(document).ready(function(){
+			$('#searchInput').on('input', function(){
+				let keyword = $(this).val();
+				if(keyword.length >= 4 || keyword.length == 0) {
+					$.ajax({
+						type: 'GET',
+						url: '/suplementos/filter',
+						data: {keyword: keyword},
+						success: function(data) {
+							$('#suplementosContainer').html(data);
+						},
+						error: function(error){
+							console.log(error);
+						}
+					});
+				}
+			});
+		});
+	</script>
+
 
 	<script th:src="@{/js/theme.js}"></script>
 </body>

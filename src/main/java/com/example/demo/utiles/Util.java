@@ -292,14 +292,14 @@ public class Util {
 		try {
 			String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
 			// Ruta de la carpeta
-			String rutaCarpeta = "C:\\FicherosProg\\" + emailUsuario;
+			String rutaCarpeta = "/var/log/sportsS/" + emailUsuario;
 			// Comprobamos si existe la carpeta, si no existe la crea
 			verificarYCrearCarpeta(rutaCarpeta);
 			// Obtenemos el dia de hoy para ponerle de nombre al log
 			Calendar hoy = Calendar.getInstance();
 			String diaFormateado = hoy.get(Calendar.DAY_OF_MONTH) + "-" + hoy.get(Calendar.MONTH) + "-"
 					+ hoy.get(Calendar.YEAR);
-			FileWriter file = new FileWriter(rutaCarpeta + "\\" + diaFormateado + ".log", true);
+			FileWriter file = new FileWriter(rutaCarpeta + "/" + diaFormateado + ".log", true);
 			PrintWriter pw = new PrintWriter(file);
 			pw.println("[" + LocalDateTime.now() + "]-[INFO-" + nombreClase + "-" + nombreMetodo + "] " + mensaje);
 			pw.close();
@@ -320,14 +320,14 @@ public class Util {
 		try {
 			String emailUsuario = SecurityContextHolder.getContext().getAuthentication().getName();
 			// Ruta de la carpeta
-			String rutaCarpeta = "C:\\FicherosProg\\" + emailUsuario;
+			String rutaCarpeta = "/var/log/sportsS/" + emailUsuario;
 			// Comprobamos si existe la carpeta, si no existe la crea
 			verificarYCrearCarpeta(rutaCarpeta);
 			// Obtenemos el dia de hoy para ponerle de nombre al log
 			Calendar hoy = Calendar.getInstance();
 			String diaFormateado = hoy.get(Calendar.DAY_OF_MONTH) + "-" + hoy.get(Calendar.MONTH) + "-"
 					+ hoy.get(Calendar.YEAR);
-			FileWriter file = new FileWriter(rutaCarpeta + "\\" + diaFormateado + ".log", true);
+			FileWriter file = new FileWriter(rutaCarpeta + "/" + diaFormateado + ".log", true);
 			PrintWriter pw = new PrintWriter(file);
 			pw.println(
 					"[" + LocalDateTime.now() + "]-[ERROR-" + nombreClase + "-" + nombreMetodo + "] Error: " + mensaje);

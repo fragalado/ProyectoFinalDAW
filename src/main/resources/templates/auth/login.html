@@ -37,10 +37,18 @@
 			<!-- Boton enviar -->
 			<button type="submit" class="boton">Enviar</button>
 
+			<!-- Registrarse -->
 			<div class="register-link">
 				<p>
 					¿Todavía no estás registrado?
 					<a th:href="@{/registro}">Registrate</a>
+				</p>
+			</div>
+
+			<div class="register-link">
+				<p>
+					¿No has activado la cuenta?
+					<a th:href="@{/activa-cuenta/peticion}">Actívala aquí</a>
 				</p>
 			</div>
 		</form>

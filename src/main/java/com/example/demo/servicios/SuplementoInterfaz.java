@@ -29,6 +29,13 @@ public interface SuplementoInterfaz {
 	public SuplementoDTO obtieneSuplementoPorId(long id_suplemento);
 
 	/**
+	 * Método que obtiene todos los suplementos que contengan la keyword
+	 * @param keyword Keyword por la cual filtrar los suplementos
+	 * @return Devuelve una lista de objetos SuplementoDTO
+	 */
+	public List<SuplementoDTO> obtieneSuplementosPorKeyword(String keyword);
+
+	/**
 	 * Método que borra un suplemento por su id.
 	 * 
 	 * @param id_suplemento Id del suplemento a eliminar

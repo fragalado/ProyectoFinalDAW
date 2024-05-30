@@ -284,9 +284,9 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			
 			// Actualizamos algunos datos del usuarioEncontrado con el usuarioDTO
 			Usuario usuarioDao = Util.usuarioADao(usuarioDTO);
-			usuarioEncontrado.setNombreUsuario(usuarioDao.getNombreUsuario());
-			usuarioEncontrado.setEmailUsuario(usuarioDao.getEmailUsuario());
-			usuarioEncontrado.setTlfUsuario(usuarioDao.getTlfUsuario());
+			usuarioEncontrado.setNombreUsuario(usuarioDao.getNombreUsuario().trim());
+			usuarioEncontrado.setEmailUsuario(usuarioDao.getEmailUsuario().trim());
+			usuarioEncontrado.setTlfUsuario(usuarioDao.getTlfUsuario().trim());
 			usuarioEncontrado.setEstaActivadoUsuario(usuarioDao.isEstaActivadoUsuario());
 			usuarioEncontrado.setAcceso(usuarioDao.getAcceso());
 			if (usuarioDTO.getImagenUsuario() != null)
@@ -409,6 +409,26 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			return null;
 		} catch (Exception e) {
 			return null;
+		}
+	}
+
+	@Override
+	public Boolean peticionActivaCuenta(String email) {
+		try {
+			// Obtenemos el usuario por el email
+			Usuario usuarioEncontrado = usuarioRepositorio.findByEmailUsuario(email);
+
+			// Comprobamos si existe
+			if(usuarioEncontrado == null)
+				return false; // No existe usuario con el email introducido
+
+			// Si existe comprobamos si tiene la cuenta activada y si no la tiene mandamos email
+			if(!usuarioEncontrado.isEstaActivadoUsuario())
+				return emailImplementacion.enviarEmail(url.getUrl() +"/activa-cuenta", true, usuarioEncontrado);
+
+			return null; // Si el usuario ya tiene la cuenta activada
+		} catch (Exception e) {
+			return false;
 		}
 	}
 

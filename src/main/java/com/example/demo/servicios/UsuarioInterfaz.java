@@ -69,6 +69,14 @@ public interface UsuarioInterfaz {
 	public boolean activaCuenta(String token, String email);
 
 	/**
+	 * Método que realiza la petición de activar cuenta, comprueba si el email introducido existe y si no tiene la cuenta activada.
+	 * Si no la tiene envía un email para activar
+	 * @param email Email del usuario que realiza la petición
+	 * @return Devuelve true si se ha enviado, false si no se ha enviado y null si el usuario ya tiene la cuenta activada.
+	 */
+	public Boolean peticionActivaCuenta(String email);
+
+	/**
 	 * Método que cambia la contraseña de un usuario
 	 * 
 	 * @param token    Token

@@ -46,28 +46,28 @@
 
 								<!-- Imagen -->
 								<div class="mb-3">
-									<label for="imagenForm" class="btn btn-primary botonImagen">Añadir imagen</label>
-									<input type="file" accept="image/jpeg, image/png, image/jpg" id="imagenForm"
-										style="display: none;" name="imagenFile">
+									<label for="formFile" class="form-label text-black">Imagen</label>
+									<input class="form-control border-1 border-black" type="file"
+										accept="image/jpeg, image/png, image/jpg" id="imagenForm" name="imagenFile">
 								</div>
 
 								<!-- Email -->
 								<div class="mb-3">
-									<label for="email" class="form-label">Email</label>
+									<label for="email" class="form-label text-black">Email</label>
 									<input type="email" class="form-control inputVistaEditar" id="email"
 										th:field="*{emailUsuario}" maxlength="50" disabled>
 								</div>
 
 								<!-- Nombre -->
 								<div class="mb-3">
-									<label for="nombre" class="form-label">Nombre</label>
+									<label for="nombre" class="form-label text-black">Nombre</label>
 									<input type="text" class="form-control inputVistaEditar" id="nombre"
 										th:field="*{nombreUsuario}" maxlength="50">
 								</div>
 
 								<!-- Telefono -->
 								<div class="mb-3">
-									<label for="tlf" class="form-label">Teléfono</label>
+									<label for="tlf" class="form-label text-black">Teléfono</label>
 									<input type="text" class="form-control inputVistaEditar" id="tlf"
 										th:field="*{tlfUsuario}" maxlength="15">
 								</div>

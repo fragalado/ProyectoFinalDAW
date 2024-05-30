@@ -247,7 +247,7 @@ public class AdministracionUsuariosControlador {
 		try {
 			Util.logInfo("AdministracionUsuariosControlador", "agregarUsuario", "Ha entrado");
 			// Encriptamos la contraseña
-			usuarioDTO.setPsswdUsuario(bCryptPasswordEncoder.encode(usuarioDTO.getPsswdUsuario()));
+			usuarioDTO.setPsswdUsuario(bCryptPasswordEncoder.encode(usuarioDTO.getPsswdUsuario().trim()));
 
 			// Controlamos los valores
 			if (usuarioDTO.getNombreUsuario().length() > 50 || usuarioDTO.getEmailUsuario().length() > 50
@@ -262,6 +262,11 @@ public class AdministracionUsuariosControlador {
 				// Le añadimos la imagen al usuarioDTO
 				usuarioDTO.setImagenUsuario(foto);
 			}
+
+			// Controlamos los espacios en blanco de las propiedades
+			usuarioDTO.setNombreUsuario(usuarioDTO.getNombreUsuario().trim());
+			usuarioDTO.setEmailUsuario(usuarioDTO.getEmailUsuario().trim());
+			usuarioDTO.setTlfUsuario(usuarioDTO.getTlfUsuario().trim());
 
 			// Agregamos el usuario
 			boolean ok = usuarioImplementacion.agregaUsuario(usuarioDTO);

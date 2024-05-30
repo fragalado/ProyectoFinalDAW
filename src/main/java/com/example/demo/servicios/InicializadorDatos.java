@@ -46,8 +46,8 @@ public class InicializadorDatos {
 		if (usuarioRepository.count() == 0) {
 			// Si no hay ningun admin añadimos uno
 			Usuario usuarioAdmin = new Usuario(0, "Admin", "123456789", "admin@gmail.com",
-					bCryptPasswordEncoder.encode("admin"), new Acceso(2, "Admin", "Administrador de la tienda"), true,
-					null, null, null);
+					bCryptPasswordEncoder.encode("adminAltair123"), new Acceso(2, "Admin", "Administrador de la tienda"), true,
+					null, null, null, null);
 
 			// Lo añadimos
 			usuarioRepository.save(usuarioAdmin);

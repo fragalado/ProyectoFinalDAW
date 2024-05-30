@@ -2,16 +2,22 @@ function validarFormulario() {
 	// Obtenemos los datos el formulario
 	let precio = document.getElementById("precioForm").value.trim();
 	let tipo = document.getElementById("tipoForm").value.trim();
-
+	let imagen = document.getElementById("imagenForm").value.split('.')[1];
+	
 	// Validamos los campos
 	let precioError = validarPrecio(precio);
 	if (precioError != "")
 		muestraToast(precioError, false);
+
 	let tipoError = validarTipo(tipo);
 	if (tipoError != "")
 		muestraToast(tipoError, false);
 
-	if (tipoError || precioError)
+	let imagenError = validarImagen(imagen);
+	if(imagenError != "")
+		muestraToast(imagenError, false);
+
+	if (tipoError || precioError || imagenError)
 		return false;
 	return true;
 }
@@ -30,4 +36,12 @@ function validarTipo(tipo) {
 	} else {
 		return "";
 	}
+}
+
+function validarImagen(tipoImagen){
+	// Comprobamos el tipo de imagen
+	if(tipoImagen == "jpg" || tipoImagen == "png" || tipoImagen == "jpeg" || tipoImagen == "webp")
+		return "";
+	else
+		return "El formato de la imagen no es válido. Formatos válidos: jpg, png, jpeg, webp."
 }

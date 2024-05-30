@@ -76,6 +76,12 @@ public class CarritoImplementacion implements CarritoInterfaz {
 			// Obtenemos el suplemento por el id
 			SuplementoDTO suplementoDTO = suplementoImplementacion.obtieneSuplementoPorId(id_suplemento);
 
+			// Comprobamos si el el usuario o el suplemento es null
+			if(usuarioDTO == null || suplementoDTO == null){
+				// Devolvemos false
+				return false;
+			}
+
 			// Comprobamos si ya existe un carrito con el suplemento
 			Carrito carrito = carritoRepositorio.findCarritoBySuplemento(Util.usuarioADao(usuarioDTO),
 					Util.suplementoDtoADao(suplementoDTO));

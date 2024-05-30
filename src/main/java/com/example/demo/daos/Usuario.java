@@ -50,6 +50,8 @@ public class Usuario {
 	private byte[] imagenUsuario;
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	private List<Token> listaTokens;
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
+	private List<Carrito> listaCarrito;
 	@OneToMany(mappedBy = "usuario")
 	private List<Orden> listaOrden;
 }

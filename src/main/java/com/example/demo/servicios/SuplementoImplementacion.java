@@ -91,15 +91,14 @@ public class SuplementoImplementacion implements SuplementoInterfaz {
 	@Override
 	public boolean actualizaSuplemento(SuplementoDTO suplementoDTO) {
 		try {
-			System.out.println(suplementoDTO.getIdSuplemento());
 			// Con el id del suplemento pasado obtenemos el suplemento de la base de datos
 			Suplemento suplementoEncontrado = suplementoRepository.findById(suplementoDTO.getIdSuplemento()).get();
 			
 			// Actualizamos algunos datos del suplementoEncontrado con el suplementoDTO
-			suplementoEncontrado.setNombreSuplemento(suplementoDTO.getNombreSuplemento());
-			suplementoEncontrado.setDescSuplemento(suplementoDTO.getDescSuplemento());
-			suplementoEncontrado.setMarcaSuplemento(suplementoDTO.getMarcaSuplemento());
-			suplementoEncontrado.setTipoSuplemento(suplementoDTO.getTipoSuplemento());
+			suplementoEncontrado.setNombreSuplemento(suplementoDTO.getNombreSuplemento().trim());
+			suplementoEncontrado.setDescSuplemento(suplementoDTO.getDescSuplemento().trim());
+			suplementoEncontrado.setMarcaSuplemento(suplementoDTO.getMarcaSuplemento().trim());
+			suplementoEncontrado.setTipoSuplemento(suplementoDTO.getTipoSuplemento().trim());
 			suplementoEncontrado.setPrecioSuplemento(suplementoDTO.getPrecioSuplemento());
 			if(suplementoDTO.getImagenSuplemento() != null)
 				suplementoEncontrado.setImagenSuplemento(Util.convertirAByteArray(suplementoDTO.getImagenSuplemento()));
@@ -133,6 +132,22 @@ public class SuplementoImplementacion implements SuplementoInterfaz {
 			return false;
 		} catch (OptimisticLockingFailureException e) {
 			return false;
+		}
+	}
+
+	@Override
+	public List<SuplementoDTO> obtieneSuplementosPorKeyword(String keyword) {
+		try {
+			// Obtenemos los suplementos por la keyword
+			List<Suplemento> listaSuplementosDao = suplementoRepository.findAllSuplementosByKeyword(keyword);
+
+			// Si es distinto de null la convertimos a DTO y devolvemos
+			if(listaSuplementosDao != null)
+				return Util.listaSuplementoDaoADto(listaSuplementosDao);
+			// Si es null devolvemos null
+			return null;
+		} catch (Exception e) {
+			return null;
 		}
 	}
 

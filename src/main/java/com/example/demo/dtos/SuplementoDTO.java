@@ -24,4 +24,10 @@ public class SuplementoDTO {
 	private String tipoSuplemento;
 	private String marcaSuplemento;
 	private String imagenSuplemento;
+
+	// Métodos
+
+	public String formateaPrecio(){
+		return String.format("%.2f", precioSuplemento);
+	}
 }

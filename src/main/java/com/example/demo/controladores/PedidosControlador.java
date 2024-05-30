@@ -75,79 +75,81 @@ public class PedidosControlador {
 
 		try {
 			// Obtenemos el orden por el id
-			OrdenDTO ordenDto = ordenImplementacion.obtieneOrdenPorId(idOrden);
+        OrdenDTO ordenDto = ordenImplementacion.obtieneOrdenPorId(idOrden);
 
-			// Comprobamos si es distinto de null
-			if (ordenDto != null) {
-				response.setContentType("application/pdf");
-				String headerKey = "Content-Disposition";
-				// Obtenemos la fecha y la formateamos
-				Calendar hoy = Calendar.getInstance();
-				String fechaFormateada = hoy.get(Calendar.DAY_OF_MONTH) + "-" + hoy.get(Calendar.MONTH+1) + "-"
-						+ hoy.get(Calendar.YEAR);
-				String headerValue = "attachment; filename=" + fechaFormateada + ".pdf";
-				response.setHeader(headerKey, headerValue);
-				Document document = new Document(PageSize.A4);
-				PdfWriter.getInstance(document, response.getOutputStream());
-				
-				HeaderFooter footer = new HeaderFooter(true, new Phrase(" page"));
-	            footer.setAlignment(Element.ALIGN_CENTER);
-	            footer.setBorderWidthBottom(0);
-	            Image imagen2 = Image.getInstance("src/main/resources/static/img/logo2.png");
-	            imagen2.scaleToFit(35, 35);
-	            footer.addSpecialContent(imagen2);
-	            document.setFooter(footer);
-				document.open();
+        // Comprobamos si es distinto de null
+        if (ordenDto != null) {
+            response.setContentType("application/pdf");
+            String headerKey = "Content-Disposition";
+            // Obtenemos la fecha y la formateamos
+            Calendar hoy = Calendar.getInstance();
+            String fechaFormateada = hoy.get(Calendar.DAY_OF_MONTH) + "-" + (hoy.get(Calendar.MONTH) + 1) + "-" + hoy.get(Calendar.YEAR);
+            String headerValue = "attachment; filename=" + fechaFormateada + ".pdf";
+            response.setHeader(headerKey, headerValue);
 
-				// Add a title to the document
-				Font font = new Font(Font.HELVETICA, 16, Font.BOLD);
-				Paragraph title = new Paragraph("Factura Pedido", font);
-				title.setAlignment(Paragraph.ALIGN_CENTER);
-				document.add(title);
+            Document document = new Document(PageSize.A4);
+            PdfWriter.getInstance(document, response.getOutputStream());
 
-				// Add a blank line
-				document.add(new Paragraph("\n"));
+            // Añadimos el footer
+            HeaderFooter footer = new HeaderFooter(true, new Phrase(" page"));
+            footer.setAlignment(Element.ALIGN_CENTER);
+            footer.setBorderWidthBottom(0);
+            // Cargamos la imagen del logo de manera más robusta
+            Image imagen2 = Image.getInstance(getClass().getResource("/static/img/logo2.png"));
+            imagen2.scaleToFit(35, 35);
+            footer.addSpecialContent(imagen2);
+            document.setFooter(footer);
 
-				// Create a table with 4 columns
-				PdfPTable table = new PdfPTable(4);
-				table.setWidthPercentage(100);
-				table.setSpacingBefore(10f);
-				table.setSpacingAfter(10f);
+            document.open();
 
-				// Define column widths
-				float[] columnWidths = { 1f, 3f, 2f, 2f };
-				table.setWidths(columnWidths);
+            // Añadimos un título al documento
+            Font font = new Font(Font.HELVETICA, 16, Font.BOLD);
+            Paragraph title = new Paragraph("Factura Pedido", font);
+            title.setAlignment(Paragraph.ALIGN_CENTER);
+            document.add(title);
 
-				// Add table header
-				Font headerFont = new Font(Font.HELVETICA, 12, Font.BOLD);
-				PdfPCell headerCell;
+            // Añadimos una línea en blanco
+            document.add(new Paragraph("\n"));
 
-				headerCell = new PdfPCell(new Paragraph("#", headerFont));
-				table.addCell(headerCell);
+            // Creamos una tabla con 4 columnas
+            PdfPTable table = new PdfPTable(4);
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(10f);
+            table.setSpacingAfter(10f);
 
-				headerCell = new PdfPCell(new Paragraph("Suplemento", headerFont));
-				table.addCell(headerCell);
+            // Definimos los anchos de las columnas
+            float[] columnWidths = {1f, 3f, 2f, 2f};
+            table.setWidths(columnWidths);
 
-				headerCell = new PdfPCell(new Paragraph("Cantidad", headerFont));
-				table.addCell(headerCell);
+            // Añadimos el encabezado de la tabla
+            Font headerFont = new Font(Font.HELVETICA, 12, Font.BOLD);
+            PdfPCell headerCell;
 
-				headerCell = new PdfPCell(new Paragraph("Precio unidad", headerFont));
-				table.addCell(headerCell);
+            headerCell = new PdfPCell(new Paragraph("#", headerFont));
+            table.addCell(headerCell);
 
-				// Add table data
-				int contador = 1;
-				for (CarritoDTO carritoDto : ordenDto.getListaCarritoDto()) {
-					table.addCell(String.valueOf(contador));
-					table.addCell(carritoDto.getSuplementoDTO().getNombreSuplemento());
-					table.addCell(String.valueOf(carritoDto.getCantidad()));
-					table.addCell(String.valueOf(carritoDto.getSuplementoDTO().getPrecioSuplemento()));
-					contador++;
-				}
+            headerCell = new PdfPCell(new Paragraph("Suplemento", headerFont));
+            table.addCell(headerCell);
 
-				document.add(table);
+            headerCell = new PdfPCell(new Paragraph("Cantidad", headerFont));
+            table.addCell(headerCell);
 
-				document.close();
-			}
+            headerCell = new PdfPCell(new Paragraph("Precio unidad", headerFont));
+            table.addCell(headerCell);
+
+            // Añadimos los datos a la tabla
+            int contador = 1;
+            for (CarritoDTO carritoDto : ordenDto.getListaCarritoDto()) {
+                table.addCell(String.valueOf(contador));
+                table.addCell(carritoDto.getSuplementoDTO().getNombreSuplemento());
+                table.addCell(String.valueOf(carritoDto.getCantidad()));
+                table.addCell(String.valueOf(carritoDto.getSuplementoDTO().getPrecioSuplemento()));
+                contador++;
+            }
+
+            document.add(table);
+            document.close();
+        }
 		} catch (Exception e) {
 			System.out.println(e.getStackTrace());
 			System.out.println(e.getMessage());

@@ -53,6 +53,9 @@ public class SuplementoControlador {
 			modelo.addAttribute("tieneCarrito", carritoImplementacion.obtieneCantidadDeCarritosUsuario(
 					SecurityContextHolder.getContext().getAuthentication().getName()));
 
+			// Añadimos al modelo el tipo que esta visualizando, para poder volver a la vista
+			modelo.addAttribute("tipo", 3);
+
 			// Devolvemos la vista
 			return "suplementos/suplementos";
 		} catch (Exception e) {
@@ -64,7 +67,8 @@ public class SuplementoControlador {
 	/**
 	 * Método que controla las peticiones GET para la ruta /suplementos/{tipo}
 	 * 
-	 * @param tipo   Tipo del suplemento que se va a mostrar (1:Proteína; 2:Creatina; 3:Todo)
+	 * @param tipo   Tipo del suplemento que se va a mostrar (1:Proteína;
+	 *               2:Creatina; 3:Pre-Entrenamiento)
 	 * @param modelo Objeto Model para pasar datos a la vista
 	 * @return Devuelve una vista
 	 */
@@ -82,6 +86,9 @@ public class SuplementoControlador {
 			else if (tipo == 2)
 				listaSuplementosDTO = listaSuplementosDTO.stream().filter(x -> x.getTipoSuplemento().equals("Creatina"))
 						.collect(Collectors.toList());
+			else if (tipo == 3)
+				listaSuplementosDTO = listaSuplementosDTO.stream()
+						.filter(x -> x.getTipoSuplemento().equals("Pre-Entrenamiento")).collect(Collectors.toList());
 
 			// Añadimos la lista al modelo
 			modelo.addAttribute("listaSuplementosDTO", listaSuplementosDTO);
@@ -90,10 +97,41 @@ public class SuplementoControlador {
 			modelo.addAttribute("tieneCarrito", carritoImplementacion.obtieneCantidadDeCarritosUsuario(
 					SecurityContextHolder.getContext().getAuthentication().getName()));
 
+			// Añadimos al modelo el tipo que esta visualizando, para poder volver a la
+			// vista
+			modelo.addAttribute("tipo", tipo);
+
 			// Devolvemos la vista
 			return "suplementos/suplementos";
 		} catch (Exception e) {
 			Util.logError("SuplementoControlador", "vistaSuplementosPorTipo", "Se ha producido un error");
+			return "redirect:/home";
+		}
+	}
+
+	/**
+	 * Método que controla las peticiones GET para la ruta /suplementos/filter
+	 * 
+	 * @param keyword Keyword por la cual filtrar los suplementos
+	 * @param modelo  Objeto Model para enviar datos a la vista
+	 * @return Devuelve un fragmento de vista
+	 */
+	@GetMapping("/filter")
+	public String filtrarSuplementoPorKeyword(String keyword, Model modelo) {
+		try {
+			// Log
+			Util.logInfo("SuplementoControlador", "filtrarSuplementoPorKeyword", "Ha entrado");
+
+			// Obtenemos los suplementos que contengan la keyword de nombre
+			List<SuplementoDTO> listaSuplementoDTO = suplementoImplementacion.obtieneSuplementosPorKeyword(keyword);
+
+			// Añadimos la lista al modelo
+			modelo.addAttribute("listaSuplementosDTO", listaSuplementoDTO);
+
+			// Devolvemos el fragmento actualizado
+			return "suplementos/suplementos :: suplementosFragments";
+		} catch (Exception e) {
+			Util.logError("SuplementoControlador", "filtrarSuplementoPorKeyword", "Se ha producido un error");
 			return "redirect:/home";
 		}
 	}

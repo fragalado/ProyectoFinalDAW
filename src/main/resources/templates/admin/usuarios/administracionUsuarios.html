@@ -12,6 +12,7 @@
 	<!-- Fin SweetAlert2 -->
 	<!-- JS -->
 	<script th:src="@{/js/toast.js}"></script>
+	<!-- JQuery -->
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 
@@ -46,7 +47,7 @@
 					</div>
 
 					<!-- Tabla -->
-					<div class="table-responsive" id="userTableContainer">
+					<div class="table-responsive" id="tableContainer">
 						<table class="table table-dark table-hover" th:fragment="userTable">
 							<thead>
 								<tr>
@@ -129,7 +130,7 @@
                         url: '/admin/usuarios/filter',
                         data: { keyword: keyword },
                         success: function(data) {
-							$('#userTableContainer').html(data);
+							$('#tableContainer').html(data);
                         },
                         error: function(error) {
                             console.log(error);

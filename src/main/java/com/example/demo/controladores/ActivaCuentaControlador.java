@@ -61,6 +61,62 @@ public class ActivaCuentaControlador {
 	}
 
 	/**
+	 * Método que controla las peticiones GET para la ruta /activa-cuenta/peticion
+	 * @param request Objeto HttpServletRequest que contiene los datos de la request/peticion
+	 * @return Devuelve una vista
+	 */
+	@GetMapping("/peticion")
+	public String vistaPeticionActivarCuenta(HttpServletRequest request){
+		try {
+			// Log
+			Util.logInfo("ActivaCuentaControlador", "vistaPeticionActivarCuenta", "Ha entrado");
+
+			// Control de sesion
+			if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				Util.logInfo("ActivaCuentaControlador", "vistaPeticionActivarCuenta", "El usuario ya ha iniciado sesion");
+				return "redirect:/home";
+			}
+
+			// Devolvemos la vista
+			return "auth/peticionActivarCuenta";
+		} catch (Exception e) {
+			Util.logError("ActivaCuentaControlador", "vistaPeticionActivarCuenta", "Se ha producido un error");
+			return "redirect:/login";
+		}
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	@PostMapping("/peticion")
+	public String peticionActivarCuenta(HttpServletRequest request, @RequestParam String email){
+		try {
+			// Log
+			Util.logInfo("ActivaCuentaControlador", "peticionActivarCuenta", "Ha entrado");
+
+			// Control de sesion
+			if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				Util.logInfo("ActivaCuentaControlador", "peticionActivarCuenta", "El usuario ya ha iniciado sesion");
+				return "redirect:/home";
+			}
+
+			// Enviamos la peticion
+			Boolean ok = usuarioImplementacion.peticionActivaCuenta(email);
+
+			// Controlamos la respuesta
+			String url = "redirect:/activa-cuenta/peticion";
+			if(ok == null) // El usuario ya tiene la cuenta activada
+				return url + "?activada";
+			else
+				return ok ? url + "?success" : url + "?error";
+		} catch (Exception e) {
+			Util.logError("ActivaCuentaControlador", "peticionActivarCuenta", "Se ha producido un error");
+			return "redirect:/login";
+		}
+	}
+
+	/**
 	 * Método que maneja las solicitudes GET para la ruta "/activa-cuenta/activar"
 	 * 
 	 * @param token   Código del token

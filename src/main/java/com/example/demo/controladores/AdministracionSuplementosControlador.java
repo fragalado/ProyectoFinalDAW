@@ -1,5 +1,7 @@
 package com.example.demo.controladores;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,6 +59,35 @@ public class AdministracionSuplementosControlador {
 			return "admin/suplementos/administracionSuplementos";
 		} catch (Exception e) {
 			Util.logError("AdministracionSuplementosControlador", "vistaAdministracionSuplementos",
+					"Se ha producido un error");
+			return "redirect:/home";
+		}
+	}
+
+	/**
+	 * Método que controla las peticiones GET para la ruta /admin/suplementos/filter
+	 * 
+	 * @param modelo Objeto Model para enviar datos a la vista
+	 * @param keyword Keyword por la cual filtrar los suplementos
+	 * @return Devuelve el fragmento de tabla
+	 */
+	@GetMapping("/filter")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public String filtrarSuplementosPorKeyword(Model modelo, @RequestParam String keyword){
+		try {
+			//Log
+			Util.logInfo("AdministracionSuplementosControlador", "filtrarSuplementosPorKeyword", "Ha entrado");
+
+			// Obtenemos los suplementos que contengan la keyword
+			List<SuplementoDTO> listaSuplementosDto = suplementoImplementacion.obtieneSuplementosPorKeyword(keyword);
+
+			// Añadimos al modelo la lista
+			modelo.addAttribute("listaSuplementosDTO", listaSuplementosDto);
+
+			// Devolvemos el fragmento
+			return "admin/suplementos/administracionSuplementos :: suplementosTable";
+		} catch (Exception e) {
+			Util.logError("AdministracionSuplementosControlador", "filtrarSuplementosPorKeyword",
 					"Se ha producido un error");
 			return "redirect:/home";
 		}
@@ -203,6 +235,12 @@ public class AdministracionSuplementosControlador {
 					|| suplementoDTO.getTipoSuplemento().length() > 255) {
 				return "redirect:/admin/suplementos?suplementoAgregadoError";
 			}
+
+			// Controlamos los espacios blancos
+			suplementoDTO.setNombreSuplemento(suplementoDTO.getNombreSuplemento().trim());
+			suplementoDTO.setDescSuplemento(suplementoDTO.getDescSuplemento().trim());
+			suplementoDTO.setMarcaSuplemento(suplementoDTO.getMarcaSuplemento().trim());
+			suplementoDTO.setTipoSuplemento(suplementoDTO.getTipoSuplemento().trim());
 
 			// Pasamos la imagen a String
 			String foto = Util.convertirABase64(imagenFile.getBytes());
