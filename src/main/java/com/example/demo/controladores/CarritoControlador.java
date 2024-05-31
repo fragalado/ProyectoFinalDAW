@@ -41,6 +41,7 @@ public class CarritoControlador {
 	public String vistaCarrito(Model modelo, Authentication authentication) {
 		try {
 			Util.logInfo("CarritoControlador", "vistaCarrito", "Ha entrado");
+			
 			// Obtenemos el carrito del usuario
 			List<CarritoDTO> listaCarritoDTO = carritoImplementacion.obtieneCarritoUsuario(authentication.getName());
 
@@ -68,15 +69,23 @@ public class CarritoControlador {
 	 * @return Devuelve una redirección
 	 */
 	@GetMapping("/agrega-suplemento/{idSuplemento}")
-	public String agregaSuplementoAlCarrito(@PathVariable long idSuplemento, Authentication authentication, @RequestParam String tipo) {
+	public String agregaSuplementoAlCarrito(@PathVariable long idSuplemento, Authentication authentication,
+			@RequestParam(required = false) String tipo) {
 		try {
 			Util.logInfo("CarritoControlador", "agregaSuplementoAlCarrito", "Ha entrado");
+			
 			// Agregamos el suplemento al carrito
 			boolean ok = carritoImplementacion.agregaSuplemento(idSuplemento, authentication.getName());
 
 			// Controlamos la respuesta
-			String url = "redirect:/suplementos/"+tipo;
-			return ok ? url + "?success" : url + "?error";
+			String url;
+			if (tipo != null) {
+				url = "redirect:/suplementos?tipo=" + tipo;
+				return ok ? url + "&success" : url + "&error";
+			} else {
+				url = "redirect:/suplementos";
+				return ok ? url + "?success" : url + "?error";
+			}
 		} catch (Exception e) {
 			Util.logError("CarritoControlador", "agregaSuplementoAlCarrito", "Se ha producido un error");
 			return "redirect:/home";
@@ -87,14 +96,16 @@ public class CarritoControlador {
 	 * Método que controla las peticiones GET para la ruta /carrito/borra-suplemento/{idCarrito}
 	 * 
 	 * @param idCarrito Id del carrito a eliminar
+	 * @param authentication Objeto Authentication con los datos de la autenticación
 	 * @return Devuelve una redirección
 	 */
 	@GetMapping("/borra-suplemento/{idCarrito}")
-	public String borraSuplementoCarrito(@PathVariable long idCarrito) {
+	public String borraSuplementoCarrito(@PathVariable long idCarrito, Authentication authentication) {
 		try {
 			Util.logInfo("CarritoControlador", "borraSuplementoCarrito", "Ha entrado");
+			
 			// Borramos el carrito
-			boolean ok = carritoImplementacion.borraCarrito(idCarrito);
+			boolean ok = carritoImplementacion.borraCarrito(idCarrito, authentication.getName());
 
 			// Controlamos la respuesta
 			return ok ? "redirect:/carrito?success" : "redirect:/carrrito?error";

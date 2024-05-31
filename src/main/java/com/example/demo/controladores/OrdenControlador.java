@@ -21,7 +21,6 @@ import com.example.demo.servicios.UsuarioImplementacion;
 import com.example.demo.utiles.Util;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
-import com.paypal.base.rest.PayPalRESTException;
 
 /**
  * Controlador que controla las peticiones HTTP para la ruta /comprar
@@ -54,11 +53,17 @@ public class OrdenControlador {
 
 	@PostMapping
 	public String comprarCarrito(@RequestParam Double total) {
-		String cancelUrl = url.getUrl() + "/comprar/cancel";
-		String successUrl = url.getUrl() + "/comprar/success";
 		try {
 			Util.logInfo("OrdenControlador", "comprarCarrito", "Ha entrado");
+
+			// URL para redirigir al terminar el pago
+			String cancelUrl = url.getUrl() + "/comprar/cancel";
+			String successUrl = url.getUrl() + "/comprar/success";
+
+			// Hacemos el pago
 			Payment payment = paypalService.createPayment(total, "EUR", "payment description", cancelUrl, successUrl);
+
+			// Recorremos los links y si la operacion esta aprobada redirigimos
 			for (Links links : payment.getLinks()) {
 				if (links.getRel().equals("approval_url")) {
 					return "redirect:" + links.getHref();
@@ -87,9 +92,15 @@ public class OrdenControlador {
 	public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId,
 			Authentication authentication) {
 		try {
+			// Log
 			Util.logInfo("OrdenControlador", "successPay", "Ha entrado");
+
+			// Hacemos el pago
 			Payment payment = paypalService.executePayment(paymentId, payerId);
+
+			// Si se aprueba el pago limpiamos el carrito
 			if (payment.getState().equals("approved")) {
+
 				// Obtenemos el usuario por el email
 				UsuarioDTO usuario = usuarioImplementacion.obtieneUsuarioPorEmail(authentication.getName());
 
@@ -106,10 +117,11 @@ public class OrdenControlador {
 							usuario.getNombreUsuario(), listaCarritoDto);
 				}
 
+				// Redirigimos
 				return ok ? "redirect:/carrito?paySuccess" : "redirect:/carrito?error";
 			}
 			return "redirect:/carrito?payError";
-		} catch (PayPalRESTException e) {
+		} catch (Exception e) {
 			Util.logError("OrdenControlador", "successPay", "Se ha producido un error");
 			return "redirect:/carrito?payError";
 		}

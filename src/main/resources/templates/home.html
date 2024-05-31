@@ -70,7 +70,7 @@
 				<div class="col-12">
 					<div class="row">
 						<!-- Card -->
-						<div th:each="suplemento: ${listaSuplementosDTO}" class="col-lg-2 col-md-3 col-sm-4 col-6">
+						<div th:each="suplemento: ${listaSuplementosDTO}" class="col-lg-2 col-md-3 col-sm-4 col-6 mt-2">
 							<div class="card sombraDiv" style="min-height: 450px;">
 								<!-- Imagen suplemento -->
 								<img th:src="'data:image/png;base64, '+ ${suplemento.getImagenSuplemento()}"

@@ -30,7 +30,7 @@
 				<div class="col-12">
 
 					<div class="row">
-						<h1 class="text-center mb-5">Suplementos</h1>	
+						<h1 class="text-center mb-5">Suplementos</h1>
 					</div>
 
 					<div class="row">
@@ -41,9 +41,10 @@
 								Filtrar por
 							</button>
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" th:href="@{/suplementos/1}">Proteína</a></li>
-								<li><a class="dropdown-item" th:href="@{/suplementos/2}">Creatina</a></li>
-								<li><a class="dropdown-item" th:href="@{/suplementos/3}">Pre-Entrenamiento</a></li>
+								<li><a class="dropdown-item" th:href="@{/suplementos?tipo=proteina}">Proteína</a></li>
+								<li><a class="dropdown-item" th:href="@{/suplementos?tipo=creatina}">Creatina</a></li>
+								<li><a class="dropdown-item"
+										th:href="@{/suplementos?tipo=pre-entrenamiento}">Pre-Entrenamiento</a></li>
 								<li>
 									<hr class="dropdown-divider">
 								</li>
@@ -79,9 +80,12 @@
 										class="card-text"></p>
 									<p th:if="${suplemento.getDescSuplemento().length <= 50}" class="card-text"
 										th:text="${suplemento.getDescSuplemento()}"></p>
-									<p class="card-text">Precio: <span
-										th:text="${suplemento.formateaPrecio()}"></span>€</p>
-									<a th:href="@{/carrito/agrega-suplemento/} + ${suplemento.getIdSuplemento()} + '?tipo=' + ${tipo}"
+									<p class="card-text">Precio: <span th:text="${suplemento.formateaPrecio()}"></span>€
+									</p>
+									<!-- Boton añadir carrito -->
+									<a th:if="${tipo != null}" th:href="@{/carrito/agrega-suplemento/} + ${suplemento.getIdSuplemento() + '?tipo=' + tipo}"
+										class="btn btn-primary">Añadir al carrito</a>
+									<a th:if="${tipo == null}" th:href="@{/carrito/agrega-suplemento/} + ${suplemento.getIdSuplemento()}"
 										class="btn btn-primary">Añadir al carrito</a>
 								</div>
 							</div>
@@ -107,18 +111,18 @@
 
 	<!-- Script AJAX -->
 	<script>
-		$(document).ready(function(){
-			$('#searchInput').on('input', function(){
+		$(document).ready(function () {
+			$('#searchInput').on('input', function () {
 				let keyword = $(this).val();
-				if(keyword.length >= 4 || keyword.length == 0) {
+				if (keyword.length >= 4 || keyword.length == 0) {
 					$.ajax({
 						type: 'GET',
 						url: '/suplementos/filter',
-						data: {keyword: keyword},
-						success: function(data) {
+						data: { keyword: keyword },
+						success: function (data) {
 							$('#suplementosContainer').html(data);
 						},
-						error: function(error){
+						error: function (error) {
 							console.log(error);
 						}
 					});

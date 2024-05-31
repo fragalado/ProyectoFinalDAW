@@ -14,7 +14,7 @@ import jakarta.annotation.PostConstruct;
 /**
  * Inicializador de datos
  * 
- * @author Francisco José Gallego Dorado
+ * @author Francisco José Gallego Dorado 
  * Fecha: 29/04/2024
  */
 @Component
@@ -31,26 +31,30 @@ public class InicializadorDatos {
 
 	@PostConstruct
 	public void init() {
-		// Comprobamos si la tabla acceso no tiene datos
-		if (accesoRepository.count() == 0) {
-			// Si no tiene le añadimos
-			Acceso accesoUsuario = new Acceso(1, "User", "Usuario de la tienda");
-			Acceso accesoAdmin = new Acceso(2, "Admin", "Administrador de la tienda");
+		try {
+			// Comprobamos si la tabla acceso no tiene datos
+			if (accesoRepository.count() == 0) {
+				// Si no tiene le añadimos
+				Acceso accesoUsuario = new Acceso(1, "User", "Usuario de la tienda");
+				Acceso accesoAdmin = new Acceso(2, "Admin", "Administrador de la tienda");
 
-			// Lo agregamos a la base de datos
-			accesoRepository.save(accesoUsuario);
-			accesoRepository.save(accesoAdmin);
-		}
+				// Lo agregamos a la base de datos
+				accesoRepository.save(accesoUsuario);
+				accesoRepository.save(accesoAdmin);
+			}
 
-		// Comprobamos si no existe ningun administrador en la base de datos
-		if (usuarioRepository.count() == 0) {
-			// Si no hay ningun admin añadimos uno
-			Usuario usuarioAdmin = new Usuario(0, "Admin", "123456789", "admin@gmail.com",
-					bCryptPasswordEncoder.encode("adminAltair123"), new Acceso(2, "Admin", "Administrador de la tienda"), true,
-					null, null, null, null);
+			// Comprobamos si no existe ningun administrador en la base de datos
+			if (usuarioRepository.count() == 0) {
+				// Si no hay ningun admin añadimos uno
+				Usuario usuarioAdmin = new Usuario(0, "Admin", "123456789", "admin@gmail.com",
+						bCryptPasswordEncoder.encode("adminAltair123"),
+						new Acceso(2, "Admin", "Administrador de la tienda"), true, null, null, null, null);
 
-			// Lo añadimos
-			usuarioRepository.save(usuarioAdmin);
+				// Lo añadimos
+				usuarioRepository.save(usuarioAdmin);
+			}
+		} catch (Exception e) {
+			System.out.println("[Error-InicializadorDatos-init] No se ha podido inicializar datos.");
 		}
 	}
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.example.demo.utiles.Util;
 
 /**
- * Controlador 
+ * Controlador
  */
 @ControllerAdvice
 public class ErrorControlador {

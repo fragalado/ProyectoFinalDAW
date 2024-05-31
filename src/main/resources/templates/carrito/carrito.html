@@ -73,8 +73,10 @@
 						<!-- Fin Tabla -->
 
 						<!-- Boton comprar -->
-						<button th:if="${listaCarritoDTO != null && listaCarritoDTO.size() > 0}" class="btn btn-primary"
+						<div>
+							<button th:if="${listaCarritoDTO != null && listaCarritoDTO.size() > 0}" class="btn btn-primary"
 							style="float: right;">Comprar</button>
+						</div>
 						<!-- Fin Boton comprar -->
 
 						<input name="total" th:value="${precioTotal}" style="display: none;">

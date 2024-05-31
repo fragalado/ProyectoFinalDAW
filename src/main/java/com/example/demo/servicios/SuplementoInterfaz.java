@@ -23,13 +23,14 @@ public interface SuplementoInterfaz {
 	/**
 	 * Método que obtiene un suplemento por su id
 	 * 
-	 * @param id_suplemento Id del suplemento a obtener
+	 * @param idSuplemento Id del suplemento a obtener
 	 * @return Devuelve un objeto de tipo SuplementoDTO
 	 */
-	public SuplementoDTO obtieneSuplementoPorId(long id_suplemento);
+	public SuplementoDTO obtieneSuplementoPorId(long idSuplemento);
 
 	/**
 	 * Método que obtiene todos los suplementos que contengan la keyword
+	 * 
 	 * @param keyword Keyword por la cual filtrar los suplementos
 	 * @return Devuelve una lista de objetos SuplementoDTO
 	 */
@@ -38,10 +39,10 @@ public interface SuplementoInterfaz {
 	/**
 	 * Método que borra un suplemento por su id.
 	 * 
-	 * @param id_suplemento Id del suplemento a eliminar
+	 * @param idSuplemento Id del suplemento a eliminar
 	 * @return Devuelve true si se ha eliminado o false si no se ha eliminado.
 	 */
-	public boolean borraSuplementoPorId(long id_suplemento);
+	public boolean borraSuplementoPorId(long idSuplemento);
 
 	/**
 	 * Método que actualiza un suplemento

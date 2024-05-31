@@ -48,6 +48,7 @@ public class AdministracionSuplementosControlador {
 	public String vistaAdministracionSuplementos(Model model) {
 		try {
 			Util.logInfo("AdministracionSuplementosControlador", "vistaAdministracionSuplementos", "Ha entrado");
+			
 			// Obtenemos una lista con todos los suplementos y lo agregamos al modelo
 			model.addAttribute("listaSuplementosDTO", suplementoImplementacion.obtieneTodosLosSuplementos());
 
@@ -67,15 +68,15 @@ public class AdministracionSuplementosControlador {
 	/**
 	 * Método que controla las peticiones GET para la ruta /admin/suplementos/filter
 	 * 
-	 * @param modelo Objeto Model para enviar datos a la vista
+	 * @param modelo  Objeto Model para enviar datos a la vista
 	 * @param keyword Keyword por la cual filtrar los suplementos
 	 * @return Devuelve el fragmento de tabla
 	 */
 	@GetMapping("/filter")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	public String filtrarSuplementosPorKeyword(Model modelo, @RequestParam String keyword){
+	public String filtrarSuplementosPorKeyword(Model modelo, @RequestParam String keyword) {
 		try {
-			//Log
+			// Log
 			Util.logInfo("AdministracionSuplementosControlador", "filtrarSuplementosPorKeyword", "Ha entrado");
 
 			// Obtenemos los suplementos que contengan la keyword
@@ -134,6 +135,7 @@ public class AdministracionSuplementosControlador {
 	public String vistaAgregarSuplemento(Model model) {
 		try {
 			Util.logInfo("AdministracionSuplementosControlador", "vistaAgregarSuplemento", "Ha entrado");
+			
 			// Agregamos al modelo un objeto suplemento
 			model.addAttribute("suplementoDTO", new SuplementoDTO());
 
@@ -160,6 +162,7 @@ public class AdministracionSuplementosControlador {
 	public String borraSuplemento(@PathVariable long id_suplemento) {
 		try {
 			Util.logInfo("AdministracionSuplementosControlador", "borraSuplemento", "Ha entrado");
+			
 			// Eliminamos el suplemento por el id_suplemento
 			boolean ok = suplementoImplementacion.borraSuplementoPorId(id_suplemento);
 
@@ -187,6 +190,7 @@ public class AdministracionSuplementosControlador {
 			@RequestPart("imagenFile") MultipartFile imagenFile) {
 		try {
 			Util.logInfo("AdministracionSuplementosControlador", "editaSuplemento", "Ha entrado");
+			
 			// Controlamos los valores
 			if (suplementoDTO.getPrecioSuplemento() > 999 || suplementoDTO.getNombreSuplemento().length() > 255
 					|| suplementoDTO.getDescSuplemento().length() > 255
@@ -228,6 +232,7 @@ public class AdministracionSuplementosControlador {
 			@RequestPart("imagenFile") MultipartFile imagenFile) {
 		try {
 			Util.logInfo("AdministracionSuplementosControlador", "agregaSuplemento", "Ha entrado");
+			
 			// Controlamos los valores
 			if (suplementoDTO.getPrecioSuplemento() > 999 || suplementoDTO.getNombreSuplemento().length() > 255
 					|| suplementoDTO.getDescSuplemento().length() > 255

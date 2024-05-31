@@ -27,7 +27,7 @@ public class HomeControlador {
 
 	@Autowired
 	private SuplementoImplementacion suplementoImplementacion;
-	
+
 	@Autowired
 	private CarritoImplementacion carritoImplementacion;
 
@@ -41,6 +41,7 @@ public class HomeControlador {
 	public String vistaHome(Model modelo, Authentication authentication) {
 		try {
 			Util.logInfo("HomeControlador", "vistaHome", "Ha entrado");
+			
 			// Obtenemos todos los suplementos
 			List<SuplementoDTO> listaSuplementosDto = suplementoImplementacion.obtieneTodosLosSuplementos();
 
@@ -50,9 +51,10 @@ public class HomeControlador {
 						listaSuplementosDto.stream().limit(6).collect(Collectors.toList()));
 			else
 				modelo.addAttribute("listaSuplementosDTO", listaSuplementosDto);
-			
+
 			// Obtenemos el numero de carrito del usuario
-			modelo.addAttribute("tieneCarrito", carritoImplementacion.obtieneCantidadDeCarritosUsuario(authentication.getName()));
+			modelo.addAttribute("tieneCarrito",
+					carritoImplementacion.obtieneCantidadDeCarritosUsuario(authentication.getName()));
 
 			// Devolvemos la vista
 			return "home";

@@ -23,6 +23,10 @@ public class OrdenDTO {
 	private Calendar fchOrden;
 	private List<CarritoDTO> listaCarritoDto = new ArrayList<>();
 	
+	/**
+	 * Método que formatea la fecha de la orden
+	 * @return Devuelve la fecha formateada
+	 */
 	public String parseaFecha() {
 		int day = fchOrden.get(Calendar.DAY_OF_MONTH);
 		int month = fchOrden.get(Calendar.MONTH) + 1;

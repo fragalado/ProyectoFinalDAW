@@ -8,8 +8,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.dtos.SuplementoDTO;
 import com.example.demo.servicios.CarritoImplementacion;
@@ -36,15 +36,35 @@ public class SuplementoControlador {
 	/**
 	 * Método que controla las peticiones GET para la ruta /suplementos
 	 * 
-	 * @param modelo Objeto Model para pasar datos a la vista
+	 * @param modelo Objeto Model para enviar datos a la vista
+	 * @param tipo   Tipo del suplemento a mostrar
 	 * @return Devuelve una vista
 	 */
 	@GetMapping
-	public String vistaSuplementos(Model modelo) {
+	public String vistaSuplementos(Model modelo, @RequestParam(required = false) String tipo) {
 		try {
 			Util.logInfo("SuplementoControlador", "vistaSuplementos", "Ha entrado");
+			
 			// Obtenemos todos los suplementos
 			List<SuplementoDTO> listaSuplementosDTO = suplementoImplementacion.obtieneTodosLosSuplementos();
+
+			// Comprobamos si tipo es distinto de null
+			if (tipo != null) {
+				// Comprobamos que tipo hay
+				if (tipo.equals("proteina"))
+					listaSuplementosDTO = listaSuplementosDTO.stream()
+							.filter(x -> x.getTipoSuplemento().equals("Proteína")).collect(Collectors.toList());
+				else if (tipo.equals("creatina"))
+					listaSuplementosDTO = listaSuplementosDTO.stream()
+							.filter(x -> x.getTipoSuplemento().equals("Creatina")).collect(Collectors.toList());
+				else if (tipo.equals("pre-entrenamiento"))
+					listaSuplementosDTO = listaSuplementosDTO.stream()
+							.filter(x -> x.getTipoSuplemento().equals("Pre-Entrenamiento"))
+							.collect(Collectors.toList());
+
+				// Agregamos el tipo al modelo
+				modelo.addAttribute("tipo", tipo);
+			}
 
 			// Añadimos la lista al modelo
 			modelo.addAttribute("listaSuplementosDTO", listaSuplementosDTO);
@@ -52,59 +72,11 @@ public class SuplementoControlador {
 			// Obtenemos el numero de carrito del usuario
 			modelo.addAttribute("tieneCarrito", carritoImplementacion.obtieneCantidadDeCarritosUsuario(
 					SecurityContextHolder.getContext().getAuthentication().getName()));
-
-			// Añadimos al modelo el tipo que esta visualizando, para poder volver a la vista
-			modelo.addAttribute("tipo", 3);
 
 			// Devolvemos la vista
 			return "suplementos/suplementos";
 		} catch (Exception e) {
 			Util.logError("SuplementoControlador", "vistaSuplementos", "Se ha producido un error");
-			return "redirect:/home";
-		}
-	}
-
-	/**
-	 * Método que controla las peticiones GET para la ruta /suplementos/{tipo}
-	 * 
-	 * @param tipo   Tipo del suplemento que se va a mostrar (1:Proteína;
-	 *               2:Creatina; 3:Pre-Entrenamiento)
-	 * @param modelo Objeto Model para pasar datos a la vista
-	 * @return Devuelve una vista
-	 */
-	@GetMapping("/{tipo}")
-	public String vistaSuplementosPorTipo(@PathVariable int tipo, Model modelo) {
-		try {
-			Util.logInfo("SuplementoControlador", "vistaSuplementosPorTipo", "Ha entrado");
-			// Obtenemos todos los suplementos
-			List<SuplementoDTO> listaSuplementosDTO = suplementoImplementacion.obtieneTodosLosSuplementos();
-
-			// Actualizamos la lista si es necesario
-			if (tipo == 1)
-				listaSuplementosDTO = listaSuplementosDTO.stream().filter(x -> x.getTipoSuplemento().equals("Proteína"))
-						.collect(Collectors.toList());
-			else if (tipo == 2)
-				listaSuplementosDTO = listaSuplementosDTO.stream().filter(x -> x.getTipoSuplemento().equals("Creatina"))
-						.collect(Collectors.toList());
-			else if (tipo == 3)
-				listaSuplementosDTO = listaSuplementosDTO.stream()
-						.filter(x -> x.getTipoSuplemento().equals("Pre-Entrenamiento")).collect(Collectors.toList());
-
-			// Añadimos la lista al modelo
-			modelo.addAttribute("listaSuplementosDTO", listaSuplementosDTO);
-
-			// Obtenemos el numero de carrito del usuario
-			modelo.addAttribute("tieneCarrito", carritoImplementacion.obtieneCantidadDeCarritosUsuario(
-					SecurityContextHolder.getContext().getAuthentication().getName()));
-
-			// Añadimos al modelo el tipo que esta visualizando, para poder volver a la
-			// vista
-			modelo.addAttribute("tipo", tipo);
-
-			// Devolvemos la vista
-			return "suplementos/suplementos";
-		} catch (Exception e) {
-			Util.logError("SuplementoControlador", "vistaSuplementosPorTipo", "Se ha producido un error");
 			return "redirect:/home";
 		}
 	}

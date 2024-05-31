@@ -9,14 +9,21 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.daos.Suplemento;
 
 /**
- * Repositorio para la entidad Suplemento, repositorio que contiene los métodos para hacer CRUD sobre Suplememento
+ * Repositorio para la entidad Suplemento, repositorio que contiene los métodos
+ * para hacer CRUD sobre Suplememento
  * 
- * @author Francisco José Gallego Dorado
+ * @author Francisco José Gallego Dorado 
  * Fecha: 27/04/2024
  */
 @Repository
-public interface SuplementoRepository extends JpaRepository<Suplemento, Long>{
+public interface SuplementoRepository extends JpaRepository<Suplemento, Long> {
 
-    @Query("select s from Suplemento s where s.nombreSuplemento like %?1%")
-    public List<Suplemento> findAllSuplementosByKeyword(String keyword);
+	/**
+	 * Método que encuentra todos los suplementos que contienen la keyword
+	 * 
+	 * @param keyword Keyword
+	 * @return List<Suplemento>
+	 */
+	@Query("select s from Suplemento s where s.nombreSuplemento like %?1%")
+	public List<Suplemento> findAllSuplementosByKeyword(String keyword);
 }

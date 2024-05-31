@@ -15,6 +15,7 @@ import com.paypal.base.rest.PayPalRESTException;
  * Configuracion Paypal
  * 
  * Fecha: 19/05/2024
+ * 
  * @author Francisco José Gallego Dorado
  */
 @Configuration

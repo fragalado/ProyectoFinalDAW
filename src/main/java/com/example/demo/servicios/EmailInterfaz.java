@@ -18,16 +18,21 @@ public interface EmailInterfaz {
 	 * cuenta al email pasado por parámetros.
 	 * 
 	 * @param direccion       Direccion a la que enviará el botón del html
-	 * @param esActivarCuenta Boolean para saber si es correo para recuperar contraseña o para activar cuenta.
+	 * @param esActivarCuenta Boolean para saber si es correo para recuperar
+	 *                        contraseña o para activar cuenta.
 	 * @param usuario         Objeto Usuario (DAO)
 	 */
 	public boolean enviarEmail(String direccion, boolean esActivarCuenta, Usuario usuario);
-	
+
 	/**
+	 * Método que envia un email de compra hecha
 	 * 
-	 * @param direccion
-	 * @param emailUsuario
-	 * @return
+	 * @param direccion       Direccion a la que enviará el botón del html
+	 * @param emailUsuario    Email del usuario
+	 * @param nombreUsuario   Nombre del usuario
+	 * @param listaCarritoDTO Lista con objetos de tipo CarritoDTO
+	 * @return Devuelve true si se ha enviado o false si no
 	 */
-	public boolean enviarEmailPedido(String direccion, String emailUsuario, String nombreUsuario, List<CarritoDTO> listaCarritoDTO);
+	public boolean enviarEmailPedido(String direccion, String emailUsuario, String nombreUsuario,
+			List<CarritoDTO> listaCarritoDTO);
 }

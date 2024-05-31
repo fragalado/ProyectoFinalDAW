@@ -2,9 +2,11 @@ package com.example.demo.servicios;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.daos.Carrito;
@@ -46,6 +48,9 @@ public class OrdenImplementacion implements OrdenInterfaz {
 	@Override
 	public boolean compraCarritoUsuario(String emailUsuario) {
 		try {
+			// Log
+			Util.logInfo("OrdenImplementacion", "compraCarritoUsuario", "Ha entrado");
+
 			// Obtenemos el usuario
 			Usuario usuarioDAO = Util.usuarioADao(usuarioImplementacion.obtieneUsuarioPorEmail(emailUsuario));
 
@@ -72,6 +77,7 @@ public class OrdenImplementacion implements OrdenInterfaz {
 				carritoDAO.setEstaCompradoCarrito(aux.isEstaCompradoCarrito());
 				carritoDAO.setCantidad(aux.getCantidad());
 				carritoDAO.setSuplemento(Util.suplementoDtoADao(aux.getSuplementoDTO()));
+
 				// Obtenemos el usuario por el id
 				carritoDAO.setUsuario(Util.usuarioADao(usuarioImplementacion.obtieneUsuarioPorId(aux.getIdUsuario())));
 
@@ -83,13 +89,28 @@ public class OrdenImplementacion implements OrdenInterfaz {
 				// Hacemos el insert en la tabla intermedia
 				ordenCarritoRepositorio.save(ordenCarrito);
 
-				// Ahora hacemos el update del carrito
+				// Ahora hacemos el update del carrito (lo ponemos como comprado)
 				carritoDAO.setEstaCompradoCarrito(true);
 				carritoRepositorio.save(carritoDAO);
 			}
 
 			return true;
+		} catch (IllegalArgumentException e) {
+			// Log
+			Util.logError("OrdenImplementacion", "compraCarritoUsuario",
+					"Se le ha pasado a un método un argumento ilegal o inapropiado.");
+
+			return false;
+		} catch (OptimisticLockingFailureException e) {
+			// Log
+			Util.logError("OrdenImplementacion", "compraCarritoUsuario",
+					"Se ha producido un error OptimisticLockingFailure.");
+
+			return false;
 		} catch (Exception e) {
+			// Log
+			Util.logError("OrdenImplementacion", "compraCarritoUsuario", "Se ha producido un error.");
+
 			return false;
 		}
 	}
@@ -97,17 +118,21 @@ public class OrdenImplementacion implements OrdenInterfaz {
 	@Override
 	public List<OrdenDTO> obtieneComprasUsuario(String emailUsuario) {
 		try {
+			// Log
+			Util.logInfo("OrdenImplementacion", "obtieneComprasUsuario", "Ha entrado");
+
 			// Obtenemos todos los ordenes del usuario por el email del usuario
 			List<Orden> listaOrdenDao = ordenRepositorio.findOrdenByEmailUsuario(emailUsuario);
-			
-			if(listaOrdenDao == null)
-				System.out.println("La lista es null");
+
 			// Si es distinto de null la convertimos a DTO y la devolvemos
-			if(listaOrdenDao != null)
+			if (listaOrdenDao != null)
 				return Util.listaOrdenDaoADto(listaOrdenDao);
-			
+
 			return null;
 		} catch (Exception e) {
+			// Log
+			Util.logError("OrdenImplementacion", "obtieneComprasUsuario", "Se ha producido un error.");
+
 			return null;
 		}
 	}
@@ -115,16 +140,34 @@ public class OrdenImplementacion implements OrdenInterfaz {
 	@Override
 	public OrdenDTO obtieneOrdenPorId(long idOrden) {
 		try {
+			// Log
+			Util.logInfo("OrdenImplementacion", "obtieneOrdenPorId", "Ha entrado");
+
 			// Obtenemos el orden por el id
 			Optional<Orden> ordenDao = ordenRepositorio.findById(idOrden);
-			
+
 			// Comprobamos si se ha obtenido
-			if(ordenDao.isEmpty())
+			if (ordenDao.isEmpty())
 				return null;
-			
+
 			// Si se ha obtenido lo convertimos a DTO y devolvemos
 			return Util.ordenDaoADto(ordenDao.get());
+		} catch (IllegalArgumentException e) {
+			// Log
+			Util.logError("OrdenImplementacion", "obtieneOrdenPorId",
+					"Se le ha pasado a un método un argumento ilegal o inapropiado.");
+
+			return null;
+		} catch (NoSuchElementException e) {
+			// Log
+			Util.logError("OrdenImplementacion", "obtieneOrdenPorId",
+					"Se le ha pasado a un método un valor que no existe.");
+
+			return null;
 		} catch (Exception e) {
+			// Log
+			Util.logError("OrdenImplementacion", "obtieneOrdenPorId", "Se ha producido un error.");
+
 			return null;
 		}
 	}

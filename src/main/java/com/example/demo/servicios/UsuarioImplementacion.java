@@ -36,13 +36,16 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 
 	@Autowired
 	private TokenImplementacion tokenImplementacion;
-	
+
 	@Autowired
 	private UrlProperties url;
 
 	@Override
 	public List<UsuarioDTO> obtieneTodosLosUsuarios() {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion", "obtieneTodosLosUsuarios", "Ha entrado");
+
 			// Obtenemos todos los usuarios de la base de datos y lo guardamos en una lista
 			// de tipo Usuario (DAO)
 			List<Usuario> listaUsuariosDao = usuarioRepositorio.findAll();
@@ -53,15 +56,21 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			// Devolvemos la lista de usuarios DTO
 			return listaUsuariosDTO;
 		} catch (Exception e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "obtieneTodosLosUsuarios", "Se ha producido un error.");
+
 			return null;
 		}
 	}
 
 	@Override
-	public UsuarioDTO obtieneUsuarioPorId(long id_usuario) {
+	public UsuarioDTO obtieneUsuarioPorId(long idUsuario) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion", "obtieneUsuarioPorId", "Ha entrado");
+
 			// Obtenemos el usuario
-			Optional<Usuario> usuarioEncontrado = usuarioRepositorio.findById(id_usuario);
+			Optional<Usuario> usuarioEncontrado = usuarioRepositorio.findById(idUsuario);
 
 			// Comprobamos si no se ha encontrado el usuario
 			if (usuarioEncontrado.isEmpty())
@@ -73,8 +82,16 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			// Devolvemos el usuario convertido a DTO
 			return usuarioDTO;
 		} catch (IllegalArgumentException e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "obtieneUsuarioPorId",
+					"Se ha intentado pasar a un método un argumento ilegal o inapropiado.");
+
 			return null;
 		} catch (NoSuchElementException e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "obtieneUsuarioPorId",
+					"Se ha intentado pasar a un método un argumento que no existe.");
+
 			return null;
 		}
 	}
@@ -82,14 +99,20 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public UsuarioDTO obtieneUsuarioPorEmail(String email) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion", "obtieneUsuarioPorEmail", "Ha entrado");
+
 			// Buscamos el usuario por el email
 			Usuario usuarioEncontrado = usuarioRepositorio.findByEmailUsuario(email);
 
 			// Convertimos el usuario a DTO y lo devolvemos
-			if(usuarioEncontrado != null)
+			if (usuarioEncontrado != null)
 				return Util.usuarioADto(usuarioEncontrado);
 			return null;
 		} catch (Exception e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "obtieneUsuarioPorEmail", "Se ha producido un error.");
+
 			return null; // Devuelve null en caso de no encontrarlo
 		}
 	}
@@ -98,10 +121,17 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	public Boolean registrarUsuario(UsuarioDTO usuario) {
 
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion", "registrarUsuario", "Ha entrado");
+
 			// Buscamos si existe un usuario con el email introducido
 			UsuarioDTO usuarioEncontrado = obtieneUsuarioPorEmail(usuario.getEmailUsuario());
 
 			if (usuarioEncontrado != null) {
+				// Log
+				Util.logInfo("UsuarioImplementacion", "registrarUsuario",
+						"El usuario es null / No se ha encontrado usuario.");
+
 				// Se ha encontrado un usuario con el email introducido
 				// Luego devolveremos false
 				return false;
@@ -122,8 +152,16 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			}
 			return usuarioDevuelto != null;
 		} catch (IllegalArgumentException e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "registrarUsuario",
+					"Se ha intentado pasar a un método un argumento ilegal o inapropiado.");
+
 			return null;
 		} catch (OptimisticLockingFailureException e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "registrarUsuario",
+					"Se ha producido un error OptimisticLockingFailure.");
+
 			// Excepcion de concurrencia optimista
 			// Esto puede ocurrir si otro proceso ha modificado los datos mientras
 			// esta transacción estaba realizando sus operaciones.
@@ -134,6 +172,9 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public boolean activaCuenta(String token, String email) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion", "activaCuenta", "Ha entrado");
+
 			// Obtenemos el token de la base de datos
 			Token tokenDao = tokenImplementacion.obtieneToken(token);
 
@@ -151,6 +192,10 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 
 				// Comprobamos si el email introducido es distinto al email del usuario
 				if (!email.equals(usuarioDao.getEmailUsuario())) {
+					// Log
+					Util.logInfo("UsuarioImplementacion", "activaCuenta",
+							"El email introducido no coincide con el email del usuario.");
+
 					return false;
 				}
 
@@ -164,17 +209,34 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 				if (usuarioDevuelto != null && usuarioDevuelto.isEstaActivadoUsuario()) {
 					return true; // El usuario ha sido activado
 				} else {
+					// Log
+					Util.logInfo("UsuarioImplementacion", "activaCuenta", "El usuario no ha sido activado.");
 					return false; // El usuario no ha sido activado
 				}
 			} else {
+				// Log
+				Util.logInfo("UsuarioImplementacion", "activaCuenta", "El token ha caducado.");
+
 				// La fecha actual es mayor que la fecha del token, luego ha caducado
 				return false;
 			}
 		} catch (NullPointerException e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "activaCuenta",
+					"Se ha intentado pasar a un método un argumento null.");
+
 			return false;
 		} catch (IllegalArgumentException e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "activaCuenta",
+					"Se ha intentado pasar a un método un argumento ilegal o inapropiado.");
+
 			return false;
 		} catch (OptimisticLockingFailureException e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "activaCuenta",
+					"Se ha producido un error OptimisticLockingFailure.");
+
 			return false;
 		}
 	}
@@ -182,16 +244,23 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public Boolean peticionCambiaPassword(String email) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion", "peticionCambiaPassword", "Ha entrado");
+
 			// Obtenemos el usuario de la base de datos por el email
 			Usuario usuarioEncontrado = Util.usuarioADao(obtieneUsuarioPorEmail(email));
 
 			// Si usuarioEncontrado es null devolvemos false
-			if (usuarioEncontrado == null)
+			if (usuarioEncontrado == null) {
+				// Log
+				Util.logInfo("UsuarioImplementacion", "peticionCambiaPassword", "El email introducido no existe.");
+
 				return false; // El email introducido no existe
+			}
 
 			// Si llega aqui es porque se ha encontrado el usuario.
 			// Luego enviamos un email
-			boolean ok = emailImplementacion.enviarEmail(url.getUrl() +"/restablecer/cambiar-password", false,
+			boolean ok = emailImplementacion.enviarEmail(url.getUrl() + "/restablecer/cambiar-password", false,
 					usuarioEncontrado);
 
 			// Controlamos la respuesta
@@ -200,6 +269,9 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			else
 				return null; // Se ha producido un error al enviar el correo
 		} catch (Exception e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "peticionCambiaPassword", "Se ha producido un error.");
+
 			return null; // Se ha producido un error al enviar el correo
 		}
 	}
@@ -207,9 +279,16 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public boolean modificaPassword(String token, String password) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion", "modificaPassword", "Ha entrado");
+
 			// Obtenemos el token
 			Token tokenDao = tokenImplementacion.obtieneToken(token);
-
+			
+			// Comprobamos si el token se ha encontrado
+			if(tokenDao == null)
+				return false;
+			
 			// Ahora comprobamos si el token no ha caducado
 			// Obtenemos la fecha actual
 			Calendar fechaActual = Calendar.getInstance();
@@ -230,43 +309,75 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 
 				return true;
 			} else {
+				// Log
+				Util.logInfo("UsuarioImplementacion", "modificaPassword", "El token ha caducado.");
+
 				// La fecha actual es mayor que la fecha del token, luego ha caducado
 				return false;
 			}
 		} catch (NullPointerException e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "modificaPassword",
+					"Se ha intentado pasar a un método un argumento null.");
+
 			return false;
 		} catch (IllegalArgumentException e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "modificaPassword",
+					"Se ha intentado pasar a un método un argumento ilegal o inapropiado.");
+
 			return false;
 		} catch (OptimisticLockingFailureException e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "modificaPassword",
+					"Se ha producido un error OptimisticLockingFailure.");
+
 			return false;
 		}
 	}
 
 	@Override
-	public boolean borraUsuarioPorId(long id_usuario) {
+	public boolean borraUsuarioPorId(long idUsuario) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion", "borraUsuarioPorId", "Ha entrado");
+
 			// Comprobamos si existe un usuario con el id pasado
-			UsuarioDTO usuarioEncontrado = obtieneUsuarioPorId(id_usuario);
+			UsuarioDTO usuarioEncontrado = obtieneUsuarioPorId(idUsuario);
 
 			// Comprobamos si no se ha encontrado
-			if (usuarioEncontrado == null)
+			if (usuarioEncontrado == null) {
+				// Log
+				Util.logInfo("UsuarioImplementacion", "borraUsuarioPorId",
+						"No se ha encontrado ningún usuario con el id pasado.");
+
 				return false;
+			}
 
 			// Si existe comprobamos que no sea administrador
-			if(usuarioEncontrado.getIdAcceso() == 2)
+			if (usuarioEncontrado.getIdAcceso() == 2) {
+				// Log
+				Util.logInfo("UsuarioImplementacion", "borraUsuarioPorId",
+						"Se ha intentando eliminar un usuario admin.");
+
 				return false;
-			
+			}
+
 			// Si no es admin lo eliminamos
-			usuarioRepositorio.deleteById(id_usuario);
+			usuarioRepositorio.deleteById(idUsuario);
 
 			// Ahora para comprobar si se ha eliminado vamos a buscar el usuario por el id
-			UsuarioDTO usuarioDTO = obtieneUsuarioPorId(id_usuario);
+			UsuarioDTO usuarioDTO = obtieneUsuarioPorId(idUsuario);
 
 			if (usuarioDTO == null)
 				return true; // Devolvemos true si no existe
 
 			return false; // En caso de que se haya encontrado un usuario con el id
 		} catch (IllegalArgumentException e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "borraUsuarioPorId",
+					"Se ha intentado pasar a un método un argumento ilegal o inapropiado.");
+
 			return false;
 		}
 	}
@@ -274,14 +385,14 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public boolean actualizaUsuario(UsuarioDTO usuarioDTO) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion", "actualizaUsuario", "Ha entrado");
+
 			// Con el id del usuario pasado obtenemos el usuario de la base de datos
 			Usuario usuarioEncontrado = Util.usuarioADao(obtieneUsuarioPorId(usuarioDTO.getIdUsuario()));
-			// Optional<Usuario> usuarioEncontrado =
-			// usuarioRepositorio.findById(usuarioDTO.getId_usuario());
-			
+
 			// Comprobamos si existe algun usuario con el email introducido
-			
-			
+
 			// Actualizamos algunos datos del usuarioEncontrado con el usuarioDTO
 			Usuario usuarioDao = Util.usuarioADao(usuarioDTO);
 			usuarioEncontrado.setNombreUsuario(usuarioDao.getNombreUsuario().trim());
@@ -297,8 +408,16 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 
 			return true;
 		} catch (IllegalArgumentException e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "actualizaUsuario",
+					"Se ha intentado pasar a un método un argumento ilegal o inapropiado.");
+
 			return false;
 		} catch (OptimisticLockingFailureException e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "actualizaUsuario",
+					"Se ha producido un error OptimisticLockingFailure.");
+
 			return false;
 		}
 	}
@@ -306,10 +425,17 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public boolean agregaUsuario(UsuarioDTO usuarioDTO) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion", "agregaUsuario", "Ha entrado");
+
 			// Buscamos si existe un usuario con el email introducido
 			UsuarioDTO usuarioEncontrado = obtieneUsuarioPorEmail(usuarioDTO.getEmailUsuario());
 
 			if (usuarioEncontrado != null) {
+				// Log
+				Util.logInfo("UsuarioImplementacion", "agregaUsuario",
+						"No existe ningún usuario con el email introducido.");
+
 				// Se ha encontrado un usuario con el email introducido
 				// Luego devolveremos false
 				return false;
@@ -324,8 +450,16 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 
 			return true;
 		} catch (IllegalArgumentException e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "agregaUsuario",
+					"Se ha intentado pasar a un método un argumento ilegal o inapropiado.");
+
 			return false;
 		} catch (OptimisticLockingFailureException e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "agregaUsuario",
+					"Se ha producido un error OptimisticLockingFailure.");
+
 			return false;
 		}
 	}
@@ -333,6 +467,9 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public boolean editarPerfil(UsuarioDTO usuarioActual, UsuarioDTO usuarioNuevo) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion", "editarPerfil", "Ha entrado");
+
 			// Cambiamos los valores del usuarioActual
 			usuarioActual.setNombreUsuario(usuarioNuevo.getNombreUsuario().trim());
 			usuarioActual.setTlfUsuario(usuarioNuevo.getTlfUsuario().trim());
@@ -345,12 +482,15 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			// Actualizamos
 			Usuario usuarioDevuelto = usuarioRepositorio.save(usuarioDao);
 
-			if (usuarioDevuelto.getNombreUsuario().equals(usuarioNuevo.getNombreUsuario())
-					&& usuarioDevuelto.getTlfUsuario().equals(usuarioNuevo.getTlfUsuario()))
+			if (usuarioDevuelto.getNombreUsuario().equals(usuarioNuevo.getNombreUsuario().trim())
+					&& usuarioDevuelto.getTlfUsuario().equals(usuarioNuevo.getTlfUsuario().trim()))
 				return true;
 			else
 				return false;
 		} catch (Exception e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "editarPerfil", "Se ha producido un error.");
+
 			return false;
 		}
 	}
@@ -358,6 +498,9 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public boolean esUltimoAdmin(UsuarioDTO usuarioDTO) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion", "esUltimoAdmin", "Ha entrado");
+
 			if (usuarioRepositorio.countAdminUsers() == 1) {
 				// Si solo existe un admin tendremos que comprobar si el usuario es admin y si
 				// le esta cambiando el rol
@@ -372,6 +515,9 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			}
 			return false;
 		} catch (Exception e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "esUltimoAdmin", "Se ha producido un error.");
+
 			return false;
 		}
 	}
@@ -379,19 +525,25 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public boolean existeUsuarioConEmail(UsuarioDTO usuarioDTO) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion", "existeUsuarioConEmail", "Ha entrado");
+
 			// Primero obtenemos el usuario
 			Usuario usuarioEncontrado = Util.usuarioADao(obtieneUsuarioPorId(usuarioDTO.getIdUsuario()));
-			
+
 			// Comprobamos si esta intentando cambiar el email
-			if(!usuarioEncontrado.getEmailUsuario().equals(usuarioDTO.getEmailUsuario())) {
+			if (!usuarioEncontrado.getEmailUsuario().equals(usuarioDTO.getEmailUsuario())) {
 				// Se esta intentando cambiar de email
 				// Ahora comprobamos si existe algun usuario con el email
 				Usuario usuarioConEmail = usuarioRepositorio.findByEmailUsuario(usuarioDTO.getEmailUsuario());
-					
+
 				return usuarioConEmail == null ? false : true;
 			}
 			return false;
 		} catch (Exception e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "existeUsuarioConEmail", "Se ha producido un error.");
+
 			return false;
 		}
 	}
@@ -399,15 +551,21 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public List<UsuarioDTO> obtieneUsuariosPorKeyword(String keyword) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion", "obtieneUsuariosPorKeyword", "Ha entrado");
+
 			// Obtenemos todos los usuarios que contengan la keyword
 			List<Usuario> listaUsuariosDao = usuarioRepositorio.findAllUsuariosByKeyword(keyword);
 
 			// Comprobamos si se ha obtenido
-			if(listaUsuariosDao != null)
+			if (listaUsuariosDao != null)
 				return Util.listaUsuarioDaoADto(listaUsuariosDao);
 			// Si no se ha obtenido devolvemos null
 			return null;
 		} catch (Exception e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "obtieneUsuariosPorKeyword", "Se ha producido un error.");
+
 			return null;
 		}
 	}
@@ -415,19 +573,26 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public Boolean peticionActivaCuenta(String email) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion", "peticionActivaCuenta", "Ha entrado");
+
 			// Obtenemos el usuario por el email
 			Usuario usuarioEncontrado = usuarioRepositorio.findByEmailUsuario(email);
 
 			// Comprobamos si existe
-			if(usuarioEncontrado == null)
+			if (usuarioEncontrado == null)
 				return false; // No existe usuario con el email introducido
 
-			// Si existe comprobamos si tiene la cuenta activada y si no la tiene mandamos email
-			if(!usuarioEncontrado.isEstaActivadoUsuario())
-				return emailImplementacion.enviarEmail(url.getUrl() +"/activa-cuenta", true, usuarioEncontrado);
+			// Si existe comprobamos si tiene la cuenta activada y si no la tiene mandamos
+			// email
+			if (!usuarioEncontrado.isEstaActivadoUsuario())
+				return emailImplementacion.enviarEmail(url.getUrl() + "/activa-cuenta", true, usuarioEncontrado);
 
 			return null; // Si el usuario ya tiene la cuenta activada
 		} catch (Exception e) {
+			// Log
+			Util.logInfo("UsuarioImplementacion", "peticionActivaCuenta", "Se ha producido un error.");
+
 			return false;
 		}
 	}

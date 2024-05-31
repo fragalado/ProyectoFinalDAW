@@ -26,10 +26,10 @@ public interface UsuarioInterfaz {
 	 * 
 	 * Fecha: 27/04/2024
 	 * 
-	 * @param id_usuario Id del usuario a obtener
+	 * @param idUsuario Id del usuario a obtener
 	 * @return Devuelve un objeto UsuarioDTO
 	 */
-	public UsuarioDTO obtieneUsuarioPorId(long id_usuario);
+	public UsuarioDTO obtieneUsuarioPorId(long idUsuario);
 
 	/**
 	 * Método que obtiene un usuario de la base de datos por el email
@@ -69,10 +69,13 @@ public interface UsuarioInterfaz {
 	public boolean activaCuenta(String token, String email);
 
 	/**
-	 * Método que realiza la petición de activar cuenta, comprueba si el email introducido existe y si no tiene la cuenta activada.
-	 * Si no la tiene envía un email para activar
+	 * Método que realiza la petición de activar cuenta, comprueba si el email
+	 * introducido existe y si no tiene la cuenta activada. Si no la tiene envía un
+	 * email para activar
+	 * 
 	 * @param email Email del usuario que realiza la petición
-	 * @return Devuelve true si se ha enviado, false si no se ha enviado y null si el usuario ya tiene la cuenta activada.
+	 * @return Devuelve true si se ha enviado, false si no se ha enviado y null si
+	 *         el usuario ya tiene la cuenta activada.
 	 */
 	public Boolean peticionActivaCuenta(String email);
 
@@ -102,10 +105,10 @@ public interface UsuarioInterfaz {
 	 * 
 	 * Fecha: 27/04/2024
 	 * 
-	 * @param id_usuario Id del usuario a eliminar
+	 * @param idUsuario Id del usuario a eliminar
 	 * @return Devuelve true si se ha eliminado o false si no.
 	 */
-	public boolean borraUsuarioPorId(long id_usuario);
+	public boolean borraUsuarioPorId(long idUsuario);
 
 	/**
 	 * Método que actualiza un usuario.
@@ -126,22 +129,26 @@ public interface UsuarioInterfaz {
 	 * @return Devuelve true si se ha agregado o false si no.
 	 */
 	public boolean agregaUsuario(UsuarioDTO usuarioDTO);
-	
+
 	/**
 	 * Método que actualiza el perfil de un usuario
+	 * 
 	 * @param usuarioActual Objeto UsuarioDTO con los datos actuales del usuario
-	 * @param usuarioNuevo Objeto UsuarioDTO con los nuevos datos del usuario
+	 * @param usuarioNuevo  Objeto UsuarioDTO con los nuevos datos del usuario
 	 * @return Devuelve true si se ha actualizado correctamente o false si no
 	 */
 	public boolean editarPerfil(UsuarioDTO usuarioActual, UsuarioDTO usuarioNuevo);
-	
+
 	/**
-	 * Método que comprueba si el usuario es el ultimo admin y si se esta intentando cambiar de rol
+	 * Método que comprueba si el usuario es el ultimo admin y si se esta intentando
+	 * cambiar de rol
+	 * 
 	 * @param usuarioDTO Objeto UsuarioDTO con los datos del usuario
-	 * @return Devuelve true si es el ultimo admin y se esta intentando cambiar de rol o false si no.
+	 * @return Devuelve true si es el ultimo admin y se esta intentando cambiar de
+	 *         rol o false si no.
 	 */
 	public boolean esUltimoAdmin(UsuarioDTO usuarioDTO);
-	
+
 	/**
 	 * 
 	 * @param usuarioDTO

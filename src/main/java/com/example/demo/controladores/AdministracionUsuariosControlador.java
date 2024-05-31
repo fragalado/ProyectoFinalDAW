@@ -54,6 +54,7 @@ public class AdministracionUsuariosControlador {
 	public String vistaAdministracionUsuarios(Model model) {
 		try {
 			Util.logInfo("AdministracionUsuariosControlador", "vistaAdministracionUsuarios", "Ha entrado");
+			
 			// Obtenemos una lista con todos los usuarios y la ordenamos por el id_acceso
 			List<UsuarioDTO> listaUsuarios = usuarioImplementacion.obtieneTodosLosUsuarios().stream()
 					.sorted(Comparator.comparingLong(UsuarioDTO::getIdAcceso).reversed()).collect(Collectors.toList());
@@ -74,6 +75,12 @@ public class AdministracionUsuariosControlador {
 		}
 	}
 
+	/**
+	 * Método que controla las peticiones GET para la ruta /admin/usuarios/filter
+	 * @param modelo Objeto Model para pasar datos a la vista
+	 * @param keyword keyword
+	 * @return Devuelve un fragmento de vista
+	 */
 	@GetMapping("/filter")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public String filtrarUsuarios(Model modelo, @RequestParam String keyword) {
@@ -90,8 +97,7 @@ public class AdministracionUsuariosControlador {
 			// Devolvemos la vista
 			return "admin/usuarios/administracionUsuarios :: userTable"; // Devolvemos el fragment para no que devuelva la vista entera
 		} catch (Exception e) {
-			Util.logError("AdministracionUsuariosControlador", "filtrarUsuarios",
-					"Se ha producido un error");
+			Util.logError("AdministracionUsuariosControlador", "filtrarUsuarios", "Se ha producido un error");
 			return "redirect:/home";
 		}
 	}
@@ -109,6 +115,7 @@ public class AdministracionUsuariosControlador {
 	public String vistaEditarUsuario(@PathVariable long id_usuario, Model model) {
 		try {
 			Util.logInfo("AdministracionUsuariosControlador", "vistaEditarUsuario", "Ha entrado");
+			
 			// Obtenemos el usuario de la base de datos y lo agregamos al modelo
 			UsuarioDTO usuarioDTO = usuarioImplementacion.obtieneUsuarioPorId(id_usuario);
 
@@ -142,6 +149,7 @@ public class AdministracionUsuariosControlador {
 	public String vistaAgregarUsuario(Model model) {
 		try {
 			Util.logInfo("AdministracionUsuariosControlador", "vistaAgregarUsuario", "Ha entrado");
+			
 			// Agregamos al modelo un objeto de tipo UsuarioDTO
 			model.addAttribute("usuarioDTO", new UsuarioDTO());
 
@@ -168,6 +176,7 @@ public class AdministracionUsuariosControlador {
 	public String borraUsuario(@PathVariable long id_usuario) {
 		try {
 			Util.logInfo("AdministracionUsuariosControlador", "borraUsuario", "Ha entrado");
+			
 			// Eliminamos el usuario por el id_usuario
 			boolean ok = usuarioImplementacion.borraUsuarioPorId(id_usuario);
 
@@ -195,6 +204,7 @@ public class AdministracionUsuariosControlador {
 			@RequestPart("imagenFile") MultipartFile imagenFile) {
 		try {
 			Util.logInfo("AdministracionUsuariosControlador", "editarUsuario", "Ha entrado");
+			
 			// Controlamos los valores
 			if (usuario.getNombreUsuario().length() > 50 || usuario.getEmailUsuario().length() > 50
 					|| usuario.getTlfUsuario().length() > 15)
@@ -246,6 +256,7 @@ public class AdministracionUsuariosControlador {
 			@RequestPart("imagenFile") MultipartFile imagenFile) {
 		try {
 			Util.logInfo("AdministracionUsuariosControlador", "agregarUsuario", "Ha entrado");
+			
 			// Encriptamos la contraseña
 			usuarioDTO.setPsswdUsuario(bCryptPasswordEncoder.encode(usuarioDTO.getPsswdUsuario().trim()));
 

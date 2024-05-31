@@ -36,14 +36,14 @@ public class PerfilControlador {
 	 * Método que controla las peticiones GET para la ruta /perfil
 	 * 
 	 * @param modelo         Objeto Model para pasar datos a la vista
-	 * @param authentication Objeto Authentication que contiene información sobre la
-	 *                       autenticación
+	 * @param authentication Objeto Authentication que contiene información sobre la autenticación
 	 * @return Devuelve una vista
 	 */
 	@GetMapping()
 	public String vistaPerfil(Model modelo, Authentication authentication) {
 		try {
 			Util.logInfo("PerfilControlador", "vistaPerfil", "Ha entrado");
+			
 			// Obtenemos el usuario por el email
 			UsuarioDTO usuarioDto = usuarioImplementacion.obtieneUsuarioPorEmail(authentication.getName());
 
@@ -78,6 +78,7 @@ public class PerfilControlador {
 	public String vistaEditarPerfil(Model modelo, Authentication authentication) {
 		try {
 			Util.logInfo("PerfilControlador", "vistaEditarPerfil", "Ha entrado");
+			
 			// Obtenemos el usuario por el email
 			UsuarioDTO usuarioDto = usuarioImplementacion.obtieneUsuarioPorEmail(authentication.getName());
 
@@ -111,6 +112,7 @@ public class PerfilControlador {
 	public String borrarCuenta(Authentication authentication) {
 		try {
 			Util.logInfo("PerfilControlador", "borrarCuenta", "Ha entrado");
+			
 			// Obtenemos el usuario
 			UsuarioDTO usuarioDto = usuarioImplementacion.obtieneUsuarioPorEmail(authentication.getName());
 
@@ -128,6 +130,8 @@ public class PerfilControlador {
 	 * Método que controla las peticiones POST para la ruta /perfil/editar
 	 * 
 	 * @param usuarioDto Objeto UsuarioDTO con los nuevos datos del usuario
+	 * @param file Objeto Multipartfile
+	 * @param authentication Objeto Authentication
 	 * @return Devuelve una redirección
 	 */
 	@PostMapping("/editar")
@@ -135,6 +139,7 @@ public class PerfilControlador {
 			@RequestPart("imagenFile") MultipartFile file, Authentication authentication) {
 		try {
 			Util.logInfo("PerfilControlador", "editarPerfil", "Ha entrado");
+			
 			// Obtenemos el usuario actual
 			UsuarioDTO usuarioActual = usuarioImplementacion.obtieneUsuarioPorEmail(authentication.getName());
 

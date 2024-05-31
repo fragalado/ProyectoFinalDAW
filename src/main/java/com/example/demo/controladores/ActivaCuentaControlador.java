@@ -40,15 +40,16 @@ public class ActivaCuentaControlador {
 
 		try {
 			Util.logInfo("ActivaCuentaControlador", "vistaActivarCuenta", "Ha entrado");
+			
 			// Control de sesion
 			if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
 				Util.logInfo("ActivaCuentaControlador", "vistaActivarCuenta", "El usuario ya ha iniciado sesion");
 				return "redirect:/home";
 			}
-			
+
 			// Añadimos el token al modelo
 			model.addAttribute("token", token);
-			
+
 			// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
 			model.addAttribute("usuarioDTO", new UsuarioDTO());
 
@@ -62,18 +63,20 @@ public class ActivaCuentaControlador {
 
 	/**
 	 * Método que controla las peticiones GET para la ruta /activa-cuenta/peticion
+	 * 
 	 * @param request Objeto HttpServletRequest que contiene los datos de la request/peticion
 	 * @return Devuelve una vista
 	 */
 	@GetMapping("/peticion")
-	public String vistaPeticionActivarCuenta(HttpServletRequest request){
+	public String vistaPeticionActivarCuenta(HttpServletRequest request) {
 		try {
 			// Log
 			Util.logInfo("ActivaCuentaControlador", "vistaPeticionActivarCuenta", "Ha entrado");
 
 			// Control de sesion
 			if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
-				Util.logInfo("ActivaCuentaControlador", "vistaPeticionActivarCuenta", "El usuario ya ha iniciado sesion");
+				Util.logInfo("ActivaCuentaControlador", "vistaPeticionActivarCuenta",
+						"El usuario ya ha iniciado sesion");
 				return "redirect:/home";
 			}
 
@@ -86,11 +89,14 @@ public class ActivaCuentaControlador {
 	}
 
 	/**
+	 * Método que controla las peticiones GET para la ruta /activa-cuenta/peticion
 	 * 
-	 * @return
+	 * @param request Objeto HttpServletRequest con los datos de la petición
+	 * @param email Email
+	 * @return Devuelve una redirección
 	 */
 	@PostMapping("/peticion")
-	public String peticionActivarCuenta(HttpServletRequest request, @RequestParam String email){
+	public String peticionActivarCuenta(HttpServletRequest request, @RequestParam String email) {
 		try {
 			// Log
 			Util.logInfo("ActivaCuentaControlador", "peticionActivarCuenta", "Ha entrado");
@@ -106,7 +112,7 @@ public class ActivaCuentaControlador {
 
 			// Controlamos la respuesta
 			String url = "redirect:/activa-cuenta/peticion";
-			if(ok == null) // El usuario ya tiene la cuenta activada
+			if (ok == null) // El usuario ya tiene la cuenta activada
 				return url + "?activada";
 			else
 				return ok ? url + "?success" : url + "?error";
@@ -124,10 +130,12 @@ public class ActivaCuentaControlador {
 	 * @return El nombre de la vista que se mostrará al usuario
 	 */
 	@PostMapping
-	public String activarCuenta(@ModelAttribute("token") String token, @RequestParam("email") String email, HttpServletRequest request) {
+	public String activarCuenta(@ModelAttribute("token") String token, @RequestParam("email") String email,
+			HttpServletRequest request) {
 
 		try {
 			Util.logInfo("ActivaCuentaControlador", "activarCuenta", "Ha entrado");
+			
 			// Control de sesion
 			if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
 				Util.logInfo("ActivaCuentaControlador", "activarCuenta", "El usuario ya ha iniciado sesion");
@@ -145,10 +153,10 @@ public class ActivaCuentaControlador {
 
 			if (ok) {
 				// Redirigimos a activa-cuenta con un parametro success
-				return "redirect:/activa-cuenta?success&tk="+token;
+				return "redirect:/activa-cuenta?success&tk=" + token;
 			} else {
 				// Redirigimos a activa-cuenta con un parametro de error
-				return "redirect:/activa-cuenta?error&tk="+token;
+				return "redirect:/activa-cuenta?error&tk=" + token;
 			}
 		} catch (Exception e) {
 			Util.logError("ActivaCuentaControlador", "activarCuenta", "Se ha producido un error");

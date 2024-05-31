@@ -10,7 +10,7 @@ function validarFormulario() {
 	let emailError = validarEmail(email);
 	let passwordError = validarPassword(password);
 	let telefonoError = validarTelefono(telefono);
-	let imagenError = validarImagen(imagen);
+	let imagenError = imagen != undefined ?  validarImagen(imagen) : "";
 	
 
 	// Mostramos los errores
@@ -61,7 +61,7 @@ function validarFormularioEditarAdmin() {
 	// Variables donde guardaremos el error
 	let emailError = validarEmail(email);
 	let telefonoError = validarTelefono(telefono);
-	let imagenError = validarImagen(imagen);
+	let imagenError = imagen != undefined ?  validarImagen(imagen) : "";
 
 	// Mostramos los errores
 	if(emailError)
@@ -83,7 +83,7 @@ function validarFormularioEditarPerfil() {
 
 	// Variables donde guardaremos el error
 	let telefonoError = validarTelefono(telefono);
-	let imagenError = validarImagen(imagen);
+	let imagenError = imagen != undefined ?  validarImagen(imagen) : "";
 
 	// Mostramos los errores
 	if(telefonoError)

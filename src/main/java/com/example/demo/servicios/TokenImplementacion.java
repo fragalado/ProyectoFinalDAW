@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.daos.Token;
 import com.example.demo.repositorios.TokenRepository;
+import com.example.demo.utiles.Util;
 
 import jakarta.transaction.Transactional;
 
@@ -25,6 +26,9 @@ public class TokenImplementacion implements TokenInterfaz {
 	@Override
 	public boolean guardaToken(Token token) {
 		try {
+			// Log
+			Util.logInfo("TokenImplementacion", "guardaToken", "Ha entrado");
+
 			// Guardamos el token
 			Token tokenDevuelto = tokenRepositorio.save(token);
 
@@ -34,8 +38,15 @@ public class TokenImplementacion implements TokenInterfaz {
 
 			return false; // Devolvemos false si no se ha guardado
 		} catch (IllegalArgumentException e) {
+			// Log
+			Util.logError("TokenImplementacion", "guardaToken",
+					"Se ha intentado pasar un argumento ilegal o inapropiado a un método.");
+
 			return false; // Devolvemos false en caso de error
 		} catch (OptimisticLockingFailureException e) {
+			// Log
+			Util.logError("TokenImplementacion", "guardaToken", "Se ha producido un error OptimisticLockingFailure.");
+
 			return false; // Devolvemos false en caso de error
 		}
 	}
@@ -43,6 +54,9 @@ public class TokenImplementacion implements TokenInterfaz {
 	@Override
 	public Token obtieneToken(String token) {
 		try {
+			// Log
+			Util.logInfo("TokenImplementacion", "obtieneToken", "Ha entrado");
+
 			// Obtenemos el token de la base de datos
 			Token tokenEncontrado = tokenRepositorio.findByCodToken(token);
 
@@ -53,6 +67,9 @@ public class TokenImplementacion implements TokenInterfaz {
 
 			return null; // Devolvemos null si no se ha encontrado el token
 		} catch (Exception e) {
+			// Log
+			Util.logError("TokenImplementacion", "obtieneToken", "Se ha producido un error.");
+
 			return null; // Devolvemos null en caso de error
 		}
 	}

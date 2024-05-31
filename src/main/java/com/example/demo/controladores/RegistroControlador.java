@@ -34,10 +34,8 @@ public class RegistroControlador {
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/register".
 	 * 
-	 * @param model   Objeto Model que proporciona Spring para enviar datos a la
-	 *                vista
-	 * @param request Objeto HttpServletRequest que contiene información sobre la
-	 *                solicitud HTTP
+	 * @param model   Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @param request Objeto HttpServletRequest que contiene información sobre la solicitud HTTP
 	 * @return Devuelve el nombre de la vista
 	 */
 	@GetMapping
@@ -45,6 +43,7 @@ public class RegistroControlador {
 
 		try {
 			Util.logInfo("RegistroControlador", "vistaRegister", "Ha entrado");
+			
 			// Control de sesion
 			if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
 				Util.logInfo("RegistroControlador", "vistaRegister", "El usuario ya ha iniciado sesion");
@@ -66,14 +65,14 @@ public class RegistroControlador {
 	 * Método que maneja las solicitudes POST para la ruta "/register"
 	 * 
 	 * @param usuario Objeto UsuarioDTO con los datos del formulario
-	 * @param request Objeto HttpServletRequest que contiene información sobre la
-	 *                solicitud HTTP
+	 * @param request Objeto HttpServletRequest que contiene información sobre la solicitud HTTP
 	 * @return Devuelve una redirección
 	 */
 	@PostMapping
 	public String registrarUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuario, HttpServletRequest request) {
 		try {
 			Util.logInfo("RegistroControlador", "registrarUsuario", "Ha entrado");
+			
 			// Encriptamos la contraseña
 			usuario.setPsswdUsuario(bCryptPasswordEncoder.encode(usuario.getPsswdUsuario()));
 

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
  * Clase url
  * 
  * Fecha: 24/05/2024
+ * 
  * @author Francisco José Gallego Dorado
  */
 @Data

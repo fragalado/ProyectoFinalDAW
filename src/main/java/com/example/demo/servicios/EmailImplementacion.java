@@ -19,6 +19,7 @@ import com.example.demo.config.EmailProperties;
 import com.example.demo.daos.Token;
 import com.example.demo.daos.Usuario;
 import com.example.demo.dtos.CarritoDTO;
+import com.example.demo.utiles.Util;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -26,7 +27,8 @@ import jakarta.mail.internet.MimeMessage;
 /**
  * Implementación de la interfaz Email
  * 
- * @author Francisco José Gallego Dorado Fecha: 21/04/2024
+ * @author Francisco José Gallego Dorado 
+ * Fecha: 21/04/2024
  */
 @Service
 public class EmailImplementacion implements EmailInterfaz {
@@ -47,6 +49,9 @@ public class EmailImplementacion implements EmailInterfaz {
 	public boolean enviarEmail(String direccion, boolean esActivarCuenta, Usuario usuario) {
 
 		try {
+			// Log
+			Util.logInfo("EmailImplementacion", "enviarEmail", "Ha entrado");
+
 			// Generamos un token
 			UUID uuid = UUID.randomUUID();
 			String token = uuid.toString();
@@ -86,18 +91,36 @@ public class EmailImplementacion implements EmailInterfaz {
 				mailSender.send(message);
 				return true;
 			} else {
+				// Log
+				Util.logError("EmailImplementacion", "enviarEmail", "No se ha guardado el token.");
+
 				return false;
 			}
 
 		} catch (IllegalArgumentException e) {
+			// Log
+			Util.logError("EmailImplementacion", "enviarEmail", "Se ha pasado un argumento ilegal o inapropiado.");
+
 			return false;
 		} catch (OptimisticLockingFailureException e) {
+			// Log
+			Util.logError("EmailImplementacion", "enviarEmail", "Se ha producido un error OptimisticLockingFailure.");
+
 			return false;
 		} catch (MailAuthenticationException e) {
+			// Log
+			Util.logError("EmailImplementacion", "enviarEmail", "Error al autenticar el email.");
+
 			return false;
 		} catch (MailSendException e) {
+			// Log
+			Util.logError("EmailImplementacion", "enviarEmail", "Error al enviar el email.");
+
 			return false;
 		} catch (MessagingException e) {
+			// Log
+			Util.logError("EmailImplementacion", "enviarEmail", "Se ha producido un error con el mensaje.");
+
 			return false;
 		}
 	}
@@ -109,7 +132,7 @@ public class EmailImplementacion implements EmailInterfaz {
 	 * @param direccion  Direccion pagina web
 	 * @param esActivado Boolean para controlar si es mensaje de recuperacion o
 	 *                   activacion de cuenta.
-	 * @return
+	 * @return Devuelve un String
 	 */
 	private String mensajeCorreo(String token, String direccion, boolean esActivado) {
 		if (esActivado) {
@@ -156,13 +179,16 @@ public class EmailImplementacion implements EmailInterfaz {
 	public boolean enviarEmailPedido(String direccion, String emailUsuario, String nombreUsuario,
 			List<CarritoDTO> listaCarritoDTO) {
 		try {
+			// Log
+			Util.logInfo("EmailImplementacion", "enviarEmailPedido", "Ha entrado");
+
 			// Obtenemos el total del carrito
 			double orderTotal = listaCarritoDTO.stream()
 					.mapToDouble(carrito -> carrito.getCantidad() * carrito.getSuplementoDTO().getPrecioSuplemento())
 					.sum();
 			// Creamos un formateador para doubles, para formatear a dos decimales
 			DecimalFormat df = new DecimalFormat("#.00");
-			
+
 			// Configuramos el contexto para Thymeleaf
 			Context context = new Context();
 			context.setVariable("customerName", nombreUsuario);
@@ -192,14 +218,31 @@ public class EmailImplementacion implements EmailInterfaz {
 			mailSender.send(message);
 			return true;
 		} catch (IllegalArgumentException e) {
+			// Log
+			Util.logError("EmailImplementacion", "enviarEmailPedido",
+					"Se ha pasado un argumento ilegal o inapropiado.");
+
 			return false;
 		} catch (OptimisticLockingFailureException e) {
+			// Log
+			Util.logError("EmailImplementacion", "enviarEmailPedido",
+					"Se ha producido un error OptimisticLockingFailure.");
+
 			return false;
 		} catch (MailAuthenticationException e) {
+			// Log
+			Util.logError("EmailImplementacion", "enviarEmailPedido", "Error al autenticar el email.");
+
 			return false;
 		} catch (MailSendException e) {
+			// Log
+			Util.logError("EmailImplementacion", "enviarEmailPedido", "Error al enviar el email.");
+
 			return false;
 		} catch (MessagingException e) {
+			// Log
+			Util.logError("EmailImplementacion", "enviarEmailPedido", "Se ha producido un error con el mensaje.");
+
 			return false;
 		}
 	}

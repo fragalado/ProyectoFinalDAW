@@ -23,6 +23,7 @@ public interface CarritoRepository extends JpaRepository<Carrito, Long> {
 	 * Método que devuelve una lista de tipo Carrito con todos los carritos que no
 	 * estén comprados
 	 * 
+	 * @param usuario Objeto Usuario
 	 * @return Devuelve una lista de tipo Carrito List<Carrito>
 	 */
 	@Query("SELECT c FROM Carrito c WHERE c.usuario=:usuario AND c.estaCompradoCarrito = false")

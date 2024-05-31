@@ -13,7 +13,8 @@ import jakarta.servlet.http.HttpServletRequest;
 /**
  * Controlador que controla las peticiones HTTP para la ruta /login
  * 
- * @author Francisco José Gallego Dorado Fecha: 21/04/2024
+ * @author Francisco José Gallego Dorado 
+ * Fecha: 21/04/2024
  */
 @Controller
 @RequestMapping("/login")
@@ -31,6 +32,7 @@ public class LoginControlador {
 
 		try {
 			Util.logInfo("LoginControlador", "vistaLogin", "Ha entrado");
+			
 			// Control de sesion
 			if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
 				Util.logInfo("LoginControlador", "vistaLogin", "El usuario ya ha iniciado sesion");

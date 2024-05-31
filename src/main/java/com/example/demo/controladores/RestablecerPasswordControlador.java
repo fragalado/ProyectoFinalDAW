@@ -35,8 +35,7 @@ public class RestablecerPasswordControlador {
 	/**
 	 * Método que maneja las solicitudes GET para la ruta /restablecer.
 	 * 
-	 * @param request Objeto HttpServletRequest que contiene información sobre la
-	 *                solicitud HTTP
+	 * @param request Objeto HttpServletRequest que contiene información sobre la solicitud HTTP
 	 * @return El nombre de la vista que se mostrará al usuario
 	 */
 	@GetMapping
@@ -44,6 +43,7 @@ public class RestablecerPasswordControlador {
 
 		try {
 			Util.logInfo("RestablecerPasswordControlador", "vistaPeticionPassword", "Ha entrado");
+			
 			// Control de sesion
 			if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
 				Util.logInfo("RestablecerPasswordControlador", "vistaPeticionPassword",
@@ -63,10 +63,8 @@ public class RestablecerPasswordControlador {
 	 * Método que maneja las solicitudes GET para la ruta /restablecer/cambia-password
 	 * 
 	 * @param token   Token
-	 * @param model   Objeto Model que proporciona Spring para enviar datos a la
-	 *                vista
-	 * @param request Objeto HttpServletRequest que contiene información sobre la
-	 *                solicitud HTTP
+	 * @param model   Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @param request Objeto HttpServletRequest que contiene información sobre la solicitud HTTP
 	 * @return El nombre de la vista que se mostrará al usuario
 	 */
 	@GetMapping("/cambiar-password")
@@ -74,6 +72,7 @@ public class RestablecerPasswordControlador {
 
 		try {
 			Util.logInfo("RestablecerPasswordControlador", "vistaCambiaPassword", "Ha entrado");
+			
 			// Control de sesion
 			if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
 				Util.logInfo("RestablecerPasswordControlador", "vistaCambiaPassword",
@@ -106,14 +105,14 @@ public class RestablecerPasswordControlador {
 	 * Método que maneja las solicitudes POST para la ruta "/restablecer"
 	 * 
 	 * @param email   Email del usuario a cambiar la password
-	 * @param request Objeto HttpServletRequest que contiene información sobre la
-	 *                solicitud HTTP
+	 * @param request Objeto HttpServletRequest que contiene información sobre la solicitud HTTP
 	 * @return Devuelve el nombre de la vista
 	 */
 	@PostMapping
 	public String peticionCambiarPassword(String email, HttpServletRequest request) {
 		try {
 			Util.logInfo("RestablecerPasswordControlador", "peticionCambiarPassword", "Ha entrado");
+			
 			// Control de sesion
 			if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
 				Util.logInfo("RestablecerPasswordControlador", "peticionCambiarPassword",
@@ -146,8 +145,7 @@ public class RestablecerPasswordControlador {
 	 * 
 	 * @param token   Token
 	 * @param usuario Objeto UsuarioDTO que contiene los datos del formulario
-	 * @param request Objeto HttpServletRequest que contiene información sobre la
-	 *                solicitud HTTP
+	 * @param request Objeto HttpServletRequest que contiene información sobre la solicitud HTTP
 	 * @return Devuelve el nombre de la vista
 	 */
 	@PostMapping("/cambiar-password")
@@ -155,6 +153,7 @@ public class RestablecerPasswordControlador {
 			@ModelAttribute("objetoDTO") FormularioCambioPasswordDTO objetoDTO, HttpServletRequest request) {
 		try {
 			Util.logInfo("RestablecerPasswordControlador", "cambiaPassword", "Ha entrado");
+			
 			// Control de sesion
 			if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
 				Util.logInfo("RestablecerPasswordControlador", "cambiaPassword", "El usuario ya ha iniciado sesion");

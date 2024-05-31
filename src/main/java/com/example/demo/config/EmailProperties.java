@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 /**
  * Clase configuración email
  * 
- * @author Francisco José Gallego Dorado
+ * @author Francisco José Gallego Dorado 
  * Fecha: 29/04/2024
  */
 @Data
@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class EmailProperties {
 
 	// Atributos
-	
+
 	@Value("${miapp.emailFrom}")
 	private String emailFrom;
 }

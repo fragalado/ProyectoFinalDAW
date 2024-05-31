@@ -33,6 +33,7 @@ import com.example.demo.dtos.UsuarioDTO;
  */
 public class Util {
 
+	// Objeto ModelMapper para poder mapear las clases
 	private static ModelMapper modelMapper = new ModelMapper();
 
 	/**
@@ -114,6 +115,11 @@ public class Util {
 		}
 	}
 
+	/**
+	 * Método que convierte una lista de usuarios dao a dto
+	 * @param listaUsuarioDao Lista de usuarios dao
+	 * @return Devuelve una lista de usuarios dto
+	 */
 	public static List<UsuarioDTO> listaUsuarioDaoADto(List<Usuario> listaUsuarioDao) {
 		try {
 			// Lista donde guardaremos los objetos DTOs
@@ -259,6 +265,11 @@ public class Util {
 		}
 	}
 	
+	/**
+	 * Método que convierte un orden dao a dto
+	 * @param ordenDao Objeto Orden Dao
+	 * @return Devuelve un objeto OrdenDTO
+	 */
 	public static OrdenDTO ordenDaoADto(Orden ordenDao) {
 		try {
 			// Mapeamos a OrdenDTO
@@ -341,7 +352,7 @@ public class Util {
 	/**
 	 * Método que comprueba si existe una carpeta, si no existe la crea
 	 * 
-	 * @param nombreCarpeta Nombre de la carpeta
+	 * @param rutaCarpeta Ruta de la carpeta
 	 */
 	private static void verificarYCrearCarpeta(String rutaCarpeta) {
 		try {
