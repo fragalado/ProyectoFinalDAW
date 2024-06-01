@@ -83,10 +83,9 @@
 									<p class="card-text">Precio: <span th:text="${suplemento.formateaPrecio()}"></span>€
 									</p>
 									<!-- Boton añadir carrito -->
-									<a th:if="${tipo != null}" th:href="@{/carrito/agrega-suplemento/} + ${suplemento.getIdSuplemento() + '?tipo=' + tipo}"
-										class="btn btn-primary">Añadir al carrito</a>
-									<a th:if="${tipo == null}" th:href="@{/carrito/agrega-suplemento/} + ${suplemento.getIdSuplemento()}"
-										class="btn btn-primary">Añadir al carrito</a>
+									<a class="btn btn-primary"
+										th:attr="onclick='agregarSuplementoCarrito(' + ${suplemento.getIdSuplemento()} + ')'">Añadir
+										al carrito</a>
 								</div>
 							</div>
 						</div>
@@ -101,14 +100,6 @@
 	<!-- Toast -->
 	<div th:replace="~{partials/toast::toast}"></div>
 
-	<script th:if="${param.success}">
-		muestraToast("Se ha agregado el suplemento al carrito.", true);
-	</script>
-
-	<script th:if="${param.error}">
-		muestraToast("No se ha podido agregar el suplemento al carrito.", false);
-	</script>
-
 	<!-- Script AJAX -->
 	<script>
 		$(document).ready(function () {
@@ -118,7 +109,7 @@
 					$.ajax({
 						type: 'GET',
 						url: '/suplementos/filter',
-						data: { keyword: keyword },
+						data: {keyword: keyword},
 						success: function (data) {
 							$('#suplementosContainer').html(data);
 						},
@@ -129,6 +120,30 @@
 				}
 			});
 		});
+
+		// Function para agregar suplemento al carrito usando ajax
+		function agregarSuplementoCarrito(idSuplemento) {
+			$.ajax({
+				type: 'GET',
+				url: '/carrito/agrega-suplemento/' + idSuplemento,
+				success: function (data) {
+					$('#carritoFragment').html(`
+						<a href="/carrito" class="carrito position-relative colorFondoLinkNav">
+							<i class="bi bi-cart-fill colorLetras"></i>
+							<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+								<span>`+ data + `+` + `</span>
+								<span class="visually-hidden">unread messages</span>
+							</span>
+						</a>
+                    `);
+					muestraToast("Se ha agregado el suplemento al carrito.", true);
+				},
+				error: function (error) {
+					muestraToast("No se ha podido agregar el suplemento al carrito.", false);
+					console.log(error);
+				}
+			});
+		}
 	</script>
 
 

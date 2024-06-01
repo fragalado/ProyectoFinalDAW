@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.dtos.CarritoDTO;
 import com.example.demo.servicios.CarritoImplementacion;
@@ -41,7 +42,7 @@ public class CarritoControlador {
 	public String vistaCarrito(Model modelo, Authentication authentication) {
 		try {
 			Util.logInfo("CarritoControlador", "vistaCarrito", "Ha entrado");
-			
+
 			// Obtenemos el carrito del usuario
 			List<CarritoDTO> listaCarritoDTO = carritoImplementacion.obtieneCarritoUsuario(authentication.getName());
 
@@ -66,36 +67,44 @@ public class CarritoControlador {
 	 * 
 	 * @param idSuplemento   Id del suplemento a agregar al carrito.
 	 * @param authentication Objeto Authentication con los datos de la sesión.
-	 * @return Devuelve una redirección
+	 * @return Devuelve un json
 	 */
 	@GetMapping("/agrega-suplemento/{idSuplemento}")
-	public String agregaSuplementoAlCarrito(@PathVariable long idSuplemento, Authentication authentication,
-			@RequestParam(required = false) String tipo) {
+	@ResponseBody
+	public ResponseEntity<?> agregaSuplementoAlCarritoAjax(@PathVariable long idSuplemento,
+			Authentication authentication) {
 		try {
+			// Log
 			Util.logInfo("CarritoControlador", "agregaSuplementoAlCarrito", "Ha entrado");
-			
+
 			// Agregamos el suplemento al carrito
 			boolean ok = carritoImplementacion.agregaSuplemento(idSuplemento, authentication.getName());
 
 			// Controlamos la respuesta
-			String url;
-			if (tipo != null) {
-				url = "redirect:/suplementos?tipo=" + tipo;
-				return ok ? url + "&success" : url + "&error";
+			if (ok) {
+				// Log
+				Util.logInfo("CarritoControlador", "agregaSuplementoAlCarrito",
+						"Se agregado correctamente el suplemento al carrito.");
+
+				return ResponseEntity
+						.ok(carritoImplementacion.obtieneCantidadDeCarritosUsuario(authentication.getName()));
 			} else {
-				url = "redirect:/suplementos";
-				return ok ? url + "?success" : url + "?error";
+				// Log
+				Util.logInfo("CarritoControlador", "agregaSuplementoAlCarrito",
+						"Se ha producido un error al agregar el suplemento al carrito.");
+
+				return ResponseEntity.status(500).body("Error al agregar el suplemento al carrito.");
 			}
 		} catch (Exception e) {
 			Util.logError("CarritoControlador", "agregaSuplementoAlCarrito", "Se ha producido un error");
-			return "redirect:/home";
+			return ResponseEntity.status(500).body("Se ha producido un error");
 		}
 	}
 
 	/**
 	 * Método que controla las peticiones GET para la ruta /carrito/borra-suplemento/{idCarrito}
 	 * 
-	 * @param idCarrito Id del carrito a eliminar
+	 * @param idCarrito      Id del carrito a eliminar
 	 * @param authentication Objeto Authentication con los datos de la autenticación
 	 * @return Devuelve una redirección
 	 */
@@ -103,7 +112,7 @@ public class CarritoControlador {
 	public String borraSuplementoCarrito(@PathVariable long idCarrito, Authentication authentication) {
 		try {
 			Util.logInfo("CarritoControlador", "borraSuplementoCarrito", "Ha entrado");
-			
+
 			// Borramos el carrito
 			boolean ok = carritoImplementacion.borraCarrito(idCarrito, authentication.getName());
 

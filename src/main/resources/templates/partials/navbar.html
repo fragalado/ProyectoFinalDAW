@@ -12,18 +12,20 @@
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0 flex">
 					<!-- Home -->
 					<li class="nav-item">
-						<a class="nav-link colorLetras colorFondoLinkNav" aria-current="page" th:href="@{/home}">Home</a>
+						<a class="nav-link colorLetras colorFondoLinkNav" aria-current="page"
+							th:href="@{/home}">Home</a>
 					</li>
 					<!-- Suplementos -->
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle colorLetras colorFondoLinkNav" href="#" role="button" data-bs-toggle="dropdown"
-							aria-expanded="false">
+						<a class="nav-link dropdown-toggle colorLetras colorFondoLinkNav" href="#" role="button"
+							data-bs-toggle="dropdown" aria-expanded="false">
 							Suplementos
 						</a>
 						<ul class="dropdown-menu">
 							<li><a class="dropdown-item" th:href="@{/suplementos?tipo=proteina}">Proteína</a></li>
 							<li><a class="dropdown-item" th:href="@{/suplementos?tipo=creatina}">Creatina</a></li>
-							<li><a class="dropdown-item" th:href="@{/suplementos?tipo=pre-entrenamiento}">Pre-Entrenamiento</a></li>
+							<li><a class="dropdown-item"
+									th:href="@{/suplementos?tipo=pre-entrenamiento}">Pre-Entrenamiento</a></li>
 							<li>
 								<hr class="dropdown-divider">
 							</li>
@@ -36,8 +38,8 @@
 					</li>
 					<!-- Administracion -->
 					<li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
-						<a class="nav-link dropdown-toggle colorLetras colorFondoLinkNav" href="#" role="button" data-bs-toggle="dropdown"
-							aria-expanded="false">
+						<a class="nav-link dropdown-toggle colorLetras colorFondoLinkNav" href="#" role="button"
+							data-bs-toggle="dropdown" aria-expanded="false">
 							Administración
 						</a>
 						<ul class="dropdown-menu">
@@ -58,18 +60,20 @@
 				</ul>
 
 				<!-- Carrito Icono -->
-				<a th:href="@{/carrito}" class="carrito position-relative colorFondoLinkNav">
-					<i class="bi bi-cart-fill colorLetras"></i>
-					<span th:if="${tieneCarrito}"
-						class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-						<span th:text="${tieneCarrito + '+'}"></span>
-						<span class="visually-hidden">unread messages</span>
-					</span>
-				</a>
+				<div id="carritoFragment">
+					<a th:href="@{/carrito}" class="carrito position-relative colorFondoLinkNav">
+						<i class="bi bi-cart-fill colorLetras"></i>
+						<span th:if="${tieneCarrito}"
+							class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+							<span th:text="${tieneCarrito + '+'}"></span>
+							<span class="visually-hidden">unread messages</span>
+						</span>
+					</a>
+				</div>
 
 				<!-- Perfil icono -->
 				<a th:href="@{/perfil}" class="iconoPerfil"><i class="bi bi-person-fill colorLetras"></i></a>
-				
+
 			</div>
 		</div>
 	</nav>
