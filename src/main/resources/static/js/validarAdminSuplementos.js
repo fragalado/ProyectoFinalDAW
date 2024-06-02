@@ -13,7 +13,7 @@ function validarFormulario() {
 	if (tipoError != "")
 		muestraToast(tipoError, false);
 
-	let imagenError = validarImagen(imagen);
+	let imagenError = imagen != undefined ?  validarImagen(imagen) : "";
 	if(imagenError != "")
 		muestraToast(imagenError, false);
 
