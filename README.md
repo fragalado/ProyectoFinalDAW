@@ -73,8 +73,8 @@ El proyecto sigue una arquitectura Modelo-Vista-Controlador (MVC), que separa la
 
 1. **Clonar el Repositorio:**
    ```bash
-   git clone https://github.com/usuario/sports-supplements.git
-   cd sports-supplements
+   git clone https://github.com/fragalado/ProyectoFinalDAW.git
+   cd ProyectoFinalDAW
 
 2. **Configurar application.properties**
 - Primero tendrás que crear una base de datos con el nombre que quieras.
