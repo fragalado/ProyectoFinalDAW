@@ -308,7 +308,7 @@ public class Util {
 			verificarYCrearCarpeta(rutaCarpeta);
 			// Obtenemos el dia de hoy para ponerle de nombre al log
 			Calendar hoy = Calendar.getInstance();
-			String diaFormateado = hoy.get(Calendar.DAY_OF_MONTH) + "-" + hoy.get(Calendar.MONTH) + "-"
+			String diaFormateado = hoy.get(Calendar.DAY_OF_MONTH) + "-" + (hoy.get(Calendar.MONTH) + 1) + "-"
 					+ hoy.get(Calendar.YEAR);
 			FileWriter file = new FileWriter(rutaCarpeta + "/" + diaFormateado + ".log", true);
 			PrintWriter pw = new PrintWriter(file);

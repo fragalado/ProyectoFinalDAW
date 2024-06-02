@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
 
 <head>
 	<title>Register - Tienda de Suplementos</title>
 	<th:block th:insert="~{partials/head::headerFiles}"></th:block>
 	<!-- CSS -->
 	<link rel="stylesheet" th:href="@{/css/styleLogin.css}" />
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
 	<!-- Fin CSS -->
 	<!-- Js -->
 	<script th:src="@{js/main.js}"></script>
@@ -13,6 +14,10 @@
 </head>
 
 <body>
+	<!-- Nav -->
+	<div th:replace="~{partials/navbar::navbar}"></div>
+	<!-- Fin Nav -->
+
 	<div class="wrapper">
 
 		<!-- Formulario -->

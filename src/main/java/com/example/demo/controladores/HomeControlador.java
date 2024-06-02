@@ -22,7 +22,7 @@ import com.example.demo.utiles.Util;
  * Fecha: 21/04/2024
  */
 @Controller
-@RequestMapping("/home")
+@RequestMapping("/")
 public class HomeControlador {
 
 	@Autowired
@@ -32,12 +32,26 @@ public class HomeControlador {
 	private CarritoImplementacion carritoImplementacion;
 
 	/**
+	 * Método que maneja las solicutes GET para la ruta /
+	 * Redirecciona a la ruta /home
+	 * @return Realiza un redirect
+	 */
+	@GetMapping
+	public String redireccionaHome(){
+		try {
+			return "redirect:/home";
+		} catch (Exception e) {
+			return "redirect:/errorVista";
+		}
+	}
+
+	/**
 	 * Método que maneja las solicitudes GET para la ruta /home
 	 * 
 	 * @param modelo Objeto Model para pasar datos a la vista
 	 * @return Devuelve una vista
 	 */
-	@GetMapping
+	@GetMapping("/home")
 	public String vistaHome(Model modelo, Authentication authentication) {
 		try {
 			Util.logInfo("HomeControlador", "vistaHome", "Ha entrado");
@@ -53,7 +67,8 @@ public class HomeControlador {
 				modelo.addAttribute("listaSuplementosDTO", listaSuplementosDto);
 
 			// Obtenemos el numero de carrito del usuario
-			modelo.addAttribute("tieneCarrito",
+			if(authentication != null)
+				modelo.addAttribute("tieneCarrito",
 					carritoImplementacion.obtieneCantidadDeCarritosUsuario(authentication.getName()));
 
 			// Devolvemos la vista

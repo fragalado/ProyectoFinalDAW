@@ -49,7 +49,7 @@ public class SeguridadConfig {
 				// spring security
 				.csrf(csrf -> csrf.disable()).authorizeHttpRequests(authRequest -> {
 					// Permite acceso a estas url
-					authRequest.requestMatchers("/login", "/registro", "/restablecer/**", "/activa-cuenta/**",
+					authRequest.requestMatchers("/", "/login", "/registro", "/restablecer/**", "/activa-cuenta/**", "/home", "/suplementos/**",
 							"/css/**", "/js/**", "/img/**").permitAll();
 					// Autenticación para cualquier otra solicitud
 					authRequest.anyRequest().authenticated();

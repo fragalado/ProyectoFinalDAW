@@ -70,7 +70,8 @@ public class SuplementoControlador {
 			modelo.addAttribute("listaSuplementosDTO", listaSuplementosDTO);
 
 			// Obtenemos el numero de carrito del usuario
-			modelo.addAttribute("tieneCarrito", carritoImplementacion.obtieneCantidadDeCarritosUsuario(
+			if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser"))
+				modelo.addAttribute("tieneCarrito", carritoImplementacion.obtieneCantidadDeCarritosUsuario(
 					SecurityContextHolder.getContext().getAuthentication().getName()));
 
 			// Devolvemos la vista

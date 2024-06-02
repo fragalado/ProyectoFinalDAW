@@ -175,6 +175,10 @@
 	<script th:if="${param.usuarioEditadoError}">
 		muestraToast("Se ha producido un error. Vuelva a intentarlo más tarde!", false);
 	</script>
+
+	<script th:if="${param.emailExiste}">
+		muestraToast("El email introducido ya existe!", false);
+	</script>
 	<!-- Fin Control actualizar -->
 
 	<!-- Fin Control de alertas -->

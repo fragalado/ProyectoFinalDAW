@@ -109,7 +109,7 @@
 					$.ajax({
 						type: 'GET',
 						url: '/suplementos/filter',
-						data: {keyword: keyword},
+						data: { keyword: keyword },
 						success: function (data) {
 							$('#suplementosContainer').html(data);
 						},
@@ -127,7 +127,8 @@
 				type: 'GET',
 				url: '/carrito/agrega-suplemento/' + idSuplemento,
 				success: function (data) {
-					$('#carritoFragment').html(`
+					if (typeof data === "number") {
+						$('#carritoFragment').html(`
 						<a href="/carrito" class="carrito position-relative colorFondoLinkNav">
 							<i class="bi bi-cart-fill colorLetras"></i>
 							<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -135,8 +136,12 @@
 								<span class="visually-hidden">unread messages</span>
 							</span>
 						</a>
-                    `);
-					muestraToast("Se ha agregado el suplemento al carrito.", true);
+                    	`);
+						muestraToast("Se ha agregado el suplemento al carrito.", true);
+					}
+					if (typeof data === "string") {
+						window.location.href = "/login";
+					}
 				},
 				error: function (error) {
 					muestraToast("No se ha podido agregar el suplemento al carrito.", false);

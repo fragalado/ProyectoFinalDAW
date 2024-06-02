@@ -33,7 +33,7 @@
 						</ul>
 					</li>
 					<!-- Pedidos -->
-					<li class="nav-item">
+					<li sec:authorize="isAuthenticated()" class="nav-item">
 						<a class="nav-link colorLetras colorFondoLinkNav" th:href="@{/pedidos}">Pedidos</a>
 					</li>
 					<!-- Administracion -->
@@ -48,19 +48,35 @@
 						</ul>
 					</li>
 					<!-- Carrito -->
-					<li class="nav-item perfilLink">
+					<li sec:authorize="isAuthenticated()" class="nav-item perfilLink">
 						<a th:href="@{/carrito}" class="nav-link colorLetras colorFondoLinkNav">
 							Carrito
 						</a>
 					</li>
 					<!-- Perfil -->
-					<li class="nav-item perfilLink">
+					<li sec:authorize="isAuthenticated()" class="nav-item perfilLink">
 						<a th:href="@{/perfil}" class="nav-link colorLetras colorFondoLinkNav">Perfil</a>
 					</li>
+
+					<!-- Iniciar sesion -->
+					<li class="nav-item perfilLink">
+						<a sec:authorize="isAnonymous()" th:href="@{/login}" class="nav-link colorLetras colorFondoLinkNav">Iniciar sesión</a>
+					</li>
+					<!-- Registrar Usuario -->
+					<li class="nav-item perfilLink">
+						<a sec:authorize="isAnonymous()" th:href="@{/registro}" class="nav-link colorLetras colorFondoLinkNav">Regístrate</a>
+					</li>
+
 				</ul>
 
+				<!-- Iniciar sesión -->
+				<a sec:authorize="isAnonymous()" th:href="@{/login}" class="carrito">Iniciar sesión</a>
+
+				<!-- Registrar Usuario -->
+				<a sec:authorize="isAnonymous()" th:href="@{/registro}" class="carrito">Regístrate</a>
+
 				<!-- Carrito Icono -->
-				<div id="carritoFragment">
+				<div id="carritoFragment" sec:authorize="isAuthenticated()">
 					<a th:href="@{/carrito}" class="carrito position-relative colorFondoLinkNav">
 						<i class="bi bi-cart-fill colorLetras"></i>
 						<span th:if="${tieneCarrito}"
@@ -72,7 +88,7 @@
 				</div>
 
 				<!-- Perfil icono -->
-				<a th:href="@{/perfil}" class="iconoPerfil"><i class="bi bi-person-fill colorLetras"></i></a>
+				<a sec:authorize="isAuthenticated()" th:href="@{/perfil}" class="iconoPerfil"><i class="bi bi-person-fill colorLetras"></i></a>
 
 			</div>
 		</div>
