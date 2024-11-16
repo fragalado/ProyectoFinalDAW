@@ -3,7 +3,7 @@
 ## Información del Proyecto
 
 - **Título:** Sports Supplements
-- **Enlace:** [frangallegodorado.es](https://frangallegodorado.es/)
+- **Enlace:** [frangd.duckdns.org](https://frangd.duckdns.org/)
 - **Autor:** Francisco José Gallego Dorado
 
 ---
